@@ -31,10 +31,12 @@ public:
         endpoint = *resolver.resolve({udp::v4(), destination, port});
     }
 
-    template<typename Container>
-    void draw(Container &buffer) {
+    void draw(const std::vector<HSV> &buffer) {
+        _send<std::vector<HSV>>(buffer);
+    }
 
-        _send<Container>(buffer);
+    void draw(const AbstractBaseBuffer<HSV> &buffer) {
+        _send<AbstractBaseBuffer<HSV>>(buffer);
     }
 
 private:
@@ -45,15 +47,15 @@ private:
 //
 //typename std::enable_if<std::is_base_of<HSV, typename Container::value_type>::value,
     template<typename Container>
-            void _send(Container& buffer) {
+    void _send(const Container &buffer) {
         std::vector<RGB> rgbbuffer(buffer.size());
-        std::transform(buffer.begin(), buffer.end(), rgbbuffer.begin(), [](const auto& e){
+        std::transform(buffer.begin(), buffer.end(), rgbbuffer.begin(), [](const auto &e) {
             return e.toRGB();
         });
 
         std::vector<boost::asio::const_buffer> buffers;
 
-        buffers.push_back(boost::asio::buffer((char*)&*rgbbuffer.begin(), rgbbuffer.size() * sizeof(RGB)));
+        buffers.push_back(boost::asio::buffer((char *) &*rgbbuffer.begin(), rgbbuffer.size() * sizeof(RGB)));
 
         socket.send_to(buffers, endpoint);
     }

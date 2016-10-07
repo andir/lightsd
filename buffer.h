@@ -125,7 +125,7 @@ public:
 
     virtual value_type &at(size_t pos) const = 0;
 
-//    virtual size_t size() const = 0;
+    virtual size_t size() const = 0;
 
     virtual size_t count() const = 0;
 
@@ -200,10 +200,6 @@ public:
         //assert(pos < _count);
         return ptr.get()[pos];
     }
-
-//    size_t size() const {
-//        return sizeof(typename parent::value_type) * _count;
-//    }
 
     size_t size() const {
         return _count;

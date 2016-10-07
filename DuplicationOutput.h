@@ -6,17 +6,26 @@
 #define LIGHTSD_DUPLICATIONOUTPUT_H
 
 template<typename Output1, typename Output2>
-class DuplicationOutput {
+class DuplicationOutput : public Output {
     Output1& out1;
     Output2& out2;
 public:
     DuplicationOutput(Output1& o1, Output2& o2) : out1(o1), out2(o2) {}
 
 
-    template<typename Collection>
-            void draw(const Collection& e) {
-        out1.draw(e);
-        out2.draw(e);
+    void draw(const std::vector<HSV>& e) {
+        _draw(e);
+    }
+
+    void draw(const AbstractBaseBuffer<HSV>& e) {
+        _draw(e);
+    }
+
+private:
+    template<typename Container>
+            void _draw(const Container& buffer) {
+        out1.draw(buffer);
+        out2.draw(buffer);
     }
 
 };

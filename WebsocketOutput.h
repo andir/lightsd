@@ -205,8 +205,20 @@ public:
         process_thread.join();
         accept_thread.join();
     }
+
+
+    void draw(const AbstractBaseBuffer<HSV>& buffer) {
+        _draw(buffer);
+    }
+
+    void draw(const std::vector<HSV>& buffer) {
+        _draw(buffer);
+    }
+
+
+private:
     template<typename Container>
-    void draw(Container &buffer) {
+    void _draw(Container &buffer) {
 
         if (!server.has_clients())
             return;

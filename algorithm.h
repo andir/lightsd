@@ -176,6 +176,30 @@ namespace algorithm {
             return fmod(tmp, max);
         }
     };
+
+
+    template<typename ContainerType>
+    void initRainbow(ContainerType &data) {
+        using ValueType = typename ContainerType::value_type;
+        size_t steps = data.count();
+        float stepDelta = 1.0f / steps;
+        size_t i = 0;
+        std::generate(data.begin(), data.end(), [stepDelta, &i]() {
+            return algorithm::LinearColor<ValueType>(stepDelta * i++);
+        });
+
+    }
+
+    template<typename ContainerType, typename ColorType>
+    void initSolidColor(ContainerType &data, ColorType color) {
+        std::fill(data.begin(), data.end(), color);
+    };
+
+    template<typename Iterator, typename ColorType>
+    void initSolidColor(Iterator start, Iterator stop, ColorType color) {
+        std::fill(start, stop, color);
+    };
+
 };
 
 

@@ -1,0 +1,42 @@
+---
+width: 1200
+fps: 90
+
+sequence:
+  - initRainbow
+#  - initSolidColor:
+#      hue: 0.0
+#      saturation: 0.0
+#      value: 0.8
+  - shade:
+      value: 1
+
+  - rotate:
+      step_width: -2
+
+#  - fade:
+#      min: 0.1
+#      max: 1.0
+#      from: 0
+#      to: 120
+
+#  - fade:
+#      min: 1
+#      max: 1
+#      from: 35
+#      to: 80
+
+
+outputs:
+  Websocket1:
+    type: websocket
+    params:
+      port: 9001
+
+  UDPOutput:
+    type: udp
+    params:
+      host: 172.23.97.143
+      port: 6453
+
+output: Websocket1

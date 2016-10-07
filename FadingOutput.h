@@ -18,9 +18,15 @@ public:
 
     FadingOutput(FrameScheduler& scheduler, ChildT& child) : scheduler(scheduler), child(child) {}
 
+    void draw(const std::vector<HSV>& buffer) {
+        _draw(buffer);
+    }
+    void draw(const AbstractBaseBuffer<HSV>& buffer) {
+        _draw(buffer);
+    }
+private:
     template<typename Container>
-    void draw(const Container& buffer) {
-
+    void _draw(const Container& buffer) {
         if (lastFrame.empty()) {
             lastFrame.resize(buffer.count());
             auto ot = lastFrame.begin();

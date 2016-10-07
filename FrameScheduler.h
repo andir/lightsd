@@ -7,6 +7,9 @@
 
 #include "util.h"
 
+#include <chrono>
+#include <cstdint>
+
 class FrameScheduler {
     const int rate;
     uint64_t speed;
@@ -15,18 +18,8 @@ class FrameScheduler {
     std::chrono::steady_clock::time_point _stop;
 
 public:
-    FrameScheduler(const int rate) : rate(rate), speed(1000.0 / rate) {
-
-    };
-
-    void delay(const uint64_t duration) {
-        const uint64_t diff = speed - duration;
-
-        if (diff > 0) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(diff));
-        }
-    }
-
+    FrameScheduler(const int rate);
+    void delay(const uint64_t duration);
 };
 
 class Frame {

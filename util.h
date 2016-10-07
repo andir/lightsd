@@ -5,6 +5,7 @@
 #ifndef LIGHTSD_UTIL_H
 #define LIGHTSD_UTIL_H
 
+#include <chrono>
 
 struct MeasureTime {
 
