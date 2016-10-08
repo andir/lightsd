@@ -1,6 +1,6 @@
 ---
-width: 1200
-fps: 90
+width: 120
+fps: 120
 
 sequence:
   - initRainbow
@@ -9,7 +9,7 @@ sequence:
 #      saturation: 0.0
 #      value: 0.8
   - shade:
-      value: 1
+      value: 0.2
 
   - rotate:
       step_width: -2

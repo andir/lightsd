@@ -36,7 +36,8 @@ using websocketpp::lib::condition_variable;
 enum action_type {
     SUBSCRIBE,
     UNSUBSCRIBE,
-    MESSAGE
+    MESSAGE,
+    QUIT
 };
 
 typedef std::string message_type;
@@ -45,7 +46,7 @@ struct action {
     action(action_type t, connection_hdl h) : type(t), hdl(h) {}
 
     action(action_type t, connection_hdl h, message_type m)
-            : type(t), hdl(h), msg(m)  {}
+            : type(t), hdl(h), msg(m) {}
 
     action_type type;
     websocketpp::connection_hdl hdl;
@@ -70,6 +71,7 @@ public:
 
     ~broadcast_server() {
         stop();
+        std::cerr << "Stopped websocket server " << std::endl;
     }
 
     void run(uint16_t port) {
@@ -94,6 +96,11 @@ public:
 
     void stop() {
         lock_guard<mutex> guard(m_action_lock);
+        const connection_hdl hdl = std::shared_ptr<void>(nullptr);
+
+        m_actions.push(action(QUIT, hdl));
+        m_action_cond.notify_one();
+
         if (!m_server.stopped()) {
             m_server.stop();
         }
@@ -148,6 +155,10 @@ public:
             action a = m_actions.front();
             m_actions.pop();
 
+            if (a.type == QUIT){
+                return;
+            }
+
             lock.unlock();
 
             if (a.type == SUBSCRIBE) {
@@ -194,9 +205,8 @@ class WebsocketOutput {
 public:
 
     WebsocketOutput(int port) :
-            process_thread(bind(&broadcast_server::process_messages,&server)),
-            accept_thread(bind(&broadcast_server::run, &server, port))
-    {
+            process_thread(bind(&broadcast_server::process_messages, &server)),
+            accept_thread(bind(&broadcast_server::run, &server, port)) {
     }
 
 
@@ -204,14 +214,16 @@ public:
         server.stop();
         process_thread.join();
         accept_thread.join();
+
+        std::cerr << "Stoped WebsocketOutput" << std::endl;
     }
 
 
-    void draw(const AbstractBaseBuffer<HSV>& buffer) {
+    void draw(const AbstractBaseBuffer<HSV> &buffer) {
         _draw(buffer);
     }
 
-    void draw(const std::vector<HSV>& buffer) {
+    void draw(const std::vector<HSV> &buffer) {
         _draw(buffer);
     }
 
@@ -219,6 +231,7 @@ public:
 private:
     template<typename Container>
     void _draw(Container &buffer) {
+
 
         if (!server.has_clients())
             return;
@@ -230,8 +243,8 @@ private:
 
 
         size_t count = 0;
-        const auto& end = buffer.end();
-        for (const auto& e: buffer) {
+        const auto &end = buffer.end();
+        for (const auto &e: buffer) {
             RGB v = e.toRGB();
             ss << "[" << int(v.red) << "," << int(v.green) << "," << int(v.blue) << "]";
 

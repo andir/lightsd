@@ -10,6 +10,7 @@
 #include <boost/algorithm/string.hpp>
 
 #include <boost/any.hpp>
+#include <stdlib.h>
 #include "buffer.h"
 #include "hsv.h"
 #include "algorithm.h"
@@ -235,20 +236,29 @@ std::unique_ptr<Operation> generateSequenceStep(const std::string &step_type, It
 
 
 class WebsocketOutputWrapper : public Output {
-    WebsocketOutput output;
+    std::unique_ptr<WebsocketOutput> output;
+    int port;
 public:
-    WebsocketOutputWrapper(const YAML::Node& params) : output(parse_port(params)) {
+    WebsocketOutputWrapper(const YAML::Node& params) : port(parse_port(params)), output(nullptr) {
 
     }
 
-    ~WebsocketOutputWrapper() {}
+    ~WebsocketOutputWrapper() {
+        std::cerr << "Destruction WebsocketOutputWrapper" << std::endl;
+    }
 
     virtual void draw(const AbstractBaseBuffer<HSV> &buffer) {
-        output.draw(buffer);
+        if (output == nullptr) {
+            output = std::make_unique<WebsocketOutput>(port);
+        }
+        output->draw(buffer);
     }
 
     virtual void draw(const std::vector<HSV> &buffer) {
-        output.draw(buffer);
+        if (output == nullptr) {
+            output = std::make_unique<WebsocketOutput>(port);
+        }
+        output->draw(buffer);
     }
 
     static int parse_port(const YAML::Node& params) {
@@ -387,61 +397,143 @@ void parseOutputs(std::map<std::string, std::shared_ptr<Output>> &outputs, const
     }
 }
 
+typedef std::unique_ptr<Config> ConfigPtr;
 
-int main(const int argc, const char *argv[]) {
+class WorkerThread  {
+    bool doRun;
+    ConfigPtr config_ptr;
+    std::mutex config_mutex;
 
-    Config config;
+public:
+    WorkerThread() : config_ptr(nullptr), doRun(true) {
 
-    std::string config_filename = "config.yml";
-
-    if (argc > 1) {
-        config_filename = std::string(argv[1]);
     }
 
-    YAML::Node yaml_config = YAML::LoadFile(config_filename);
+    void setConfig(ConfigPtr cfg) {
+        std::lock_guard<std::mutex> lock(config_mutex);
+        config_ptr = std::move(cfg);
+    }
+
+    void run() {
+        while (doRun) {
+            Config* config = nullptr;
+            do {
+                std::lock_guard<std::mutex> lock(config_mutex);
+                config = config_ptr.get();
+                if (config == nullptr) {
+                    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                }
+            } while (config == nullptr);
+
+            FrameScheduler scheduler(config->fps);
+            AllocatedBuffer<HSV> buffer(config->width);
+
+            while (true) {
+                std::lock_guard<std::mutex> lock(config_mutex);
+
+                if (config != config_ptr.get()) {
+                    break;
+                }
+
+                Frame frame(scheduler);
+
+                for (const auto &step : config->sequence) {
+                    (*step)(buffer);
+                }
+                for (const auto &output : config->outputs) {
+                    (*output.second).draw(buffer);
+                }
+
+            }
+        }
+    }
+
+
+};
+
+
+ConfigPtr parseConfig(const std::string& filename) {
+    auto config = std::make_unique<Config>();
+
+    YAML::Node yaml_config = YAML::LoadFile(filename);
 
     if (yaml_config["width"]) {
-        config.width = yaml_config["width"].as<size_t>();
+        config->width = yaml_config["width"].as<size_t>();
     } else {
-        config.width = 15;
+        config->width = 15;
     }
 
     if (yaml_config["fps"]) {
-        config.fps = yaml_config["fps"].as<size_t>();
+        config->fps = yaml_config["fps"].as<size_t>();
     } else {
-        config.fps = 25;
+        config->fps = 25;
     }
 
     if (!yaml_config["sequence"]) {
         throw ConfigParsingException("No sequence configured.");
     } else {
         const YAML::Node sequence_node = yaml_config["sequence"];
-        parseSequence(config.sequence, sequence_node);
+        parseSequence(config->sequence, sequence_node);
     }
 
     if (!yaml_config["outputs"]) {
         throw ConfigParsingException("No outputs defined.");
     } else {
         const YAML::Node outputs_node = yaml_config["outputs"];
-        parseOutputs(config.outputs, outputs_node);
+        parseOutputs(config->outputs, outputs_node);
 
     }
+    return config;
+
+}
 
 
-    FrameScheduler scheduler(config.fps);
-    AllocatedBuffer<HSV> buffer(config.width);
 
-    while (true) {
-        Frame frame(scheduler);
+static WorkerThread workerThread;
+static std::string config_filename;
 
-        for (const auto &step : config.sequence) {
-            (*step)(buffer);
-        }
-        for (const auto& output : config.outputs) {
-            (*output.second).draw(buffer);
-        }
 
+void emptySignalHandler(int signum) {
+
+}
+
+void sigHupHandler(int signum) {
+    if (signum == SIGHUP) {
+        auto conf = parseConfig(config_filename);
+        workerThread.setConfig(std::move(conf));
+    } else {
+        exit(signum);
     }
+}
+
+int main(const int argc, const char *argv[]) {
+
+    config_filename = "config.yml";
+
+    if (argc > 1) {
+        config_filename = std::string(argv[1]);
+    }
+
+    workerThread.setConfig(parseConfig(config_filename));
+
+
+    std::thread t([](){
+        sigset_t set;
+        sigemptyset(&set);
+        if (pthread_sigmask(SIG_SETMASK, &set, NULL)) {
+            std::cerr << "failed to set SIGHUP mask" << std::endl;
+            return;
+        }
+
+
+        workerThread.run();
+    });
+
+    signal(SIGHUP, sigHupHandler);
+
+
+
+    t.join();
 
     return 0;
 }
