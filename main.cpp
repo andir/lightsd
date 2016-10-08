@@ -402,6 +402,7 @@ typedef std::unique_ptr<Config> ConfigPtr;
 class WorkerThread  {
     bool doRun;
     ConfigPtr config_ptr;
+    ConfigPtr new_config_ptr;
     std::mutex config_mutex;
 
 public:
@@ -411,27 +412,31 @@ public:
 
     void setConfig(ConfigPtr cfg) {
         std::lock_guard<std::mutex> lock(config_mutex);
-        config_ptr = std::move(cfg);
+        new_config_ptr = std::move(cfg);
     }
+
+    ConfigPtr getConfig() {
+        std::lock_guard<std::mutex> lock(config_mutex);
+        if (new_config_ptr != nullptr) {
+            return std::move(new_config_ptr);
+        }
+        return nullptr;
+    }
+
 
     void run() {
         while (doRun) {
-            Config* config = nullptr;
-            do {
-                std::lock_guard<std::mutex> lock(config_mutex);
-                config = config_ptr.get();
-                if (config == nullptr) {
-                    std::this_thread::sleep_for(std::chrono::milliseconds(100));
-                }
-            } while (config == nullptr);
+            ConfigPtr config = getConfig();
+            while (config == nullptr) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                config = std::move(getConfig());
+            };
 
             FrameScheduler scheduler(config->fps);
             AllocatedBuffer<HSV> buffer(config->width);
 
             while (true) {
-                std::lock_guard<std::mutex> lock(config_mutex);
-
-                if (config != config_ptr.get()) {
+                if (new_config_ptr.get() != nullptr) {
                     break;
                 }
 
@@ -499,6 +504,8 @@ void emptySignalHandler(int signum) {
 
 void sigHupHandler(int signum) {
     if (signum == SIGHUP) {
+        static std::mutex m;
+        std::unique_lock<std::mutex> lock(m);
         auto conf = parseConfig(config_filename);
         workerThread.setConfig(std::move(conf));
     } else {
@@ -516,22 +523,31 @@ int main(const int argc, const char *argv[]) {
 
     workerThread.setConfig(parseConfig(config_filename));
 
+    sigset_t set;
+    sigemptyset(&set);
+    sigprocmask(SIG_SETMASK, &set, NULL);
+    if (pthread_sigmask(SIG_SETMASK, &set, NULL)) {
+        std::cerr << "failed to set SIGHUP mask" << std::endl;
+        return 1;
+    }
 
     std::thread t([](){
         sigset_t set;
         sigemptyset(&set);
+        sigprocmask(SIG_SETMASK, &set, NULL);
         if (pthread_sigmask(SIG_SETMASK, &set, NULL)) {
             std::cerr << "failed to set SIGHUP mask" << std::endl;
-            return;
+            return 1;
         }
-
-
         workerThread.run();
     });
 
+    if (pthread_sigmask(SIG_BLOCK, &set, NULL)) {
+        std::cerr << "failed to set SIGHUP mask" << std::endl;
+        return 1;
+    }
+
     signal(SIGHUP, sigHupHandler);
-
-
 
     t.join();
 
