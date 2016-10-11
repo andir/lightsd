@@ -78,11 +78,12 @@ public:
             std::cout << "topic: " << topic_name << std::endl;
             std::cout << "value: " << contents << std::endl;
 
-
-            if (boost::algorithm::starts_with(topic_name, this->realm)) {
+            static const std::string set("set");
+            if (boost::algorithm::starts_with(topic_name, this->realm) && boost::algorithm::ends_with(topic_name, set)) {
                 const auto e = topic_name.find(this->realm);
                 if (e != topic_name.size()) {
-                    std::string s(topic_name, e + this->realm.size(), topic_name.size() - e);
+                    const size_t len = topic_name.size() - this->realm.size() - e - set.size() - 1;
+                    std::string s(topic_name, this->realm.size(), len);
                     const auto& keys = this->store.keys();
                     const auto it = keys.find(s);
                     if (it != keys.end()) {
@@ -103,6 +104,13 @@ public:
                             } catch(boost::bad_lexical_cast& ex) {
                                 std::cerr << ex.what() << std::endl;
                             }
+                            std::stringstream publish_ss, value_ss;
+
+                            publish_ss << this->realm << s;
+                            value_ss << *spt;
+
+                            mqtt_client->publish(publish_ss.str(), value_ss.str());
+
                         }
                     }
                 }
