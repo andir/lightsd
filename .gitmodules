@@ -1,0 +1,3 @@
+[submodule "mqtt_client_cpp"]
+	path = mqtt_client_cpp
+	url = https://github.com/redboltz/mqtt_client_cpp.git

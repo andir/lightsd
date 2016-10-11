@@ -1,6 +1,11 @@
 ---
 width: 120
-fps: 120
+fps: 40
+
+mqtt:
+  broker: whisky.trollhoehle.net
+  relam: /lights/
+
 
 sequence:
   - initRainbow
@@ -9,10 +14,10 @@ sequence:
 #      saturation: 0.0
 #      value: 0.8
   - shade:
-      value: 0.2
+      value: 0.7
 
   - rotate:
-      step_width: -2
+      step_width: -1
 
 #  - fade:
 #      min: 0.1
@@ -36,7 +41,7 @@ outputs:
   UDPOutput:
     type: udp
     params:
-      host: 172.23.97.143
+      host: 172.23.97.157
       port: 6453
 
 output: Websocket1
