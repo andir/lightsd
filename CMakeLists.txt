@@ -27,6 +27,7 @@ set(SOURCE_FILES main.cpp FrameScheduler.cpp test.cpp algorithm.cpp WebsocketOut
         config.cpp
         RainbowOperation.cpp
         RotateOperation.cpp
+        WorkerThread.cpp
         )
 
 add_executable(lightsd ${SOURCE_FILES})
