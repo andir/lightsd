@@ -5,11 +5,8 @@
 #include <yaml-cpp/yaml.h>
 
 #include <iostream>
-#include <map>
-#include <string>
 #include <boost/algorithm/string.hpp>
 
-#include <boost/any.hpp>
 #include <stdlib.h>
 #include "buffer.h"
 #include "hsv.h"
@@ -18,10 +15,7 @@
 #include "Output.h"
 #include "WebsocketOutput.h"
 #include "operations.h"
-#include "VariableStore/VariableStore.h"
 #include "MqttVarStore.h"
-#include "UDPOutputWrapper.h"
-#include "WebsocketOutputWrapper.h"
 #include "config.h"
 
 
