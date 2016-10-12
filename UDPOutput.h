@@ -6,7 +6,7 @@
 #define LIGHTSD_UDPOUTPUT_H
 
 #include <boost/asio.hpp>
-
+#include "Output.h"
 using boost::asio::ip::udp;
 
 

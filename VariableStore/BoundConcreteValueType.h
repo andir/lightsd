@@ -7,6 +7,7 @@
 
 #include <memory>
 #include "ConcreteValueType.h"
+#include "VariableStore.h"
 
 template<typename EnclosedValue>
 class BoundConcreteValue : public ValueType {

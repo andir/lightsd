@@ -5,9 +5,14 @@
 #ifndef LIGHTSD_OPERATIONS_H
 #define LIGHTSD_OPERATIONS_H
 
+
+#include <yaml-cpp/yaml.h>
+
+#include "Operation.h"
 #include "VariableStore/ConcreteValueType.h"
 #include "VariableStore/VariableStore.h"
 #include "VariableStore/BoundConcreteValueType.h"
+#include "algorithm.h"
 
 
 template<typename T>
@@ -21,65 +26,8 @@ static T getValueByKey(const std::string key, YAML::const_iterator start, YAML::
     return T{};
 }
 
-class Operation {
-public:
-    Operation() {}
-
-    virtual ~Operation() {}
-
-    virtual void operator()(const AbstractBaseBuffer<HSV> &buffer) = 0;
 
 
-
-};
-
-class RainbowOperation : public Operation {
-public:
-    RainbowOperation(VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end) {
-
-    }
-
-    virtual ~RainbowOperation() {}
-
-    virtual void operator()(const AbstractBaseBuffer<HSV> &buffer) {
-        algorithm::initRainbow(buffer);
-    }
-};
-
-
-class RotateOperation : public Operation {
-    size_t step;
-//    size_t step_width;
-
-    BoundConcreteValue<int> step_width;
-
-public:
-    RotateOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end) : step(0),
-        step_width("step_width", store, getValueByKey<int>("step_width", start, end))
-
-    {
-//        for (; start != end; start++) {
-//            const auto iterator_value = *start;
-//            const std::string key = iterator_value.first.as<std::string>();
-//
-//            if (key == "step_width") {
-//                step_width = iterator_value.second.as<size_t>();
-//            }
-//        }
-    }
-
-    virtual ~RotateOperation() {}
-
-    virtual void operator()(const AbstractBaseBuffer<HSV> &buffer) {
-
-        const size_t current_position = (step % buffer.count()) * step_width.getInteger();
-        const size_t offset = (current_position + step_width.getInteger()) % buffer.count();
-
-        std::rotate(&buffer.at(0), &buffer.at(0) + offset, &*buffer.end());
-
-        step++;
-    }
-};
 
 
 class ShadeOperation : public Operation {

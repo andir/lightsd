@@ -22,6 +22,11 @@ set(SOURCE_FILES main.cpp FrameScheduler.cpp test.cpp algorithm.cpp WebsocketOut
         VariableStore/VariableStore.cpp
         VariableStore/InvalidVariableTypeException.cpp
         MqttVarStore.cpp
+        UDPOutputWrapper.cpp
+        WebsocketOutputWrapper.cpp
+        config.cpp
+        RainbowOperation.cpp
+        RotateOperation.cpp
         )
 
 add_executable(lightsd ${SOURCE_FILES})

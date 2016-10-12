@@ -9,6 +9,7 @@
 #include <memory>
 #include <shared_mutex>
 #include <map>
+#include <set>
 #include "ValueType.h"
 
 class VariableStore {
