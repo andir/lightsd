@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 project(lightsd)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -O0 ")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -O2 -march=native ")
 
 #SET(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
 #SET(BUILD_SHARED_LIBRARIES OFF)
@@ -13,9 +13,7 @@ include_directories(${Boost_INCLUDE_DIRS})
 include_directories(mqtt_client_cpp/include)
 
 
-
-
-set(SOURCE_FILES main.cpp FrameScheduler.cpp test.cpp algorithm.cpp WebsocketOutput.h
+set(SOURCE_FILES main.cpp FrameScheduler.cpp algorithm.cpp WebsocketOutput.h
         rgb.h hsv.cpp buffer.h algorithm.h SharedMemoryBuffer.cpp SharedMemoryBuffer.h
         MemFD.cpp MemFD.h MemMap.cpp MemMap.h Output.cpp Output.h
         VariableStore/ValueType.cpp
@@ -29,6 +27,7 @@ set(SOURCE_FILES main.cpp FrameScheduler.cpp test.cpp algorithm.cpp WebsocketOut
         RotateOperation.cpp
         WorkerThread.cpp
         )
+#test.cpp
 
 add_executable(lightsd ${SOURCE_FILES})
 
