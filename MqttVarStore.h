@@ -32,27 +32,24 @@ public:
         mqtt_client->set_client_id("foo");
         mqtt_client->set_clean_session(true);
 
-        mqtt_client->set_publish_handler(
-                [this]
-                        (std::uint8_t header,
-                         boost::optional<std::uint16_t> packet_id,
-                         std::string topic_name,
-                         std::string contents) {
-                    std::cout << "publish received. "
-                              << "dup: " << std::boolalpha << mqtt::publish::is_dup(header)
-                              << " pos: " << mqtt::qos::to_str(mqtt::publish::get_qos(header))
-                              << " retain: " << mqtt::publish::is_retain(header) << std::endl;
-                    if (packet_id)
-                        std::cout << "packet_id: " << *packet_id << std::endl;
-                    std::cout << "topic_name: " << topic_name << std::endl;
-                    std::cout << "contents: " << contents << std::endl;
-                    return true;
-                });
-        mqtt_client->set_error_handler(
-                []
-                        (boost::system::error_code const &ec) {
-                    std::cout << "error: " << ec.message() << std::endl;
-                });
+        mqtt_client->set_publish_handler([this]
+                                                 (std::uint8_t header,
+                                                  boost::optional<std::uint16_t> packet_id,
+                                                  std::string topic_name,
+                                                  std::string contents) {
+            std::cout << "publish received. "
+                      << "dup: " << std::boolalpha << mqtt::publish::is_dup(header)
+                      << " pos: " << mqtt::qos::to_str(mqtt::publish::get_qos(header))
+                      << " retain: " << mqtt::publish::is_retain(header) << std::endl;
+            if (packet_id)
+                std::cout << "packet_id: " << *packet_id << std::endl;
+            std::cout << "topic_name: " << topic_name << std::endl;
+            std::cout << "contents: " << contents << std::endl;
+            return true;
+        });
+        mqtt_client->set_error_handler([](boost::system::error_code const &ec) {
+            std::cout << "error: " << ec.message() << std::endl;
+        });
         mqtt_client->set_connack_handler([this, &store]
                                                  (bool sp, std::uint8_t connack_return_code) {
             std::cerr << "connack return code: " << connack_return_code << std::endl;
@@ -79,12 +76,13 @@ public:
             std::cout << "value: " << contents << std::endl;
 
             static const std::string set("set");
-            if (boost::algorithm::starts_with(topic_name, this->realm) && boost::algorithm::ends_with(topic_name, set)) {
+            if (boost::algorithm::starts_with(topic_name, this->realm) &&
+                boost::algorithm::ends_with(topic_name, set)) {
                 const auto e = topic_name.find(this->realm);
                 if (e != topic_name.size()) {
                     const size_t len = topic_name.size() - this->realm.size() - e - set.size() - 1;
                     std::string s(topic_name, this->realm.size(), len);
-                    const auto& keys = this->store.keys();
+                    const auto &keys = this->store.keys();
                     const auto it = keys.find(s);
                     if (it != keys.end()) {
                         auto spt = this->store.getVar(s);
@@ -101,7 +99,7 @@ public:
                                     default:
                                         std::cerr << "Unbale to parse " << contents << std::endl;
                                 }
-                            } catch(boost::bad_lexical_cast& ex) {
+                            } catch (boost::bad_lexical_cast &ex) {
                                 std::cerr << ex.what() << std::endl;
                             }
                             std::stringstream publish_ss, value_ss;
@@ -118,11 +116,9 @@ public:
             return true;
         });
 
-        mqtt_client->set_close_handler(
-                []
-                        () {
-                    std::cout << "closed." << std::endl;
-                });
+        mqtt_client->set_close_handler([]() {
+            std::cout << "closed." << std::endl;
+        });
 
 
         mqtt_client->connect();
@@ -130,9 +126,13 @@ public:
 
     }
 
-    ~MqttVarStore() {
+    void stop() {
         if (!io_service.stopped())
             io_service.stop();
+    }
+
+    ~MqttVarStore() {
+        stop();
         worker_thread.join();
     }
 

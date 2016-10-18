@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.5)
 project(lightsd)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -O2 -march=native ")
+include(cotire)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -O0 -march=native ")
 
 #SET(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
 #SET(BUILD_SHARED_LIBRARIES OFF)
@@ -37,3 +39,6 @@ target_link_libraries(lightsd ssl)
 target_link_libraries(lightsd ${Boost_LIBRARIES})
 #target_link_libraries(lightsd /usr/lib64/libboost_system.a)
 target_link_libraries(lightsd yaml-cpp)
+
+cotire(lightsd)
+

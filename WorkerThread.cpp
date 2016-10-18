@@ -7,7 +7,7 @@
 #include "MqttVarStore.h"
 
 
-WorkerThread::WorkerThread()  : config_ptr(nullptr), doRun(true) {
+WorkerThread::WorkerThread() : config_ptr(nullptr), doRun(true) {
 
 }
 
@@ -37,11 +37,9 @@ void WorkerThread::run() {
 
         FrameScheduler scheduler(config->fps);
         AllocatedBuffer<HSV> buffer(config->width);
-        MqttVarStore mqtt(config->store, "whisky.trollhoehle.net", "/test/");
 
 
-
-        for (const auto& key : config->store.keys() ) {
+        for (const auto &key : config->store.keys()) {
             std::cout << key << " " << *config->store.getVar(key) << std::endl;
         }
 

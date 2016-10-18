@@ -1,10 +1,10 @@
 ---
-width: 120
+width: 200
 fps: 40
 
 mqtt:
   broker: whisky.trollhoehle.net
-  relam: /lights/
+  relam: /lights2/
 
 
 sequence:
@@ -17,7 +17,7 @@ sequence:
       value: 0.7
 
   - rotate:
-      step_width: -1
+      step_width: -2
 
 #  - fade:
 #      min: 0.1
@@ -38,10 +38,10 @@ outputs:
     params:
       port: 9001
 
-  UDPOutput:
-    type: udp
-    params:
-      host: 172.23.97.157
-      port: 6453
+#  UDPOutput:
+#    type: udp
+#    params:
+#      host: 172.23.97.157
+#      port: 6453
 
 output: Websocket1

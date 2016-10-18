@@ -10,8 +10,7 @@ int parse_port(const YAML::Node &params) {
     return 9000;
 }
 
-WebsocketOutputWrapper::WebsocketOutputWrapper(const YAML::Node &params) : port(parse_port(params)),
-                                                                           output(parse_port(params)) {
+WebsocketOutputWrapper::WebsocketOutputWrapper(const YAML::Node &params) : port(parse_port(params)) {
 
 }
 
@@ -21,12 +20,15 @@ WebsocketOutputWrapper::~WebsocketOutputWrapper() {
 }
 
 void WebsocketOutputWrapper::draw(const AbstractBaseBuffer<HSV> &buffer) {
-//    if (output == nullptr) {
-//        output = std::make_unique<WebsocketOutput>(port);
-//    }
-    output.draw(buffer);
+    if (output == nullptr) {
+        output = std::make_unique<WebsocketOutput>(port);
+    }
+    output->draw(buffer);
 }
 
 void WebsocketOutputWrapper::draw(const std::vector<HSV> &buffer) {
-    output.draw(buffer);
+    if (output == nullptr) {
+        output = std::make_unique<WebsocketOutput>(port);
+    }
+    output->draw(buffer);
 }

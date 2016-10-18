@@ -11,7 +11,7 @@
 #include "WebsocketOutput.h"
 
 class WebsocketOutputWrapper : public Output {
-    WebsocketOutput output;
+    std::unique_ptr<WebsocketOutput> output;
     int port;
 public:
     WebsocketOutputWrapper(const YAML::Node &params);

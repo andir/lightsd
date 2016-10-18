@@ -11,17 +11,22 @@
 #include "VariableStore/VariableStore.h"
 #include "operations.h"
 #include "Output.h"
+#include "MqttVarStore.h"
+
+struct MqttConfig {
+    const std::string broker;
+    const std::string realm;
+};
 
 class Config {
 public:
 
-    inline ~Config() {
-        sequence.clear();
-        outputs.clear();
-    }
+    ~Config();
 
     size_t fps;
     size_t width;
+
+    std::unique_ptr<MqttVarStore> mqtt{nullptr};
 
     std::vector<std::unique_ptr<Operation> > sequence;
     std::map<std::string, std::shared_ptr<Output> > outputs;

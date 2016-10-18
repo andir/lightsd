@@ -21,7 +21,8 @@ struct ConfigParsingException : public std::exception {
 
 
 template<typename IteratorType1, typename IteratorType2>
-std::unique_ptr<Operation> generateSequenceStep(VariableStore& store, const std::string &step_type, IteratorType1 begin, IteratorType2 end) {
+std::unique_ptr<Operation>
+generateSequenceStep(VariableStore &store, const std::string &step_type, IteratorType1 begin, IteratorType2 end) {
     using namespace std::string_literals;
 
     static const std::set<std::string> known_sequence_types = {
@@ -51,7 +52,8 @@ std::unique_ptr<Operation> generateSequenceStep(VariableStore& store, const std:
     }
 };
 
-void parseSequence(VariableStore& store, std::vector<std::unique_ptr<Operation>> &steps, const YAML::Node &sequence_node) {
+void
+parseSequence(VariableStore &store, std::vector<std::unique_ptr<Operation>> &steps, const YAML::Node &sequence_node) {
     assert(sequence_node.Type() == YAML::NodeType::Sequence);
 
     for (const auto node : sequence_node) {
@@ -143,11 +145,28 @@ void parseOutputs(std::map<std::string, std::shared_ptr<Output>> &outputs, const
 }
 
 
-
 ConfigPtr parseConfig(const std::string &filename) {
     auto config = std::make_unique<Config>();
 
     YAML::Node yaml_config = YAML::LoadFile(filename);
+
+    if (yaml_config["mqtt"]) {
+        const auto mqtt = yaml_config["mqtt"];
+
+        if (mqtt["broker"]) {
+            const std::string broker = mqtt["broker"].as<std::string>();
+
+            const std::string realm = [&mqtt]() -> std::string {
+                if (mqtt["realm"]) {
+                    return mqtt["realm"].as<std::string>();
+                } else {
+                    return "/lights/";
+                }
+            }();
+            config->mqtt = std::make_unique<MqttVarStore>(config->store, broker, realm);
+        }
+    }
+
 
     if (yaml_config["width"]) {
         config->width = yaml_config["width"].as<size_t>();
@@ -177,4 +196,10 @@ ConfigPtr parseConfig(const std::string &filename) {
     }
 
     return config;
+}
+
+
+Config::~Config() {
+    sequence.clear();
+    outputs.clear();
 }
