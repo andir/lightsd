@@ -16,14 +16,18 @@
 
 
 template<typename T>
-static T getValueByKey(const std::string key, YAML::const_iterator start, YAML::const_iterator end) {
+static T getValueByKey(const std::string key, YAML::const_iterator start, YAML::const_iterator end, T default_value = 0) {
     for (; start != end; start++) {
         const auto &v = *start;
         if (v.first.as<std::string>() == key) {
             return v.second.as<T>();
         }
     }
-    return T{};
+    if (default_value == 0) {
+        return T{};
+    } else {
+        return default_value;
+    }
 }
 
 
@@ -69,117 +73,54 @@ public:
         const HSV color = {hue.getValue(), saturation.getValue(), value.getValue()};
         algorithm::initSolidColor(buffer, color);
     }
-
-private:
-//
-//    static HSV parse_color(YAML::const_iterator start, YAML::const_iterator end) {
-//        float hue = 0.0f, saturation = 0.0f, value = 0.0f;
-//
-//        for (; start != end; start++) {
-//            const auto &v = *start;
-//            if (v.first.as<std::string>() == "hue") {
-//                hue = v.second.as<float>();
-//            } else if (v.first.as<std::string>() == "saturation") {
-//                saturation = v.second.as<float>();
-//            } else {
-//                value = v.second.as<float>();
-//            }
-//        }
-//        return HSV{hue, saturation, value};
-//    }
-
-};
-
-
-class FadeOperation : public Operation {
-    BoundConcreteValue<float> value;
-public:
-
-    FadeOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end) :
-            value("value", store, getValueByKey<float>("value", start, end)) {
-    }
-
-    virtual void operator()(const AbstractBaseBuffer<HSV> &buffer) {
-        algorithm::MaskBuffer(value.getValue(), buffer);
-    }
-
 };
 
 
 //class FadeOperation : public Operation {
-//    BoundConcreteValueType<float> min;
-//    BoundConcreteValueType<float> max;
-//    BoundConcreteValueType<int> from;
-//    BoundConcreteValueType<int> to;
-////    const float min;
-////    const float max;
-////    const size_t from;
-////    const size_t to;
-//
-//    std::vector<float> mask;
-//
+//    BoundConcreteValue<float> value;
 //public:
-//    FadeOperation(VariableStore& store, YAML::const_iterator start, YAML::const_iterator end) :
-//            min("min", parse_min(start, end)),
-//            max("max", parse_max(start, end)),
-//            from("from", parse_from(start, end)),
-//            to("to", parse_to(start, end)) {
-//        // FIXME: as soon as the vars are observable recalculate the mask on change
-//        if (to.getInteger() <= from || min >= max)
-//            return;
 //
-//        const size_t length = (to - from);
-//        const float diff = max - min;
-//        const float step = diff / length;
-//        for (size_t i = 0; i < length; i++) {
-//            mask.push_back(step * i);
-//        }
+//    FadeOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end) :
+//            value("value", store, getValueByKey<float>("value", start, end)) {
 //    }
 //
-//    void operator()(const AbstractBaseBuffer<HSV> &buffer) {
-//        algorithm::PartialMaskBuffer(mask, buffer, from);
+//    virtual void operator()(const AbstractBaseBuffer<HSV> &buffer) {
+//        algorithm::MaskBuffer(value.getValue(), buffer);
 //    }
 //
-//private:
-//    static float parse_min(YAML::const_iterator start, YAML::const_iterator end) {
-//        for (; start != end; start++) {
-//            const auto &e = *start;
-//            if (e.first.as<std::string>() == "min") {
-//                return e.second.as<float>();
-//            }
-//        }
-//        return 0.0f;
-//    }
-//
-//    static float parse_max(YAML::const_iterator start, YAML::const_iterator end) {
-//        for (; start != end; start++) {
-//            const auto &e = *start;
-//            if (e.first.as<std::string>() == "max") {
-//                return e.second.as<float>();
-//            }
-//        }
-//        return 1.0f;
-//    }
-//
-//    static size_t parse_to(YAML::const_iterator start, YAML::const_iterator end) {
-//        for (; start != end; start++) {
-//            const auto &e = *start;
-//            if (e.first.as<std::string>() == "to") {
-//                return e.second.as<size_t>();
-//            }
-//        }
-//        return 0;
-//    }
-//
-//    static size_t parse_from(YAML::const_iterator start, YAML::const_iterator end) {
-//        for (; start != end; start++) {
-//            const auto &e = *start;
-//            if (e.first.as<std::string>() == "from") {
-//                return e.second.as<size_t>();
-//            }
-//        }
-//        return 0;
-//    }
 //};
+
+
+class FadeOperation : public Operation {
+    BoundConcreteValue<float> min;
+    BoundConcreteValue<float> max;
+    BoundConcreteValue<int> from;
+    BoundConcreteValue<int> to;
+
+    std::vector<float> mask;
+
+public:
+    FadeOperation(VariableStore& store, YAML::const_iterator start, YAML::const_iterator end) :
+            min("min", store, getValueByKey<float>("min", start, end)),
+            max("max", store, getValueByKey<float>("max", start, end)),
+            from("from", store, getValueByKey<int>("from", start, end)),
+            to("to", store, getValueByKey<int>("to", start, end)) {
+
+        // FIXME: as soon as the vars are observable recalculate the mask on change
+        if (to.getInteger() <= from.getInteger() || min.getFloat() >= max.getFloat())
+            return;
+
+        const size_t length = (to.getInteger() - from.getInteger());
+        const float diff = max.getFloat() - min.getFloat();
+        const float step = diff / length;
+        for (size_t i = 0; i < length; i++) {
+            mask.push_back(step * i);
+        }
+    }
+
+    void operator()(const AbstractBaseBuffer<HSV> &buffer) {
+        algorithm::PartialMaskBuffer(mask, buffer, from.getInteger());
+    }
+};
 
 #endif //LIGHTSD_OPERATIONS_H

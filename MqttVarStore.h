@@ -52,7 +52,7 @@ public:
         });
         mqtt_client->set_connack_handler([this, &store]
                                                  (bool sp, std::uint8_t connack_return_code) {
-            std::cerr << "connack return code: " << connack_return_code << std::endl;
+            std::cerr << "connack return code: " << int(connack_return_code) << std::endl;
             for (const auto &e : store.keys()) {
                 std::stringstream key_ss, value_ss;
                 key_ss << this->realm << e;

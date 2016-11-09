@@ -81,6 +81,9 @@ public:
         // Start the server accept loop
         m_server.start_accept();
 
+        const auto log_levels = websocketpp::log::alevel::connect | websocketpp::log::alevel::disconnect;
+        m_server.set_error_channels(websocketpp::log::elevel::fatal);
+        m_server.set_access_channels(log_levels);
 
         // Start the ASIO io_service run loop
         try {

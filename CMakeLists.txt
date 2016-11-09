@@ -3,7 +3,7 @@ project(lightsd)
 
 include(cotire)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -O0 -march=native ")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -O3 -ggdb -march=native ")
 
 #SET(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
 #SET(BUILD_SHARED_LIBRARIES OFF)
@@ -28,7 +28,7 @@ set(SOURCE_FILES main.cpp FrameScheduler.cpp algorithm.cpp WebsocketOutput.h
         RainbowOperation.cpp
         RotateOperation.cpp
         WorkerThread.cpp
-        )
+        RaindropOperation.cpp RaindropOperation.h)
 #test.cpp
 
 add_executable(lightsd ${SOURCE_FILES})

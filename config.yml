@@ -1,29 +1,44 @@
 ---
-width: 200
-fps: 40
+width: 1202
+fps: 30
 
-mqtt:
-  broker: whisky.trollhoehle.net
-  relam: /lights2/
+#mqtt:
+#  broker: whisky.trollhoehle.net
+#  realm: /lights/
 
 
 sequence:
   - initRainbow
+  - raindrop:
+      saturation_min: 0.1
+      saturation_max: 0.8
+      hue_min: 10
+      hue_max: 320
+
+      value_min: 0.1
+      value_max: 0.7
+
+      chance: 0.999
+      decay_low: 0.9
+      decay_high: 0.99
+      decat_resolution: 100000
+
+
 #  - initSolidColor:
 #      hue: 0.0
 #      saturation: 0.0
-#      value: 0.8
+#      value: 0.1
   - shade:
-      value: 0.7
+      value: 1
 
   - rotate:
-      step_width: -2
+      step_width: 0
 
 #  - fade:
-#      min: 0.1
-#      max: 1.0
+#      min: 0.0
+#      max: 1
 #      from: 0
-#      to: 120
+#      to: 1200
 
 #  - fade:
 #      min: 1
@@ -38,10 +53,10 @@ outputs:
     params:
       port: 9001
 
-#  UDPOutput:
-#    type: udp
-#    params:
-#      host: 172.23.97.157
-#      port: 6453
+  UDPOutput:
+    type: udp
+    params:
+      host: 172.23.97.109
+      port: 6453
 
-output: Websocket1
+#output: Websocket1
