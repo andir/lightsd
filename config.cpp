@@ -156,22 +156,7 @@ ConfigPtr parseConfig(const std::string &filename) {
 
     YAML::Node yaml_config = YAML::LoadFile(filename);
 
-    if (yaml_config["mqtt"]) {
-        const auto mqtt = yaml_config["mqtt"];
 
-        if (mqtt["broker"]) {
-            const std::string broker = mqtt["broker"].as<std::string>();
-
-            const std::string realm = [&mqtt]() -> std::string {
-                if (mqtt["realm"]) {
-                    return mqtt["realm"].as<std::string>();
-                } else {
-                    return "/lights/";
-                }
-            }();
-            config->mqtt = std::make_unique<MqttVarStore>(config->store, broker, realm);
-        }
-    }
 
 
     if (yaml_config["width"]) {
@@ -200,6 +185,23 @@ ConfigPtr parseConfig(const std::string &filename) {
         const YAML::Node outputs_node = yaml_config["outputs"];
         parseOutputs(config->outputs, outputs_node);
 
+    }
+
+    if (yaml_config["mqtt"]) {
+        const auto mqtt = yaml_config["mqtt"];
+
+        if (mqtt["broker"]) {
+            const std::string broker = mqtt["broker"].as<std::string>();
+
+            const std::string realm = [&mqtt]() -> std::string {
+                if (mqtt["realm"]) {
+                    return mqtt["realm"].as<std::string>();
+                } else {
+                    return "/lights/";
+                }
+            }();
+            config->mqtt = std::make_unique<MqttVarStore>(config->store, broker, realm);
+        }
     }
 
     return config;
