@@ -19,6 +19,7 @@ RaindropOperation::RaindropOperation(VariableStore
                                      &store,
                                      YAML::const_iterator start, YAML::const_iterator
                                      end) :
+        Operation("raindrop", store, start, end),
         hue_min("raindrop/hue_min", store, getValueByKey<float>("hue_min", start, end, 0.0f)),
         hue_max("raindrop/hue_max", store, getValueByKey<float>("hue_max", start, end, 360.0f)),
 
@@ -59,6 +60,9 @@ void RaindropOperation::Raindrop::decay() {
 }
 
 void RaindropOperation::operator()(const AbstractBaseBuffer<HSV> &buffer) {
+    if (!isEnabled())
+        return;
+
     if (buffer.size() != leds.size()) {
         leds.clear();
         leds.resize(buffer.size());

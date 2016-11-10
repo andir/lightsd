@@ -7,6 +7,7 @@
 #include <yaml-cpp/yaml.h>
 
 RotateOperation::RotateOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end) :
+        Operation("rotate", store, start, end),
         step(0),
         step_width(
                 "rotate/step_width",

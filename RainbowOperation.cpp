@@ -7,9 +7,13 @@
 #include <yaml-cpp/yaml.h>
 
 
-RainbowOperation::RainbowOperation(VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end) {
+RainbowOperation::RainbowOperation(VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end) :
+    Operation("rainbow", store, begin, end)
+{
 }
 
 void RainbowOperation::operator()(const AbstractBaseBuffer<HSV> &buffer) {
-    algorithm::initRainbow(buffer);
+    if (isEnabled()) {
+        algorithm::initRainbow(buffer);
+    }
 }

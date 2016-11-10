@@ -25,10 +25,11 @@ set(SOURCE_FILES main.cpp FrameScheduler.cpp algorithm.cpp WebsocketOutput.h
         UDPOutputWrapper.cpp
         WebsocketOutputWrapper.cpp
         config.cpp
+        util.cpp util.h
         RainbowOperation.cpp
         RotateOperation.cpp
         WorkerThread.cpp
-        RaindropOperation.cpp RaindropOperation.h)
+        RaindropOperation.cpp RaindropOperation.h util.cpp)
 #test.cpp
 
 add_executable(lightsd ${SOURCE_FILES})

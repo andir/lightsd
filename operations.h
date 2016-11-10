@@ -13,22 +13,7 @@
 #include "VariableStore/VariableStore.h"
 #include "VariableStore/BoundConcreteValueType.h"
 #include "algorithm.h"
-
-
-template<typename T>
-static T getValueByKey(const std::string key, YAML::const_iterator start, YAML::const_iterator end, T default_value = 0) {
-    for (; start != end; start++) {
-        const auto &v = *start;
-        if (v.first.as<std::string>() == key) {
-            return v.second.as<T>();
-        }
-    }
-    if (default_value == 0) {
-        return T{};
-    } else {
-        return default_value;
-    }
-}
+#include "util.h"
 
 
 
@@ -38,11 +23,14 @@ class ShadeOperation : public Operation {
     BoundConcreteValue<float> value;
 public:
     ShadeOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end) :
+            Operation("shade", store, start, end),
             value("shade/value", store, getValueByKey<float>("value", start, end)) {
     }
 
     virtual void operator()(const AbstractBaseBuffer<HSV> &buffer) {
-        algorithm::MaskBuffer(value.getFloat(), buffer);
+        if (isEnabled()) {
+            algorithm::MaskBuffer(value.getFloat(), buffer);
+        }
     }
 
 private:
@@ -64,31 +52,19 @@ class SolidColorOperation : public Operation {
 
 public:
     SolidColorOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end) :
+            Operation("color", store, start, end),
             hue("color/hue", store, getValueByKey<float>("hue", start, end)),
             saturation("color/saturation", store, getValueByKey<float>("saturation", start, end)),
             value("color/value", store, getValueByKey<float>("value", start, end)) {}
 
 
     virtual void operator()(const AbstractBaseBuffer<HSV> &buffer) {
-        const HSV color = {hue.getValue(), saturation.getValue(), value.getValue()};
-        algorithm::initSolidColor(buffer, color);
+        if (isEnabled()) {
+            const HSV color = {hue.getValue(), saturation.getValue(), value.getValue()};
+            algorithm::initSolidColor(buffer, color);
+        }
     }
 };
-
-
-//class FadeOperation : public Operation {
-//    BoundConcreteValue<float> value;
-//public:
-//
-//    FadeOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end) :
-//            value("value", store, getValueByKey<float>("value", start, end)) {
-//    }
-//
-//    virtual void operator()(const AbstractBaseBuffer<HSV> &buffer) {
-//        algorithm::MaskBuffer(value.getValue(), buffer);
-//    }
-//
-//};
 
 
 class FadeOperation : public Operation {
@@ -101,6 +77,7 @@ class FadeOperation : public Operation {
 
 public:
     FadeOperation(VariableStore& store, YAML::const_iterator start, YAML::const_iterator end) :
+            Operation("fade", store, start, end),
             min("fade/min", store, getValueByKey<float>("min", start, end)),
             max("fade/max", store, getValueByKey<float>("max", start, end)),
             from("fade/from", store, getValueByKey<int>("from", start, end)),
@@ -119,7 +96,9 @@ public:
     }
 
     void operator()(const AbstractBaseBuffer<HSV> &buffer) {
-        algorithm::PartialMaskBuffer(mask, buffer, from.getInteger());
+        if (isEnabled()) {
+            algorithm::PartialMaskBuffer(mask, buffer, from.getInteger());
+        }
     }
 };
 
