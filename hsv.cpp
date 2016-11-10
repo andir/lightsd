@@ -19,7 +19,7 @@ A ensure_bounds(A val) {
 };
 
 RGB HSV::toRGB() const {
-    double hh, p, q, t, ff;
+    float hh, p, q, t, ff;
     long i;
 
     if (saturation <= 0) {
@@ -79,14 +79,13 @@ void HSV::print() const {
 
 std::string HSV::string() const {
     std::stringstream ss;
-    ss << "HSV{" << hue << ", " << saturation << ", " << value << "}" ;
+    ss << "HSV{" << hue << ", " << saturation << ", " << value << "}";
     return ss.str();
 }
 
 
 HSV HSV::operator-(const HSV &rhs) const {
     const auto hd = hue - rhs.hue;
-    algorithm::cubic_add<float> m;
 
     auto a = value_type(fmod(hue - rhs.hue, 360));
     if (a < 0)
@@ -97,17 +96,15 @@ HSV HSV::operator-(const HSV &rhs) const {
 
     return HSV{
             a < b ? a : b,
-            ensure_bounds<value_type , -1, 1>(saturation - rhs.saturation),
-            ensure_bounds<value_type , -1, 1>(value - rhs.value),
+            ensure_bounds<value_type, -1, 1>(saturation - rhs.saturation),
+            ensure_bounds<value_type, -1, 1>(value - rhs.value),
     };
 }
 
 HSV HSV::operator+(const HSV &rhs) const {
-    algorithm::cubic_add<float> m;
     return HSV{
             std::max(value_type(fmod(hue + rhs.hue, 360)), 0.0f),
-            //std::min(std::max(, 0.0f), 360.0f),
-            ensure_bounds<value_type , 0, 1>(saturation + rhs.saturation),
-            ensure_bounds<value_type , 0, 1>(value + rhs.value),
+            ensure_bounds<value_type, 0, 1>(saturation + rhs.saturation),
+            ensure_bounds<value_type, 0, 1>(value + rhs.value),
     };
 }

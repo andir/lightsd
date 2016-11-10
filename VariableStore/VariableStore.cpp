@@ -3,7 +3,7 @@
 #include <set>
 #include "VariableStore.h"
 
-VariableStore::VariableStore() {}
+VariableStore::VariableStore() : lock() {}
 
 void VariableStore::registerVar(const std::string name, std::shared_ptr<ValueType> var) {
     std::unique_lock<std::shared_mutex> locker(lock);

@@ -20,7 +20,7 @@ struct MqttConfig {
 
 class Config {
 public:
-
+    Config();
     ~Config();
 
     size_t fps;
@@ -30,7 +30,7 @@ public:
 
     std::vector<std::unique_ptr<Operation> > sequence;
     std::map<std::string, std::shared_ptr<Output> > outputs;
-    VariableStore store;
+    std::shared_ptr<VariableStore> store;
 };
 
 typedef std::unique_ptr<Config> ConfigPtr;

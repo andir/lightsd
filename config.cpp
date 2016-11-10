@@ -23,7 +23,7 @@ struct ConfigParsingException : public std::exception {
 
 template<typename IteratorType1, typename IteratorType2>
 std::unique_ptr<Operation>
-generateSequenceStep(VariableStore &store, const std::string &step_type, IteratorType1 begin, IteratorType2 end) {
+generateSequenceStep(VariableStore& store, const std::string &step_type, IteratorType1 begin, IteratorType2 end) {
     using namespace std::string_literals;
 
     static const std::set<std::string> known_sequence_types = {
@@ -33,6 +33,9 @@ generateSequenceStep(VariableStore &store, const std::string &step_type, Iterato
 
     const auto lower_case_name = boost::algorithm::to_lower_copy(step_type);
     const auto it = known_sequence_types.find(lower_case_name);
+
+
+    assert(&store != nullptr);
 
     if (it == known_sequence_types.end()) {
         throw ConfigParsingException("The selected step_type wasn't found.");
@@ -56,7 +59,7 @@ generateSequenceStep(VariableStore &store, const std::string &step_type, Iterato
 };
 
 void
-parseSequence(VariableStore &store, std::vector<std::unique_ptr<Operation>> &steps, const YAML::Node &sequence_node) {
+parseSequence(VariableStore& store, std::vector<std::unique_ptr<Operation>> &steps, const YAML::Node &sequence_node) {
     assert(sequence_node.Type() == YAML::NodeType::Sequence);
 
     for (const auto node : sequence_node) {
@@ -187,7 +190,8 @@ ConfigPtr parseConfig(const std::string &filename) {
         throw ConfigParsingException("No sequence configured.");
     } else {
         const YAML::Node sequence_node = yaml_config["sequence"];
-        parseSequence(config->store, config->sequence, sequence_node);
+        auto s = config->store.get();
+        parseSequence(*s, config->sequence, sequence_node);
     }
 
     if (!yaml_config["outputs"]) {
@@ -202,7 +206,13 @@ ConfigPtr parseConfig(const std::string &filename) {
 }
 
 
+Config::Config() :
+    store(std::make_shared<VariableStore>())
+{
+}
+
 Config::~Config() {
+    mqtt = nullptr;
     sequence.clear();
     outputs.clear();
 }

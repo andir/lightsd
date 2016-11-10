@@ -2,9 +2,9 @@
 width: 1202
 fps: 30
 
-#mqtt:
-#  broker: whisky.trollhoehle.net
-#  realm: /lights/
+mqtt:
+  broker: whisky.trollhoehle.net
+  realm: /lights/
 
 
 sequence:
@@ -53,10 +53,10 @@ outputs:
     params:
       port: 9001
 
-  UDPOutput:
-    type: udp
-    params:
-      host: 172.23.97.109
-      port: 6453
+#  UDPOutput:
+#    type: udp
+#    params:
+#      host: 172.23.97.109
+#      port: 6453
 
 #output: Websocket1

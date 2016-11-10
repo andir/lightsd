@@ -39,9 +39,9 @@ void WorkerThread::run() {
         AllocatedBuffer<HSV> buffer(config->width);
 
 
-        for (const auto &key : config->store.keys()) {
-            std::cout << key << " " << *config->store.getVar(key) << std::endl;
-        }
+//        for (const auto &key : config->store->keys()) {
+//            std::cout << key << " " << *config->store->getVar(key) << std::endl;
+//        }
 
         while (true) {
 
