@@ -19,21 +19,21 @@ RaindropOperation::RaindropOperation(VariableStore
                                      &store,
                                      YAML::const_iterator start, YAML::const_iterator
                                      end) :
-        hue_min("hue_min", store, getValueByKey<float>("hue_min", start, end, 0.0f)),
-        hue_max("hue_max", store, getValueByKey<float>("hue_max", start, end, 360.0f)),
+        hue_min("raindrop/hue_min", store, getValueByKey<float>("hue_min", start, end, 0.0f)),
+        hue_max("raindrop/hue_max", store, getValueByKey<float>("hue_max", start, end, 360.0f)),
 
-        saturation_min("saturation_min", store, getValueByKey<float>("saturation_min", start, end, 0.0f)),
-        saturation_max("saturation_max", store, getValueByKey<float>("saturation_max", start, end, 1.0f)),
+        saturation_min("raindrop/saturation_min", store, getValueByKey<float>("saturation_min", start, end, 0.0f)),
+        saturation_max("raindrop/saturation_max", store, getValueByKey<float>("saturation_max", start, end, 1.0f)),
 
-        value_min("value_min", store, getValueByKey<float>("value_min", start, end, 0.8f)),
-        value_max("value_max", store, getValueByKey<float>("value_max", start, end, 1.0f)),
+        value_min("raindrop/value_min", store, getValueByKey<float>("value_min", start, end, 0.8f)),
+        value_max("raindrop/value_max", store, getValueByKey<float>("value_max", start, end, 1.0f)),
 
 
-        chance("chance", store, getValueByKey<float>("chance", start, end, 0.95f)),
+        chance("raindrop/chance", store, getValueByKey<float>("chance", start, end, 0.95f)),
 
-        decay_low("decay_low", store, getValueByKey<float>("decay_low", start, end, 0.8f)),
-        decay_high("decay_high", store, getValueByKey<float>("decay_high", start, end, 0.5f)),
-        decay_resolution("decay_resolution", store, getValueByKey<float>("decay_resolution", start, end, 1.0f)) {
+        decay_low("raindrop/decay_low", store, getValueByKey<float>("decay_low", start, end, 0.8f)),
+        decay_high("raindrop/decay_high", store, getValueByKey<float>("decay_high", start, end, 0.5f)),
+        decay_resolution("raindrop/decay_resolution", store, getValueByKey<float>("decay_resolution", start, end, 1.0f)) {
 
 }
 

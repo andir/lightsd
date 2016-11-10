@@ -9,7 +9,7 @@
 RotateOperation::RotateOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end) :
         step(0),
         step_width(
-                "step_width",
+                "rotate/step_width",
                 store,
                 getValueByKey<int>(
                         "step_width",

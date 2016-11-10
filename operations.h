@@ -38,7 +38,7 @@ class ShadeOperation : public Operation {
     BoundConcreteValue<float> value;
 public:
     ShadeOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end) :
-            value("shade", store, getValueByKey<float>("value", start, end)) {
+            value("shade/value", store, getValueByKey<float>("value", start, end)) {
     }
 
     virtual void operator()(const AbstractBaseBuffer<HSV> &buffer) {
@@ -64,9 +64,9 @@ class SolidColorOperation : public Operation {
 
 public:
     SolidColorOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end) :
-            hue("hue", store, getValueByKey<float>("hue", start, end)),
-            saturation("saturation", store, getValueByKey<float>("saturation", start, end)),
-            value("value", store, getValueByKey<float>("value", start, end)) {}
+            hue("color/hue", store, getValueByKey<float>("hue", start, end)),
+            saturation("color/saturation", store, getValueByKey<float>("saturation", start, end)),
+            value("color/value", store, getValueByKey<float>("value", start, end)) {}
 
 
     virtual void operator()(const AbstractBaseBuffer<HSV> &buffer) {
@@ -101,10 +101,10 @@ class FadeOperation : public Operation {
 
 public:
     FadeOperation(VariableStore& store, YAML::const_iterator start, YAML::const_iterator end) :
-            min("min", store, getValueByKey<float>("min", start, end)),
-            max("max", store, getValueByKey<float>("max", start, end)),
-            from("from", store, getValueByKey<int>("from", start, end)),
-            to("to", store, getValueByKey<int>("to", start, end)) {
+            min("fade/min", store, getValueByKey<float>("min", start, end)),
+            max("fade/max", store, getValueByKey<float>("max", start, end)),
+            from("fade/from", store, getValueByKey<int>("from", start, end)),
+            to("fade/to", store, getValueByKey<int>("to", start, end)) {
 
         // FIXME: as soon as the vars are observable recalculate the mask on change
         if (to.getInteger() <= from.getInteger() || min.getFloat() >= max.getFloat())
