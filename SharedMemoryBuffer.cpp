@@ -20,25 +20,25 @@ SharedMemoryBuffer::SharedMemoryBuffer(const std::string filename, size_t size) 
     std::cerr << filename << std::endl;
 
     assert(fd >= 0);
-    assert(ftruncate(fd, size * sizeof(RGB)) == 0);
-    assert(memmap.open(fd, size * sizeof(RGB)));
+    assert(ftruncate(fd, size * sizeof(LargeRGB)) == 0);
+    assert(memmap.open(fd, size * sizeof(LargeRGB)));
 
 //    assert(memfd.open(MFD_ALLOW_SEALING));
 //    assert(memfd.setSize(size));
 //    assert(memfd.seal());
 
-    auto ptr = memmap.get<RGB>();
-    buffer = AllocatedBuffer<RGB>(size, ptr);
+    auto ptr = memmap.get<LargeRGB>();
+    buffer = AllocatedBuffer<LargeRGB>(size, ptr);
 }
 
 void SharedMemoryBuffer::resize(const size_t size) {
     if (size > buffer.size()) {
         buffer.release();
         memmap.close();
-        assert(ftruncate(fd, size * sizeof(RGB)) == 0);
-        memmap.open(fd, size * sizeof(RGB));
-        auto ptr = memmap.get<RGB>();
-        buffer = AllocatedBuffer<RGB>(size, ptr);
+        assert(ftruncate(fd, size * sizeof(LargeRGB)) == 0);
+        memmap.open(fd, size * sizeof(LargeRGB));
+        auto ptr = memmap.get<LargeRGB>();
+        buffer = AllocatedBuffer<LargeRGB>(size, ptr);
     }
 }
 

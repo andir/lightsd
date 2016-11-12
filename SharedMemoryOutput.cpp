@@ -28,7 +28,9 @@ void SharedMemoryOutput::draw(const AbstractBaseBuffer<HSV> &buffer) {
 
     for (auto& e : buf) {
         if (it == buffer.end()) return;
-        e = (*it).toRGB();
+        const auto& p = *it;
+        const auto rgb = p.toRGB();
+        e = rgb;
     }
 }
 
@@ -40,6 +42,8 @@ void SharedMemoryOutput::draw(const std::vector<HSV>& buffer) {
 
     for (auto& e : buf) {
         if (it == buffer.end()) return;
-        e = (*it).toRGB();
+        const auto& p = *it;
+        const auto rgb = p.toRGB();
+        e = rgb;
     }
 }
