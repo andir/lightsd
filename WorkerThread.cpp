@@ -38,13 +38,7 @@ void WorkerThread::run() {
         FrameScheduler scheduler(config->fps);
         AllocatedBuffer<HSV> buffer(config->width);
 
-
-//        for (const auto &key : config->store->keys()) {
-//            std::cout << key << " " << *config->store->getVar(key) << std::endl;
-//        }
-
         while (true) {
-
             if (new_config_ptr.get() != nullptr) {
                 break;
             }
