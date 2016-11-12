@@ -17,13 +17,17 @@ public:
         union {
             uint32_t _allocator;
             struct {
+                uint8_t g;
+                uint8_t r;
+                uint8_t b;
                 uint8_t empty;
-                RGB rgb;
             };
         };
 
         LargeRGB& operator=(const RGB& rhs) {
-            rgb = rhs;
+            g = rhs.green;
+            r = rhs.red;
+            b = rhs.blue;
             return *this;
         }
     };
