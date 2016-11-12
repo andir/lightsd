@@ -25,16 +25,24 @@ SharedMemoryOutput::SharedMemoryOutput(const YAML::Node &params) : filename(pars
 void SharedMemoryOutput::draw(const AbstractBaseBuffer<HSV> &buffer) {
     shmBuffer.ensureSize(buffer.size());
     const auto& buf = *shmBuffer.get();
+    const auto old_counter = buf.at(0).empty;
+
     std::transform(buffer.begin(), buffer.end(), buf.begin(), [](const auto & p){
         return p.toRGB();
     });
+    auto& val = buf.at(0).empty;
+    val = (old_counter + 1) % 255;
 }
 
 
 void SharedMemoryOutput::draw(const std::vector<HSV>& buffer) {
     shmBuffer.ensureSize(buffer.size());
     const auto& buf = *shmBuffer.get();
+    const auto old_counter = buf.at(0).empty;
+
     std::transform(buffer.begin(), buffer.end(), buf.begin(), [](const auto & p){
         return p.toRGB();
     });
+    auto& val = buf.at(0).empty;
+    val = (old_counter + 1) % 255;
 }
