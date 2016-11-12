@@ -13,7 +13,7 @@ int _shm_open(const std::string filename) {
 
 SharedMemoryBuffer::SharedMemoryBuffer(const std::string filename, size_t size) :
 //        memfd(filename),
-    buffer(0, nullptr) {
+        buffer(0, nullptr) {
 
     fd = _shm_open(filename);
 

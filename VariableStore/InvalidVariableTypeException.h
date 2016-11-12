@@ -15,7 +15,7 @@ class InvalidVariableTypeException : public std::exception {
 public:
     InvalidVariableTypeException();
 
-    const char* what() const throw();
+    const char *what() const throw();
 };
 
 #endif //VARIABLESTORE_INVALIDVARIABLETYPEEXCEPTION_H

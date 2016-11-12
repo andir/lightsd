@@ -14,7 +14,7 @@ MemMap::MemMap() : size(0), ptr(0) {
 bool MemMap::open(const int fd, const size_t size) {
     if (this->size == 0) {
         this->size = size;
-        void* shm = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+        void *shm = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
         assert(shm != MAP_FAILED);
         ptr = shm;
         return true;

@@ -20,7 +20,7 @@ RotateOperation::RotateOperation(VariableStore &store, YAML::const_iterator star
 
 RotateOperation::~RotateOperation() {}
 
-void RotateOperation::operator()(const AbstractBaseBuffer <HSV> &buffer) {
+void RotateOperation::operator()(const AbstractBaseBuffer<HSV> &buffer) {
 
     const size_t current_position = (step % buffer.count()) * step_width.getInteger();
     const size_t offset = (current_position + step_width.getInteger()) % buffer.count();

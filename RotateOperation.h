@@ -12,7 +12,6 @@
 #include "VariableStore/VariableStore.h"
 
 
-
 class RotateOperation : public Operation {
     size_t step;
     BoundConcreteValue<int> step_width;

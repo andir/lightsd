@@ -3,7 +3,8 @@
 #include <cassert>
 #include <random>
 
-template<typename Engine = std::mt19937> // <std::ranlux48>, minstd_rand
+template<typename Engine = std::mt19937>
+// <std::ranlux48>, minstd_rand
 inline int random_in_range(const int lower, const int upper) {
     static std::random_device rd; // obtain a random number from hardware
     static Engine eng(rd()); // seed the generator
@@ -35,7 +36,8 @@ RaindropOperation::RaindropOperation(VariableStore
 
         decay_low("raindrop/decay_low", store, getValueByKey<float>("decay_low", start, end, 0.8f)),
         decay_high("raindrop/decay_high", store, getValueByKey<float>("decay_high", start, end, 0.5f)),
-        decay_resolution("raindrop/decay_resolution", store, getValueByKey<float>("decay_resolution", start, end, 1.0f)) {
+        decay_resolution("raindrop/decay_resolution", store,
+                         getValueByKey<float>("decay_resolution", start, end, 1.0f)) {
 
 }
 
@@ -45,7 +47,7 @@ void RaindropOperation::hitRaindrop(Raindrop &drop) {
     const int saturation = random_in_range(saturation_min.getFloat() * 1000, saturation_max.getFloat() * 1000);
     drop.color.hue = random_in_range(hue_min.getInteger(), hue_max.getInteger());
     drop.color.saturation = float(saturation) / 1000.0f;
-    drop.color.value = float(random_in_range(value_min.getFloat() * 10000, value_max.getFloat() * 10000))/10000.0f;
+    drop.color.value = float(random_in_range(value_min.getFloat() * 10000, value_max.getFloat() * 10000)) / 10000.0f;
 
     const auto decay_rate = float(random_in_range(
             decay_low.getFloat() * decay_resolution.getInteger() * 10000,
@@ -67,7 +69,7 @@ void RaindropOperation::operator()(const AbstractBaseBuffer<HSV> &buffer) {
     if (buffer.size() != leds.size()) {
         leds.clear();
         leds.resize(buffer.size());
-        for (auto& l : leds) {
+        for (auto &l : leds) {
             l.color.value = 0.0f;
         }
     }

@@ -18,23 +18,24 @@ int parse_size(const YAML::Node &params) {
 }
 
 SharedMemoryOutput::SharedMemoryOutput(const YAML::Node &params) : filename(parse_filename(params)),
-                                                                   shmBuffer(parse_filename(params), parse_size(params)) {
+                                                                   shmBuffer(parse_filename(params),
+                                                                             parse_size(params)) {
 }
 
 
 void SharedMemoryOutput::draw(const AbstractBaseBuffer<HSV> &buffer) {
     shmBuffer.ensureSize(buffer.size());
-    const auto& buf = *shmBuffer.get();
-    std::transform(buffer.begin(), buffer.end(), buf.begin(), [](const auto & p){
+    const auto &buf = *shmBuffer.get();
+    std::transform(buffer.begin(), buffer.end(), buf.begin(), [](const auto &p) {
         return p.toRGB();
     });
 }
 
 
-void SharedMemoryOutput::draw(const std::vector<HSV>& buffer) {
+void SharedMemoryOutput::draw(const std::vector <HSV> &buffer) {
     shmBuffer.ensureSize(buffer.size());
-    const auto& buf = *shmBuffer.get();
-    std::transform(buffer.begin(), buffer.end(), buf.begin(), [](const auto & p){
+    const auto &buf = *shmBuffer.get();
+    std::transform(buffer.begin(), buffer.end(), buf.begin(), [](const auto &p) {
         return p.toRGB();
     });
 }

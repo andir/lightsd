@@ -11,7 +11,7 @@
 #include "WebsocketOutput.h"
 
 class WebsocketOutputWrapper : public Output {
-    std::unique_ptr<WebsocketOutput> output;
+    std::unique_ptr <WebsocketOutput> output;
     int port;
 public:
     WebsocketOutputWrapper(const YAML::Node &params);
@@ -19,7 +19,8 @@ public:
     ~WebsocketOutputWrapper();
 
     virtual void draw(const AbstractBaseBuffer<HSV> &buffer);
-    virtual void draw(const std::vector<HSV> &buffer);
+
+    virtual void draw(const std::vector <HSV> &buffer);
 
 };
 

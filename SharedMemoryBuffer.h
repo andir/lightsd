@@ -8,7 +8,6 @@
 
 #include "rgb.h"
 #include "buffer.h"
-//#include "MemFD.h"
 #include "MemMap.h"
 
 class SharedMemoryBuffer {
@@ -24,10 +23,10 @@ public:
             };
         };
 
-        inline LargeRGB& operator=(const RGB& rhs) {
+        inline LargeRGB &operator=(const RGB &rhs) {
             int a = rhs.green << 16;
-            int b = rhs.red   << 8;
-            int c = rhs.blue  << 0;
+            int b = rhs.red << 8;
+            int c = rhs.blue << 0;
 
             _allocator = a + b + c;
             return *this;
@@ -45,7 +44,9 @@ private:
 
 public:
     SharedMemoryBuffer(const std::string filename, size_t size);
+
     ~SharedMemoryBuffer();
+
     void close();
 
     inline void ensureSize(const size_t size) {
@@ -55,7 +56,7 @@ public:
     }
 
 
-    AllocatedBuffer<LargeRGB>* get() {
+    AllocatedBuffer<LargeRGB> *get() {
         return &buffer;
     }
 

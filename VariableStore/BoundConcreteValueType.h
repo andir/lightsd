@@ -13,7 +13,7 @@ template<typename EnclosedValue>
 class BoundConcreteValue : public ValueType {
     std::string name;
     VariableStore &store;
-    std::shared_ptr<ConcreteValueType<EnclosedValue >> value;
+    std::shared_ptr <ConcreteValueType<EnclosedValue >> value;
 
 public:
     BoundConcreteValue(const std::string name, VariableStore &store, EnclosedValue initial_value) :

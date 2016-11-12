@@ -31,20 +31,21 @@ class RaindropOperation : public Operation {
         float decay_rate;
 
         void hit(const float decay_high, const float decay_low);
+
         void decay();
     };
 
 
-    std::vector<Raindrop> leds;
+    std::vector <Raindrop> leds;
 
     void hitRaindrop(Raindrop &drop);
 
 public:
     RaindropOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end);
 
-    void draw(const AbstractBaseBuffer<HSV>& buffer);
+    void draw(const AbstractBaseBuffer<HSV> &buffer);
 
-    void operator()(const AbstractBaseBuffer<HSV>& buffer);
+    void operator()(const AbstractBaseBuffer<HSV> &buffer);
 };
 
 #endif //LIGHTSD_RAINDROP_H

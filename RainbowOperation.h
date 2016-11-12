@@ -19,5 +19,4 @@ public:
 };
 
 
-
 #endif //LIGHTSD_RAINBOWOPERATION_H

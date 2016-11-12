@@ -7,6 +7,7 @@
 
 #include <boost/asio.hpp>
 #include "Output.h"
+
 using boost::asio::ip::udp;
 
 
@@ -31,8 +32,8 @@ public:
         endpoint = *resolver.resolve({udp::v4(), destination, port});
     }
 
-    void draw(const std::vector<HSV> &buffer) {
-        _send<std::vector<HSV>>(buffer);
+    void draw(const std::vector <HSV> &buffer) {
+        _send < std::vector < HSV >> (buffer);
     }
 
     void draw(const AbstractBaseBuffer<HSV> &buffer) {
@@ -48,12 +49,12 @@ private:
 //typename std::enable_if<std::is_base_of<HSV, typename Container::value_type>::value,
     template<typename Container>
     void _send(const Container &buffer) {
-        std::vector<RGB> rgbbuffer(buffer.size());
+        std::vector <RGB> rgbbuffer(buffer.size());
         std::transform(buffer.begin(), buffer.end(), rgbbuffer.begin(), [](const auto &e) {
             return e.toRGB();
         });
 
-        std::vector<boost::asio::const_buffer> buffers;
+        std::vector <boost::asio::const_buffer> buffers;
 
         buffers.push_back(boost::asio::buffer((char *) &*rgbbuffer.begin(), rgbbuffer.size() * sizeof(RGB)));
 

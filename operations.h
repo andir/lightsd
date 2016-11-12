@@ -16,9 +16,6 @@
 #include "util.h"
 
 
-
-
-
 class ShadeOperation : public Operation {
     BoundConcreteValue<float> value;
 public:
@@ -76,7 +73,7 @@ class FadeOperation : public Operation {
     std::vector<float> mask;
 
 public:
-    FadeOperation(VariableStore& store, YAML::const_iterator start, YAML::const_iterator end) :
+    FadeOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end) :
             Operation("fade", store, start, end),
             min("fade/min", store, getValueByKey<float>("min", start, end)),
             max("fade/max", store, getValueByKey<float>("max", start, end)),

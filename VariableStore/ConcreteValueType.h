@@ -33,7 +33,6 @@ class ConcreteValueType : public ValueType {
     Type type;
 
 
-
 public:
     ConcreteValueType(IntervalValueType initial_value) : value(initial_value) {
 
@@ -68,15 +67,16 @@ public:
     }
 
 
-
 private:
     template<typename TargetType>
-    TargetType getValue(typename std::enable_if<!std::is_same<IntervalValueType, TargetType>::value, int>::type = 0) const {
+    TargetType
+    getValue(typename std::enable_if<!std::is_same<IntervalValueType, TargetType>::value, int>::type = 0) const {
         throw InvalidVariableTypeException();
     }
 
     template<typename TargetType>
-    TargetType getValue(typename std::enable_if<std::is_same<IntervalValueType, TargetType>::value, int>::type = 0) const {
+    TargetType
+    getValue(typename std::enable_if<std::is_same<IntervalValueType, TargetType>::value, int>::type = 0) const {
         return value;
     }
 
@@ -91,7 +91,6 @@ private:
         value = v;
     }
 };
-
 
 
 #endif //VARIABLESTORE_CONCRETEVALUETYPE_H

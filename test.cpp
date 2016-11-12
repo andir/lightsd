@@ -22,11 +22,8 @@
 #include "FrameScheduler.h"
 
 
-
-
-
 template<typename A, typename B>
-DuplicationOutput<A, B> duplicateOutput(A& a, B& b) {
+DuplicationOutput<A, B> duplicateOutput(A &a, B &b) {
     return DuplicationOutput<A, B>(a, b);
 };
 
@@ -37,7 +34,7 @@ void test_leds() {
     const size_t num = 60 * 5;
     SharedMemoryBuffer shm("/tmp/test", num * sizeof(HSV));
 
-    auto& buffer1 = *shm.get();
+    auto &buffer1 = *shm.get();
 
 //    DebugOutput o;
     UDPOutput u("172.23.97.143", "6453");
@@ -53,19 +50,19 @@ void test_leds() {
             const auto black = HSV{0.0f, 0.0f, 0.0f};
             algorithm::initSolidColor(buffer1, black);
 
-            const std::vector<HSV> c = std::vector<HSV>({
-                                                          HSV{120.0f, 1.0f, 1.0f},
-                                                          HSV{200.0f, 1.0f, 1.0f},
-                                                          HSV{350.0f, 1.0f, 1.0f},
-                                                          HSV{1.0f, 0.0f, 1.0f},
-                                                  });
-            for (auto& color : c) {
+            const std::vector <HSV> c = std::vector<HSV>({
+                                                                 HSV{120.0f, 1.0f, 1.0f},
+                                                                 HSV{200.0f, 1.0f, 1.0f},
+                                                                 HSV{350.0f, 1.0f, 1.0f},
+                                                                 HSV{1.0f, 0.0f, 1.0f},
+                                                         });
+            for (auto &color : c) {
                 buffer1.at(i) = color;
 
                 if (i > 0)
-                    buffer1.at(i-1) = HSV{100.0f, 0.5f, 1.0f};
+                    buffer1.at(i - 1) = HSV{100.0f, 0.5f, 1.0f};
                 if (i < num)
-                    buffer1.at(i+1) = HSV{200.0f, 0.5f, 1.0f};
+                    buffer1.at(i + 1) = HSV{200.0f, 0.5f, 1.0f};
 
                 output.draw(buffer1);
             }
@@ -110,7 +107,7 @@ void flokli() {
 
 
         // increment counter
-        counter ++;
+        counter++;
     }
 
 }
@@ -153,11 +150,9 @@ int main_old(int argn, const char *argv[]) {
     WebsocketOutput wso2(9003);
 
 
-
-
     auto out = duplicateOutput(u, wso1);
     FadingOutput<HSV, decltype(out)> fade(scheduler, out);
-    auto& output = fade;
+    auto &output = fade;
 
 
     auto lastIteration = 0;

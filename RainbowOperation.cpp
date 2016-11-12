@@ -8,8 +8,7 @@
 
 
 RainbowOperation::RainbowOperation(VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end) :
-    Operation("rainbow", store, begin, end)
-{
+        Operation("rainbow", store, begin, end) {
 }
 
 void RainbowOperation::operator()(const AbstractBaseBuffer<HSV> &buffer) {

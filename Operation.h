@@ -23,9 +23,10 @@ protected:
     inline bool isEnabled() const {
         return enabled.getInteger() >= 1;
     }
+
 public:
     Operation(const std::string name, VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end) :
-            enabled(concat(name,"/enabled"), store, getValueByKey<int>("enabled", begin, end, 1)) {}
+            enabled(concat(name, "/enabled"), store, getValueByKey<int>("enabled", begin, end, 1)) {}
 
     virtual ~Operation() {}
 
