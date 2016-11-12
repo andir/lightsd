@@ -23,15 +23,12 @@ SharedMemoryBuffer::SharedMemoryBuffer(const std::string filename, size_t size) 
     assert(ftruncate(fd, size * sizeof(LargeRGB)) == 0);
     assert(memmap.open(fd, size * sizeof(LargeRGB)));
 
-//    assert(memfd.open(MFD_ALLOW_SEALING));
-//    assert(memfd.setSize(size));
-//    assert(memfd.seal());
 
     auto ptr = memmap.get<LargeRGB>();
     buffer = AllocatedBuffer<LargeRGB>(size, ptr);
 }
 
-void SharedMemoryBuffer::resize(const size_t size) {
+void SharedMemoryBuffer::_resize(const size_t size) {
     if (size > buffer.size()) {
         buffer.release();
         memmap.close();
@@ -47,6 +44,7 @@ void SharedMemoryBuffer::close() {
         ::close(fd);
     buffer.release();
     memmap.close();
+
 }
 
 SharedMemoryBuffer::~SharedMemoryBuffer() {

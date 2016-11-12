@@ -24,10 +24,12 @@ public:
             };
         };
 
-        LargeRGB& operator=(const RGB& rhs) {
-            g = rhs.green;
-            r = rhs.red;
-            b = rhs.blue;
+        inline LargeRGB& operator=(const RGB& rhs) {
+            int a = rhs.green << 24;
+            int b = rhs.red   << 16;
+            int c = rhs.blue  <<  8;
+
+            _allocator = a + b + c;
             return *this;
         }
     };
@@ -39,12 +41,18 @@ private:
     MemMap memmap;
     AllocatedBuffer<LargeRGB> buffer;
 
+    void _resize(const size_t size);
+
 public:
     SharedMemoryBuffer(const std::string filename, size_t size);
     ~SharedMemoryBuffer();
     void close();
 
-    void resize(const size_t);
+    inline void ensureSize(const size_t size) {
+        if (size > buffer.size()) {
+            _resize(size);
+        }
+    }
 
 
     AllocatedBuffer<LargeRGB>* get() {
