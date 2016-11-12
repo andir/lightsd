@@ -3,6 +3,7 @@
 //
 
 #include "SharedMemoryOutput.h"
+#include <algorithm>
 
 std::string parse_filename(const YAML::Node &params) {
     const auto f = params["filename"];
@@ -22,28 +23,18 @@ SharedMemoryOutput::SharedMemoryOutput(const YAML::Node &params) : filename(pars
 
 
 void SharedMemoryOutput::draw(const AbstractBaseBuffer<HSV> &buffer) {
-    auto it = buffer.begin();
-    shmBuffer.resize(buffer.size());
-    auto& buf = *shmBuffer.get();
-
-    for (auto& e : buf) {
-        if (it == buffer.end()) return;
-        const auto& p = *it;
-        const auto rgb = p.toRGB();
-        e = rgb;
-    }
+    shmBuffer.ensureSize(buffer.size());
+    const auto& buf = *shmBuffer.get();
+    std::transform(buffer.begin(), buffer.end(), buf.begin(), [](const auto & p){
+        return p.toRGB();
+    });
 }
 
 
 void SharedMemoryOutput::draw(const std::vector<HSV>& buffer) {
-    auto it = buffer.begin();
-    shmBuffer.resize(buffer.size());
-    auto& buf = *shmBuffer.get();
-
-    for (auto& e : buf) {
-        if (it == buffer.end()) return;
-        const auto& p = *it;
-        const auto rgb = p.toRGB();
-        e = rgb;
-    }
+    shmBuffer.ensureSize(buffer.size());
+    const auto& buf = *shmBuffer.get();
+    std::transform(buffer.begin(), buffer.end(), buf.begin(), [](const auto & p){
+        return p.toRGB();
+    });
 }
