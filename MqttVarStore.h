@@ -15,6 +15,7 @@
 #include "VariableStore/VariableStore.h"
 
 class MqttVarStore {
+    bool thread_running;
     std::string realm;
     std::shared_ptr<VariableStore> store;
     boost::asio::io_service io_service;
@@ -37,11 +38,13 @@ public:
 
 private:
     void run() {
+        thread_running = true;
         try {
             std::cout << io_service.run() << std::endl;
         } catch (const std::exception &e) {
             std::cout << e.what() << std::endl;
         }
+        thread_running = false;
     }
 
 };

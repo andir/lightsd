@@ -98,8 +98,18 @@ MqttVarStore::MqttVarStore(std::shared_ptr <VariableStore> store, const std::str
         return true;
     });
 
-    mqtt_client->set_close_handler([]() {
-        std::cout << "closed." << std::endl;
+    mqtt_client->set_close_handler([this]() {
+        std::cout << "mqtt connection closed." << std::endl;
+
+        std::this_thread::sleep_for(std::chrono::seconds(3));
+
+        std::cout << "attempting reconnect to mqtt browker" << std::endl;
+        this->mqtt_client->connect();
+
+        if (!this->thread_running) {
+            std::cout << "mqtt worker thread dead. Spawning new thread." << std::endl;
+            this->worker_thread = std::thread(std::bind(&MqttVarStore::run, this));
+        }
     });
 
 
