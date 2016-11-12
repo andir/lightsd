@@ -8,6 +8,7 @@
 #include "WebsocketOutputWrapper.h"
 #include "UDPOutputWrapper.h"
 #include "RaindropOperation.h"
+#include "SharedMemoryOutput.h"
 
 
 struct ConfigParsingException : public std::exception {
@@ -124,6 +125,7 @@ void parseOutputs(std::map<std::string, std::shared_ptr<Output>> &outputs, const
         static const std::set<std::string> known_types = {
                 "websocket"s,
                 "udp"s,
+                "shm"s,
         };
         const std::string type = node.second["type"].as<std::string>();
 
@@ -142,6 +144,9 @@ void parseOutputs(std::map<std::string, std::shared_ptr<Output>> &outputs, const
             outputs[output_name] = std::move(p);
         } else if (type == "udp") {
             auto p = std::make_unique<UDPOutputWrapper>(params);
+            outputs[output_name] = std::move(p);
+        } else if (type == "shm") {
+            auto p = std::make_unique<SharedMemoryOutput>(params);
             outputs[output_name] = std::move(p);
         } else {
             throw ConfigParsingException("Unknown output type.");

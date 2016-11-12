@@ -53,6 +53,11 @@ outputs:
     params:
       port: 9001
 
+  SHM:
+    type: shm
+    params:
+      filename: leds
+
 #  UDPOutput:
 #    type: udp
 #    params:

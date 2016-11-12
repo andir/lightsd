@@ -29,11 +29,13 @@ set(SOURCE_FILES main.cpp FrameScheduler.cpp algorithm.cpp WebsocketOutput.h
         RainbowOperation.cpp
         RotateOperation.cpp
         WorkerThread.cpp
-        RaindropOperation.cpp RaindropOperation.h util.cpp)
+        SharedMemoryOutput.cpp SharedMemoryOutput.h
+        RaindropOperation.cpp RaindropOperation.h util.cpp SharedMemoryOutput.cpp SharedMemoryOutput.h)
 #test.cpp
 
 add_executable(lightsd ${SOURCE_FILES})
 
+target_link_libraries(lightsd m rt)
 target_link_libraries(lightsd pthread)
 target_link_libraries(lightsd crypto)
 target_link_libraries(lightsd ssl)

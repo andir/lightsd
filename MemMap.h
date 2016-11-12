@@ -19,6 +19,10 @@ public:
             T* get() const {
         return reinterpret_cast<T*>(ptr);
     }
+
+    size_t getSize() const {
+        return size;
+    }
 };
 
 

@@ -6,23 +6,25 @@
 #define LIGHTSD_SHAREDMEMORYBUFFER_H
 
 
-#include "hsv.h"
+#include "rgb.h"
 #include "buffer.h"
 #include "MemFD.h"
 #include "MemMap.h"
 
 class SharedMemoryBuffer {
-    MemFD memfd;
+//    MemFD memfd;
+    int fd;
     MemMap memmap;
-    AllocatedBuffer<HSV> buffer;
+    AllocatedBuffer<RGB> buffer;
 
 public:
     SharedMemoryBuffer(const std::string filename, size_t size);
     ~SharedMemoryBuffer();
     void close();
 
+    void resize(const size_t);
 
-    AllocatedBuffer<HSV>* get() {
+    AllocatedBuffer<RGB>* get() {
         return &buffer;
     }
 
