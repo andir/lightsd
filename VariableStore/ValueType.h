@@ -18,6 +18,7 @@ public:
     virtual void setFloat(const float) = 0;
 
     virtual void setInteger(const int) = 0;
+
 };
 
 

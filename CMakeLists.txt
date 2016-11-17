@@ -22,7 +22,9 @@ set(SOURCE_FILES main.cpp FrameScheduler.cpp algorithm.cpp WebsocketOutput.h
         VariableStore/VariableStore.cpp
         VariableStore/InvalidVariableTypeException.cpp
         MqttVarStore.cpp
+        Operation.cpp
         UDPOutputWrapper.cpp
+        UDPOutput.cpp UDPOutput.h
         WebsocketOutputWrapper.cpp
         config.cpp
         util.cpp util.h
@@ -30,7 +32,7 @@ set(SOURCE_FILES main.cpp FrameScheduler.cpp algorithm.cpp WebsocketOutput.h
         RotateOperation.cpp
         WorkerThread.cpp
         SharedMemoryOutput.cpp SharedMemoryOutput.h
-        RaindropOperation.cpp RaindropOperation.h util.cpp SharedMemoryOutput.cpp SharedMemoryOutput.h)
+        RaindropOperation.cpp RaindropOperation.h util.cpp SharedMemoryOutput.cpp SharedMemoryOutput.h Operation.cpp)
 #test.cpp
 
 add_executable(lightsd ${SOURCE_FILES})

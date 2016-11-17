@@ -5,21 +5,34 @@
 
 VariableStore::VariableStore() : lock() {}
 
-void VariableStore::registerVar(const std::string name, std::shared_ptr <ValueType> var) {
+void VariableStore::registerVar(const std::string name, const std::string description, std::shared_ptr <ValueType> var) {
     std::unique_lock <std::shared_mutex> locker(lock);
     auto weak_ptr = std::weak_ptr<ValueType>(var);
 
     if (vars.find(name) == vars.end()) {
         vars.emplace(name, weak_ptr);
     }
+
+    if (descriptions.find(name) == descriptions.end()) {
+        descriptions.emplace(name, description);
+    }
 }
 
 
 void VariableStore::unregisterVar(const std::string name) {
     std::unique_lock <std::shared_mutex> locker(lock);
-    auto it = vars.find(name);
-    if (it != vars.end()) {
-        vars.erase(it);
+    {
+        auto it = vars.find(name);
+
+        if (it != vars.end()) {
+            vars.erase(it);
+        }
+    }
+    {
+        auto it = descriptions.find(name);
+        if (it != descriptions.end()) {
+            descriptions.erase(it);
+        }
     }
 }
 
@@ -67,4 +80,13 @@ std::shared_ptr <ValueType> VariableStore::getVar(const std::string name) const 
         return spt;
     }
     return nullptr;
+}
+
+std::string VariableStore::getDescription(const std::string name) const {
+    std::shared_lock <std::shared_mutex> locker(lock);
+    auto it = descriptions.find(name);
+    if (it != descriptions.end()) {
+        return (*it).second;
+    }
+    return "";
 }

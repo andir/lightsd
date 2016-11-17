@@ -32,7 +32,6 @@ class ConcreteValueType : public ValueType {
     IntervalValueType value;
     Type type;
 
-
 public:
     ConcreteValueType(IntervalValueType initial_value) : value(initial_value) {
 

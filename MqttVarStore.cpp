@@ -40,6 +40,7 @@ MqttVarStore::MqttVarStore(std::shared_ptr <VariableStore> store, const std::str
             const auto &val = this->store->getVar(e);
             value_ss << *val;
             mqtt_client->publish(key_ss.str(), value_ss.str());
+            mqtt_client->publish(key_ss.str() + "/description", this->store->getDescription(e));
             key_ss << "/set";
             mqtt_client->subscribe(key_ss.str(), mqtt::qos::at_least_once);
             std::cerr << "subscribed to " << key_ss.str() << std::endl;

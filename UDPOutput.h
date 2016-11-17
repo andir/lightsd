@@ -17,36 +17,14 @@ class UDPOutput : public Output {
     udp::resolver resolver;
     udp::endpoint endpoint;
 
-
-    struct dmx_header {
-        char ident[8];
-        unsigned int opcode;
-
-    };
-
 public:
 
-    UDPOutput(const std::string destination, const std::string port) :
-            socket(io_service, udp::endpoint(udp::v4(), 0)),
-            resolver(io_service) {
-        endpoint = *resolver.resolve({udp::v4(), destination, port});
-    }
+    UDPOutput(const std::string destination, const std::string port);
 
-    void draw(const std::vector <HSV> &buffer) {
-        _send < std::vector < HSV >> (buffer);
-    }
-
-    void draw(const AbstractBaseBuffer<HSV> &buffer) {
-        _send<AbstractBaseBuffer<HSV>>(buffer);
-    }
+    void draw(const std::vector <HSV> &buffer);
+    void draw(const AbstractBaseBuffer<HSV> &buffer);
 
 private:
-//    template<typename Container>
-//    void _send(Container& foo) {
-//        static_assert(always_fail<Container>::value, "Not implmeneted.");
-//    }
-//
-//typename std::enable_if<std::is_base_of<HSV, typename Container::value_type>::value,
     template<typename Container>
     void _send(const Container &buffer) {
         std::vector <RGB> rgbbuffer(buffer.size());

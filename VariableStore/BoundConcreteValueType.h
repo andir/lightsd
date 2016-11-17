@@ -16,11 +16,11 @@ class BoundConcreteValue : public ValueType {
     std::shared_ptr <ConcreteValueType<EnclosedValue >> value;
 
 public:
-    BoundConcreteValue(const std::string name, VariableStore &store, EnclosedValue initial_value) :
+    BoundConcreteValue(const std::string name, const std::string description, VariableStore &store, EnclosedValue initial_value) :
             name(name),
             store(store),
             value(std::make_shared<ConcreteValueType<EnclosedValue >>(initial_value)) {
-        store.registerVar(name, value);
+        store.registerVar(name, description, value);
     }
 
     ~BoundConcreteValue() {

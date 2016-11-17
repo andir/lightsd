@@ -26,11 +26,21 @@ protected:
 
 public:
     Operation(const std::string name, VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end) :
-            enabled(concat(name, "/enabled"), store, getValueByKey<int>("enabled", begin, end, 1)) {}
+            enabled(concat(name, "/enabled"), Operation::BOOLEAN, store, getValueByKey<int>("enabled", begin, end, 1)) {}
 
     virtual ~Operation() {}
 
     virtual void operator()(const AbstractBaseBuffer<HSV> &buffer) = 0;
+
+    static const std::string HSV_HUE;
+    static const std::string HSV_SATURATION;
+    static const std::string HSV_VALUE;
+
+    static const std::string BOOLEAN;
+
+    static const std::string FLOAT_0_1;
+
+    static const std::string INT;
 };
 
 #endif //LIGHTSD_OPERATION_H
