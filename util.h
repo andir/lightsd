@@ -33,7 +33,7 @@ static float getValueByKeyFloat(const std::string key, YAML::const_iterator star
 
 struct MeasureTime {
 
-    const std::chrono::steady_clock::time_point start;
+    std::chrono::steady_clock::time_point start;
 
     MeasureTime() : start(std::chrono::steady_clock::now()) {}
 
@@ -48,6 +48,10 @@ struct MeasureTime {
                 p - start
         ).count();
 
+    }
+
+    void reset() {
+        start = std::chrono::steady_clock::now();
     }
 
     ~MeasureTime() {}
