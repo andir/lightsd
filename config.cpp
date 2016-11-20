@@ -9,6 +9,7 @@
 #include "UDPOutputWrapper.h"
 #include "RaindropOperation.h"
 #include "SharedMemoryOutput.h"
+#include "BellOperation.h"
 
 
 struct ConfigParsingException : public std::exception {
@@ -28,7 +29,8 @@ generateSequenceStep(VariableStore& store, const std::string &step_type, Iterato
     using namespace std::string_literals;
 
     static const std::set<std::string> known_sequence_types = {
-            "initrainbow"s, "rotate"s, "initsolidcolor"s, "shade"s, "fade"s, "raindrop"s
+            "initrainbow"s, "rotate"s, "initsolidcolor"s, "shade"s, "fade"s, "raindrop"s,
+            "bell"s
     };
 
 
@@ -53,6 +55,8 @@ generateSequenceStep(VariableStore& store, const std::string &step_type, Iterato
             return std::make_unique<FadeOperation>(store, begin, end);
         } else if (lower_case_name == "raindrop") {
             return std::make_unique<RaindropOperation>(store, begin, end);
+        } else if (lower_case_name == "bell") {
+            return std::make_unique<BellOperation>(store, begin, end);
         } else {
             return nullptr;
         }

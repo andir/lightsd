@@ -26,13 +26,14 @@ set(SOURCE_FILES main.cpp FrameScheduler.cpp algorithm.cpp WebsocketOutput.h
         UDPOutputWrapper.cpp
         UDPOutput.cpp UDPOutput.h
         WebsocketOutputWrapper.cpp
+        BellOperation.cpp BellOperation.h
         config.cpp
         util.cpp util.h
         RainbowOperation.cpp
         RotateOperation.cpp
         WorkerThread.cpp
         SharedMemoryOutput.cpp SharedMemoryOutput.h
-        RaindropOperation.cpp RaindropOperation.h util.cpp SharedMemoryOutput.cpp SharedMemoryOutput.h Operation.cpp)
+        RaindropOperation.cpp RaindropOperation.h util.cpp SharedMemoryOutput.cpp SharedMemoryOutput.h Operation.cpp BellOperation.h BellOperation.cpp)
 #test.cpp
 
 add_executable(lightsd ${SOURCE_FILES})

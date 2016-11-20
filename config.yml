@@ -28,8 +28,11 @@ sequence:
 #      hue: 0.0
 #      saturation: 0.0
 #      value: 0.1
+
   - shade:
       value: 1
+
+  - bell
 
   - rotate:
       step_width: 0

@@ -11,6 +11,7 @@
 #include "util.h"
 
 class Operation {
+protected:
     BoundConcreteValue<int> enabled;
 
     static inline std::string concat(const std::string a, const std::string b) {
