@@ -3,10 +3,9 @@
 #include <chrono>
 
 BellOperation::BellOperation(VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end) :
-    Operation("bell", store, begin, end),
-    state(0),
-    milliseconds(2000)
-{
+        Operation("bell", store, begin, end),
+        state(0),
+        milliseconds(2000) {
     enabled.setInteger(0);
 }
 
@@ -14,7 +13,7 @@ void BellOperation::operator()(const AbstractBaseBuffer<HSV> &buffer) {
     const float perc = 0.10f;
     if (isEnabled()) {
 
-        unsigned int time_passed;
+        unsigned int time_passed = 0;
 
         if (state == 0) {
             time_measurment.reset();
@@ -23,21 +22,24 @@ void BellOperation::operator()(const AbstractBaseBuffer<HSV> &buffer) {
         }
 
 
-        float shade = 0.0f;
+        float shade = 0.8f;
 
-        if (time_passed > milliseconds) {
-            shade = 1.0f;
-        } else {
-            shade = milliseconds / time_passed;
+        if (time_passed < milliseconds) {
+            shade *= float(time_passed) / milliseconds;
         }
-        int t = ((state / 10) % 6 == 0 ? 1 : 2);
+
+        std::cerr << shade << std::endl;
         for (size_t i = 0; i < buffer.size(); i++) {
-            if (int(i / 10) % 2 == t)
-                buffer.at(i) = HSV{0.0f,1.0f, 1.0f * shade};
+            const int p = i * perc;
+
+            int z = (time_passed / 1000) % 2;
+
+            if (p % 2 == z)
+                buffer.at(i) = HSV{0.0f, 1.0f, 1.0f * shade};
             else
-                buffer.at(i) = HSV{0.0f,0.0f,0.0f};
+                buffer.at(i) = HSV{0.0f, 0.0f, 0.0f};
         }
-        state ++;
+        state++;
     } else {
         state = 0;
     }
