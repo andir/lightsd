@@ -10,8 +10,8 @@
 
 class RaindropOperation : public Operation {
 
-    BoundConcreteValue<int> hue_min;
-    BoundConcreteValue<int> hue_max;
+    BoundConcreteValue<float> hue_min;
+    BoundConcreteValue<float> hue_max;
 
     BoundConcreteValue<float> saturation_min;
     BoundConcreteValue<float> saturation_max;
