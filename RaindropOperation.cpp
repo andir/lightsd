@@ -25,8 +25,8 @@ RaindropOperation::RaindropOperation(VariableStore
                                      end) :
         Operation("raindrop", store, start, end),
 
-        hue_min("raindrop/hue_min", Operation::HSV_HUE, store, getValueByKey<float>("hue_min", start, end, 0.0f)),
-        hue_max("raindrop/hue_max", Operation::HSV_HUE, store, getValueByKey<float>("hue_max", start, end, 360.0f)),
+        hue_min("raindrop/hue_min", Operation::HSV_HUE, store, getValueByKey<int>("hue_min", start, end, 0.0f)),
+        hue_max("raindrop/hue_max", Operation::HSV_HUE, store, getValueByKey<int>("hue_max", start, end, 360.0f)),
 
         saturation_min("raindrop/saturation_min", Operation::HSV_SATURATION, store, getValueByKey<float>("saturation_min", start, end, 0.0f)),
         saturation_max("raindrop/saturation_max", Operation::HSV_SATURATION, store, getValueByKey<float>("saturation_max", start, end, 1.0f)),
@@ -48,7 +48,7 @@ RaindropOperation::RaindropOperation(VariableStore
 void RaindropOperation::hitRaindrop(Raindrop &drop) {
 
     const int saturation = random_in_range(saturation_min.getFloat() * 1000, saturation_max.getFloat() * 1000);
-    drop.color.hue = random_in_range(hue_min.getFloat(), hue_max.getFloat());
+    drop.color.hue = random_in_range(hue_min.getInteger(), hue_max.getInteger());
     drop.color.saturation = float(saturation) / 1000.0f;
     drop.color.value = float(random_in_range(value_min.getFloat() * 10000, value_max.getFloat() * 10000)) / 10000.0f;
 
