@@ -1,9 +1,9 @@
 ---
-width: 1202
-fps: 30
+width: 150
+fps: 5
 
 mqtt:
-  broker: whisky.trollhoehle.net
+  broker: whisky.w17.io
   realm: /lights/
 
 
@@ -22,6 +22,8 @@ sequence:
       decay_low: 0.9
       decay_high: 0.99
       decat_resolution: 100000
+
+  - splashdrop
 
 
 #  - initSolidColor:
@@ -54,12 +56,12 @@ outputs:
   Websocket1:
     type: websocket
     params:
-      port: 9001
+      port: 9000
 
-  SHM:
-    type: shm
-    params:
-      filename: leds
+#  SHM:
+#    type: shm
+#    params:
+#      filename: leds
 
 #  UDPOutput:
 #    type: udp

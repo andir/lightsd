@@ -46,7 +46,6 @@ RaindropOperation::RaindropOperation(VariableStore
 
 
 void RaindropOperation::hitRaindrop(Raindrop &drop) {
-
     const int saturation = random_in_range(saturation_min.getFloat() * 1000, saturation_max.getFloat() * 1000);
     drop.color.hue = random_in_range(hue_min.getFloat(), hue_max.getFloat());
     drop.color.saturation = float(saturation) / 1000.0f;

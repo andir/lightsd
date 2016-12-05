@@ -16,12 +16,14 @@ public:
 protected:
     const BufferType *const buffer;
     size_t pos;
+    bool end;
 
 
 public:
-    Iterator(const BufferType *const buffer, size_t pos) : buffer(buffer),
-                                                           pos(pos) {
-
+    Iterator(const BufferType *const buffer, size_t pos, bool end = false) : buffer(buffer),
+                                                           pos(pos),
+                                                           end(end)
+    {
     }
 
     Iterator(this_type &&other) :
@@ -53,6 +55,10 @@ public:
     }
 
     bool operator!=(const this_type &other) const {
+        if (other.end) {
+            return (pos < other.pos);
+        }
+
         return pos != other.pos;
     }
 
@@ -138,7 +144,7 @@ public:
     }
 
     IteratorType end() const {
-        return IteratorType(this, count());
+        return IteratorType(this, count(), true);
     }
 
     ReverseIteratorType rend() const {
@@ -197,7 +203,7 @@ public:
     }
 
     inline typename parent::value_type &at(size_t pos) const {
-        //assert(pos < _count);
+        assert(pos < _count);
         return ptr.get()[pos];
     }
 
@@ -214,7 +220,7 @@ public:
     }
 
     inline IteratorType end() const {
-        return IteratorType(this, count());
+        return IteratorType(this, count(), true);
     }
 
     auto release() {
