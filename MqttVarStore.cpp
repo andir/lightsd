@@ -4,13 +4,35 @@
 
 #include "MqttVarStore.h"
 
+#include <iostream>
+#include <fstream>
+#include <string>
+
+static std::string getClientId() {
+    static std::string mac;
+
+    if (mac.length() != 0)
+        return mac;
+
+    std::ifstream f("/sys/class/net/eth0/address");
+
+    if (f.good()) {
+        std::string line;
+        std::getline(f, line);
+        return line;
+    } else {
+        return "foo";
+    }
+}
+
+
 MqttVarStore::MqttVarStore(std::shared_ptr <VariableStore> store, const std::string broker, const std::string realm) :
         realm(realm),
         store(store),
         mqtt_client(mqtt::make_client_no_strand(io_service, broker, 1883)) {
 
 
-    mqtt_client->set_client_id("foo");
+    mqtt_client->set_client_id(getClientId());
     mqtt_client->set_clean_session(true);
 
     mqtt_client->set_publish_handler([this]
