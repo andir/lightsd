@@ -33,13 +33,19 @@ void SplashdropOperation::draw(const AbstractBaseBuffer<HSV> &buffer) {
 }
 
 void SplashdropOperation::hitDrop(Drop& drop) {
+
+
+    if (drop.state != IDLE)
+        return;
+
     //TODO: add random colors
     drop.color = HSV{
             200,
             1.0f,
-            1.0f
+            0.0f,
     };
-    drop.decay_rate = 0.3f;
+    drop.rate = 0.3f;
+    drop.state = DROPPING;
 }
 
 void SplashdropOperation::decayDrop(Drop &drop) {
@@ -47,22 +53,14 @@ void SplashdropOperation::decayDrop(Drop &drop) {
         return;
     }
 
-    drop.color.value *=  1.0f - drop.decay_rate;
+    drop.color.value *=  1.0f - drop.rate;
 }
 
-HSV SplashdropOperation::drawDrop(Drop &drop, const size_t index, const AbstractBaseBuffer<HSV> &buffer) {
-    if (drop.color.value <= 0.0f) {
-        return buffer.at(index);
-    }
+void SplashdropOperation::drawSplash(const Drop &drop,const size_t index, const AbstractBaseBuffer<HSV> &buffer, const size_t width) {
+    size_t left = width;
+    size_t right = width;
 
-    buffer.at(index) = drop.color;
-
-    const size_t span = drop.color.value / drop.decay_rate;
-
-    size_t left = span;
-    size_t right = span;
-
-    if (span >= index) {
+    if (width >= index) {
         if (index > 0) {
             left = index - 1;
         } else {
@@ -70,13 +68,13 @@ HSV SplashdropOperation::drawDrop(Drop &drop, const size_t index, const Abstract
         }
     }
 
-    if (index + span >= buffer.size()) {
+    if (index + width >= buffer.size()) {
         right = buffer.size() - index;
     }
 
-    for (size_t i = 0; i < span; i++) {
+    for (size_t i = 0; i < width; i++) {
         auto e = drop.color;
-        e.value -= i * drop.decay_rate;
+        e.value -= i * drop.rate;
         if (i < left) {
             auto& b = buffer.at(index - i);
             b = e;
@@ -87,7 +85,51 @@ HSV SplashdropOperation::drawDrop(Drop &drop, const size_t index, const Abstract
             b = e;
         }
     }
-    return buffer.at(index);
+}
+
+void SplashdropOperation::drawDrop(Drop &drop, const size_t index, const AbstractBaseBuffer<HSV> &buffer) {
+    if (drop.state != IDLE) {
+        return;
+    }
+
+    buffer.at(index) = drop.color;
+
+
+    switch (drop.state) {
+        case DROPPING:
+            drop.color.value += drop.rate;
+            if (drop.color.value >= 1.0f) {
+                drop.state = RISING_SPLASH;
+                drop.color.value = 1.0f;
+            }
+            break;
+        case RISING_SPLASH: {
+            drop.color.value *= 1.0f - drop.rate;
+            const size_t width = drop.rate / drop.color.value;
+
+            drawSplash(drop, index, buffer, width);
+
+            if (drop.color.value <= 0.5f) {
+                drop.color.value = 0.5f;
+                drop.state = DEACYING_SPLASH;
+            }
+            break;
+        }
+        case DEACYING_SPLASH: {
+            drop.color.value *= 1.0f - drop.rate;
+            const size_t width = drop.color.value / drop.rate;
+
+            drawSplash(drop, index, buffer, width);
+
+            if (drop.color.value <= 0.0f) {
+                drop.state = IDLE;
+            }
+
+            break;
+        }
+    }
+
+    buffer.at(index) = drop.color;
 }
 
 
@@ -101,6 +143,7 @@ void SplashdropOperation::operator()(const AbstractBaseBuffer<HSV> &buffer) {
         drops.resize(buffer.size());
         for (auto& drop : drops) {
             drop.color.value = 0;
+            drop.state = IDLE;
         }
     }
 
@@ -117,7 +160,6 @@ void SplashdropOperation::operator()(const AbstractBaseBuffer<HSV> &buffer) {
         }
 
         drawDrop(drop, i++, buffer);
-        decayDrop(drop);
     }
 }
 

@@ -33,7 +33,10 @@ set(SOURCE_FILES main.cpp FrameScheduler.cpp algorithm.cpp WebsocketOutput.h
         RotateOperation.cpp
         WorkerThread.cpp
         SharedMemoryOutput.cpp SharedMemoryOutput.h
-        RaindropOperation.cpp RaindropOperation.h util.cpp SharedMemoryOutput.cpp SharedMemoryOutput.h Operation.cpp BellOperation.h BellOperation.cpp SplashdropOperation.h SplashdropOperation.cpp)
+        RaindropOperation.cpp RaindropOperation.h util.cpp SharedMemoryOutput.cpp SharedMemoryOutput.h Operation.cpp BellOperation.h BellOperation.cpp SplashdropOperation.h SplashdropOperation.cpp HSVUDPSink.h
+        HSVUDPSink.cpp HSVUDPSink.h
+        RGBUDPSink.cpp RGBUDPSink.h
+        UDPInputOperation.h UDPInputOperation.cpp)
 #test.cpp
 
 add_executable(lightsd ${SOURCE_FILES})

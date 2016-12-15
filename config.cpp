@@ -11,6 +11,7 @@
 #include "SharedMemoryOutput.h"
 #include "BellOperation.h"
 #include "SplashdropOperation.h"
+#include "UDPInputOperation.h"
 
 
 struct ConfigParsingException : public std::exception {
@@ -31,7 +32,7 @@ generateSequenceStep(VariableStore& store, const std::string &step_type, Iterato
 
     static const std::set<std::string> known_sequence_types = {
             "initrainbow"s, "rotate"s, "initsolidcolor"s, "shade"s, "fade"s, "raindrop"s,
-            "bell"s, "splashdrop"s,
+            "bell"s, "splashdrop"s, "udpinput"s,
     };
 
 
@@ -59,9 +60,11 @@ generateSequenceStep(VariableStore& store, const std::string &step_type, Iterato
         } else if (lower_case_name == "bell") {
             return std::make_unique<BellOperation>(store, begin, end);
         } else if (lower_case_name == "splashdrop") {
-                return std::make_unique<SplashdropOperation>(store, begin, end);
-            } else {
-            return nullptr;
+            return std::make_unique<SplashdropOperation>(store, begin, end);
+        } else if (lower_case_name == "udpinput") {
+            return std::make_unique<UDPInputOperation>(store, begin, end);
+        } else {
+        return nullptr;
         }
     }
 };

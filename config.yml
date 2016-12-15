@@ -1,29 +1,34 @@
 ---
 width: 150
-fps: 5
+fps: 60
 
 mqtt:
   broker: whisky.w17.io
-  realm: /lights/
+  realm: /lights-foo/
 
 
 sequence:
-  - initRainbow
-  - raindrop:
-      saturation_min: 0.1
-      saturation_max: 0.8
-      hue_min: 10
-      hue_max: 320
+#  - initRainbow
+#  - raindrop:
+#      saturation_min: 0.1
+#      saturation_max: 0.8
+#      hue_min: 10
+#      hue_max: 320
+#
+#      value_min: 0.1
+#      value_max: 0.7
+#
+#      chance: 0.999
+#      decay_low: 0.9
+#      decay_high: 0.99
+#      decat_resolution: 100000
 
-      value_min: 0.1
-      value_max: 0.7
+  - splashdrop:
+      enabled: 0
 
-      chance: 0.999
-      decay_low: 0.9
-      decay_high: 0.99
-      decat_resolution: 100000
-
-  - splashdrop
+  - udpinput:
+      enabled: 0
+      port: 1337
 
 
 #  - initSolidColor:
