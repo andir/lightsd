@@ -20,13 +20,15 @@ HSVUDPSink::~HSVUDPSink() {
 void HSVUDPSink::handle_receive(const boost::system::error_code &error, std::size_t bytes) {
 
     if (bytes > 0 && !error) {
-        // if this turns out to be super slow, we might just reuse the old buffer
-        // and take a lock... let people way for a few ms when their UDP crap is slow
-        auto buf = std::make_shared<AllocatedBuffer<HSV>>(bytes / sizeof(HSV));
+        std::lock_guard<std::shared_mutex> guard(frame_guard);
+        auto buf = last_frame;
+        const size_t led_count = bytes / sizeof(HSV);
+        if (led_count != buf->size())
+            buf = std::make_shared<AllocatedBuffer<HSV>>(led_count);
+
         for (size_t i = 0; i < buf->size(); i++) {
             buf->at(i) = recv_buffer[i];
         }
-        std::lock_guard<std::shared_mutex> guard(frame_guard);
         last_frame = std::move(buf);
     } else {
         throw error;
