@@ -112,7 +112,7 @@ MqttVarStore::MqttVarStore(std::shared_ptr <VariableStore> store, const std::str
                         publish_ss << this->realm << s;
                         value_ss << *spt;
 
-                        mqtt_client->publish(publish_ss.str(), value_ss.str());
+                        mqtt_client->publish(publish_ss.str(), value_ss.str(), mqtt::qos::at_most_once, true);
 
                     }
                 }
