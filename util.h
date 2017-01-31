@@ -6,6 +6,7 @@
 #define LIGHTSD_UTIL_H
 
 #include <chrono>
+#include <yaml-cpp/yaml.h> 
 
 template<typename T>
 inline static T

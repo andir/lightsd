@@ -4,6 +4,8 @@
 
 #include "SharedMemoryOutput.h"
 #include <algorithm>
+#include <yaml-cpp/yaml.h>
+
 
 std::string parse_filename(const YAML::Node &params) {
     const auto f = params["filename"];

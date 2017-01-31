@@ -3,7 +3,10 @@
 //
 
 #include "SharedMemoryBuffer.h"
+#include <sys/mman.h>
 #include <iostream>
+#include <fcntl.h>
+#include <unistd.h>
 
 int _shm_open(const std::string filename) {
     int fd = shm_open(filename.c_str(), O_CREAT | O_TRUNC | O_RDWR, S_IWUSR | S_IRUSR | S_IWGRP | S_IRGRP);
