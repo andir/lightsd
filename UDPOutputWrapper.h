@@ -1,7 +1,3 @@
-//
-// Created by andi on 10/12/16.
-//
-
 #ifndef LIGHTSD_UDPOUTPUTWRAPPER_H
 #define LIGHTSD_UDPOUTPUTWRAPPER_H
 

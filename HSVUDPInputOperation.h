@@ -16,12 +16,12 @@
 
 #include "HSVUDPSink.h"
 
-class UDPInputOperation : public Operation {
+class HSVUDPInputOperation : public Operation {
 
     HSVUDPSink sink;
 public:
-    UDPInputOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end);
-    ~UDPInputOperation();
+    HSVUDPInputOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end);
+    ~HSVUDPInputOperation();
 
     void operator()(const AbstractBaseBuffer<HSV> &buffer);
 

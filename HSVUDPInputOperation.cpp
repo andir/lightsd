@@ -1,23 +1,19 @@
-//
-// Created by andi on 12/11/16.
-//
-
-#include "UDPInputOperation.h"
+#include "HSVUDPInputOperation.h"
 
 
-UDPInputOperation::UDPInputOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end) :
+HSVUDPInputOperation::HSVUDPInputOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end) :
     Operation("udpsink", store, start, end),
     sink(getValueByKey<int>("port", start, end))
 {
     sink.start();
 }
 
-UDPInputOperation::~UDPInputOperation() {
+HSVUDPInputOperation::~HSVUDPInputOperation() {
     sink.stop();
 }
 
 
-void UDPInputOperation::operator()(const AbstractBaseBuffer <HSV> &buffer) {
+void HSVUDPInputOperation::operator()(const AbstractBaseBuffer <HSV> &buffer) {
     if (!enabled.getInteger()) return;
     auto buf = sink.get();
     if (buf == nullptr)

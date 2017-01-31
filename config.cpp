@@ -1,6 +1,7 @@
 //
 // Created by andi on 10/12/16.
 //
+#include <yaml-cpp/yaml.h>
 #include <boost/algorithm/string.hpp>
 #include "config.h"
 #include "RainbowOperation.h"
@@ -11,8 +12,8 @@
 #include "SharedMemoryOutput.h"
 #include "BellOperation.h"
 #include "SplashdropOperation.h"
-#include "UDPInputOperation.h"
-
+#include "HSVUDPInputOperation.h"
+#include "HSVUDPOutput.h"
 
 struct ConfigParsingException : public std::exception {
     const std::string s;
@@ -32,7 +33,7 @@ generateSequenceStep(VariableStore& store, const std::string &step_type, Iterato
 
     static const std::set<std::string> known_sequence_types = {
             "initrainbow"s, "rotate"s, "initsolidcolor"s, "shade"s, "fade"s, "raindrop"s,
-            "bell"s, "splashdrop"s, "udpinput"s,
+            "bell"s, "splashdrop"s, "udpinput"s, "hsvudpinput"s
     };
 
 
@@ -61,8 +62,8 @@ generateSequenceStep(VariableStore& store, const std::string &step_type, Iterato
             return std::make_unique<BellOperation>(store, begin, end);
         } else if (lower_case_name == "splashdrop") {
             return std::make_unique<SplashdropOperation>(store, begin, end);
-        } else if (lower_case_name == "udpinput") {
-            return std::make_unique<UDPInputOperation>(store, begin, end);
+        } else if (lower_case_name == "hsvudpinput" || lower_case_name == "udpinput") {
+            return std::make_unique<HSVUDPInputOperation>(store, begin, end);
         } else {
         return nullptr;
         }
@@ -136,6 +137,7 @@ void parseOutputs(std::map<std::string, std::shared_ptr<Output>> &outputs, const
                 "websocket"s,
                 "udp"s,
                 "shm"s,
+                "hsvudp"s,
         };
         const std::string type = node.second["type"].as<std::string>();
 
@@ -157,6 +159,9 @@ void parseOutputs(std::map<std::string, std::shared_ptr<Output>> &outputs, const
             outputs[output_name] = std::move(p);
         } else if (type == "shm") {
             auto p = std::make_unique<SharedMemoryOutput>(params);
+            outputs[output_name] = std::move(p);
+        } else if (type == "hsvudp") {
+            auto p = std::make_unique<HSVUDPOutput>(params);
             outputs[output_name] = std::move(p);
         } else {
             throw ConfigParsingException("Unknown output type.");
