@@ -24,7 +24,7 @@ public:
 
 class Frame {
     FrameScheduler& scheduler;
-    MeasureTime measureTime;
+    MeasureTime<> measureTime;
 public:
     Frame(FrameScheduler& scheduler) : scheduler(scheduler) {
     }

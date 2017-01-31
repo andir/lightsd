@@ -31,7 +31,7 @@ getValueByKeyInt(const std::string key, YAML::const_iterator start, YAML::const_
 static float getValueByKeyFloat(const std::string key, YAML::const_iterator start, YAML::const_iterator end,
                                 float default_value = 0.0f);
 
-
+template<class TimeDimension = std::chrono::milliseconds>
 struct MeasureTime {
 
     std::chrono::steady_clock::time_point start;
@@ -45,7 +45,7 @@ struct MeasureTime {
 
         const auto p = std::chrono::steady_clock::now();
 
-        return std::chrono::duration_cast<std::chrono::milliseconds>(
+        return std::chrono::duration_cast<TimeDimension>(
                 p - start
         ).count();
 
