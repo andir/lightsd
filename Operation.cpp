@@ -10,3 +10,5 @@ const std::string Operation::BOOLEAN = "boolean";
 const std::string Operation::FLOAT_0_1 = "float(0, 1)";
 
 const std::string Operation::INT = "int";
+
+const std::string Operation::FLOAT = "float";

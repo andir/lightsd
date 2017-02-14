@@ -11,11 +11,13 @@
 #include "VariableStore/BoundConcreteValueType.h"
 #include "VariableStore/VariableStore.h"
 
+#include "util.h"
+
 
 class RotateOperation : public Operation {
-    size_t step;
-    BoundConcreteValue<int> step_width;
-
+    float step;
+    BoundConcreteValue<float> step_width;
+    MeasureTime<> timeMeasurment;
 public:
     RotateOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end);
 

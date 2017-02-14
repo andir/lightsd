@@ -46,6 +46,8 @@ public:
     static const std::string FLOAT_0_1;
 
     static const std::string INT;
+
+    static const std::string FLOAT;
 };
 
 #endif //LIGHTSD_OPERATION_H
