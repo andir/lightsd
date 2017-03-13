@@ -8,7 +8,7 @@
 
 #include <yaml-cpp/yaml.h>
 
-#include "Operation.h"
+#include "operations/Operation.h"
 #include "VariableStore/ConcreteValueType.h"
 #include "VariableStore/VariableStore.h"
 #include "VariableStore/BoundConcreteValueType.h"

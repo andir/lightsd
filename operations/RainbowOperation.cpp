@@ -3,7 +3,7 @@
 //
 
 #include "RainbowOperation.h"
-#include "algorithm.h"
+#include "../algorithm.h"
 #include <yaml-cpp/yaml.h>
 
 

@@ -4,16 +4,17 @@
 #include <yaml-cpp/yaml.h>
 #include <boost/algorithm/string.hpp>
 #include "config.h"
-#include "RainbowOperation.h"
-#include "RotateOperation.h"
 #include "WebsocketOutputWrapper.h"
 #include "UDPOutputWrapper.h"
-#include "RaindropOperation.h"
-#include "SharedMemoryOutput.h"
-#include "BellOperation.h"
-#include "SplashdropOperation.h"
-#include "HSVUDPInputOperation.h"
 #include "HSVUDPOutput.h"
+#include "SharedMemoryOutput.h"
+
+#include "operations/RainbowOperation.h"
+#include "operations/RotateOperation.h"
+#include "operations/RaindropOperation.h"
+#include "operations/BellOperation.h"
+#include "operations/SplashdropOperation.h"
+#include "operations/HSVUDPInputOperation.h"
 
 struct ConfigParsingException : public std::exception {
     const std::string s;

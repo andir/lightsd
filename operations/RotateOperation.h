@@ -8,10 +8,10 @@
 #include <yaml-cpp/yaml.h>
 
 #include "Operation.h"
-#include "VariableStore/BoundConcreteValueType.h"
-#include "VariableStore/VariableStore.h"
+#include "../VariableStore/BoundConcreteValueType.h"
+#include "../VariableStore/VariableStore.h"
 
-#include "utils/util.h"
+#include "../utils/util.h"
 
 
 class RotateOperation : public Operation {

@@ -4,9 +4,9 @@
 #include <yaml-cpp/yaml.h>
 
 
-#include "operations.h"
-#include "VariableStore/VariableStore.h"
-#include "VariableStore/BoundConcreteValueType.h"
+#include "../operations.h"
+#include "../VariableStore/VariableStore.h"
+#include "../VariableStore/BoundConcreteValueType.h"
 
 class RaindropOperation : public Operation {
 

@@ -22,22 +22,26 @@ set(SOURCE_FILES main.cpp FrameScheduler.cpp algorithm.cpp WebsocketOutput.h
         VariableStore/VariableStore.cpp
         VariableStore/InvalidVariableTypeException.cpp
         MqttVarStore.cpp
-        Operation.cpp
         UDPOutputWrapper.cpp
         UDPOutput.cpp UDPOutput.h
         WebsocketOutputWrapper.cpp
-        BellOperation.cpp BellOperation.h
         config.cpp
         utils/util.cpp utils/util.h
-        RainbowOperation.cpp
-        RotateOperation.cpp
+        operations/Operation.cpp operations/Operation.h
+        operations/BellOperation.cpp operations/BellOperation.h
+        operations/RainbowOperation.cpp operations/RainbowOperation.h
+        operations/RotateOperation.cpp operations/RotateOperation.h
+        operations/RaindropOperation.cpp operations/RaindropOperation.h
+        operations/BellOperation.h operations/BellOperation.cpp
+        operations/SplashdropOperation.h operations/SplashdropOperation.cpp
+        operations/HSVUDPInputOperation.h operations/HSVUDPInputOperation.cpp
         WorkerThread.cpp
         SharedMemoryOutput.cpp SharedMemoryOutput.h
-        RaindropOperation.cpp RaindropOperation.h SharedMemoryOutput.cpp SharedMemoryOutput.h Operation.cpp BellOperation.h BellOperation.cpp SplashdropOperation.h SplashdropOperation.cpp HSVUDPSink.h
+        SharedMemoryOutput.cpp SharedMemoryOutput.h HSVUDPSink.h
         HSVUDPSink.cpp HSVUDPSink.h
         RGBUDPSink.cpp RGBUDPSink.h
         HSVUDPOutput.h HSVUDPOutput.cpp
-        HSVUDPInputOperation.h HSVUDPInputOperation.cpp)
+        )
 
 add_executable(lightsd ${SOURCE_FILES})
 

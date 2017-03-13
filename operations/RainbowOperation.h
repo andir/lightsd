@@ -7,7 +7,7 @@
 
 #include <yaml-cpp/yaml.h>
 #include "Operation.h"
-#include "VariableStore/VariableStore.h"
+#include "../VariableStore/VariableStore.h"
 
 class RainbowOperation : public Operation {
 public:
