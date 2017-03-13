@@ -4,10 +4,10 @@
 #include <yaml-cpp/yaml.h>
 #include <boost/algorithm/string.hpp>
 #include "config.h"
-#include "WebsocketOutputWrapper.h"
-#include "UDPOutputWrapper.h"
-#include "HSVUDPOutput.h"
-#include "SharedMemoryOutput.h"
+#include "outputs/WebsocketOutputWrapper.h"
+#include "outputs/UDPOutputWrapper.h"
+#include "outputs/HSVUDPOutput.h"
+#include "outputs/SharedMemoryOutput.h"
 
 #include "operations/RainbowOperation.h"
 #include "operations/RotateOperation.h"

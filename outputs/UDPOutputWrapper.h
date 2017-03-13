@@ -4,7 +4,7 @@
 #include <yaml-cpp/yaml.h>
 #include "UDPOutput.h"
 #include "Output.h"
-#include "hsv.h"
+#include "../hsv.h"
 
 
 class UDPOutputWrapper : public Output {

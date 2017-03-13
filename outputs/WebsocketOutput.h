@@ -15,6 +15,8 @@
 
 #include <websocketpp/common/thread.hpp>
 
+#include "../rgb.h"
+
 typedef websocketpp::server <websocketpp::config::asio> server;
 
 using websocketpp::connection_hdl;

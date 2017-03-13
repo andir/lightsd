@@ -7,6 +7,7 @@
 
 #include <boost/asio.hpp>
 #include "Output.h"
+#include "../rgb.h"
 
 using boost::asio::ip::udp;
 

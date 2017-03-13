@@ -5,8 +5,8 @@
 #ifndef LIGHTSD_OUTPUT_H
 #define LIGHTSD_OUTPUT_H
 
-#include "Buffer.h"
-#include "algorithm.h"
+#include "../Buffer.h"
+#include "../hsv.h"
 
 class Output {
 

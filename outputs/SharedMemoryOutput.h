@@ -6,7 +6,7 @@
 #define LIGHTSD_SHAREDMEMORYOUTPUT_H
 
 #include <yaml-cpp/yaml.h>
-#include "SharedMemoryBuffer.h"
+#include "../SharedMemoryBuffer.h"
 #include "Output.h"
 
 class SharedMemoryOutput : public Output {

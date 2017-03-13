@@ -1,8 +1,8 @@
 #ifndef LIGHTSD_FADINGOUTPUT_H
 #define LIGHTSD_FADINGOUTPUT_H
 
-#include "util.h"
-#include "FrameScheduler.h"
+#include "../utils/util.h"
+#include "../FrameScheduler.h"
 
 #include <algorithm>
 

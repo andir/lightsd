@@ -10,7 +10,7 @@
 #include <memory>
 #include "VariableStore/VariableStore.h"
 #include "operations.h"
-#include "Output.h"
+#include "outputs/Output.h"
 #include "MqttVarStore.h"
 
 struct MqttConfig {

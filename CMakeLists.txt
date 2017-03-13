@@ -15,17 +15,16 @@ include_directories(${Boost_INCLUDE_DIRS})
 include_directories(mqtt_client_cpp/include)
 
 
-set(SOURCE_FILES main.cpp FrameScheduler.cpp algorithm.cpp WebsocketOutput.h
+set(SOURCE_FILES main.cpp FrameScheduler.cpp algorithm.cpp 
         rgb.h hsv.cpp Buffer.h algorithm.h SharedMemoryBuffer.cpp SharedMemoryBuffer.h
-        utils/MemFD.cpp utils/MemFD.h utils/MemMap.cpp utils/MemMap.h Output.cpp Output.h
+        utils/MemFD.cpp utils/MemFD.h utils/MemMap.cpp utils/MemMap.h
         VariableStore/ValueType.cpp
         VariableStore/VariableStore.cpp
         VariableStore/InvalidVariableTypeException.cpp
         MqttVarStore.cpp
-        UDPOutputWrapper.cpp
-        UDPOutput.cpp UDPOutput.h
-        WebsocketOutputWrapper.cpp
+        
         config.cpp
+
         utils/util.cpp utils/util.h
         operations/Operation.cpp operations/Operation.h
         operations/BellOperation.cpp operations/BellOperation.h
@@ -35,12 +34,19 @@ set(SOURCE_FILES main.cpp FrameScheduler.cpp algorithm.cpp WebsocketOutput.h
         operations/BellOperation.h operations/BellOperation.cpp
         operations/SplashdropOperation.h operations/SplashdropOperation.cpp
         operations/HSVUDPInputOperation.h operations/HSVUDPInputOperation.cpp
+        
         WorkerThread.cpp
-        SharedMemoryOutput.cpp SharedMemoryOutput.h
-        SharedMemoryOutput.cpp SharedMemoryOutput.h HSVUDPSink.h
+
+        outputs/Output.cpp outputs/Output.h
+        outputs/UDPOutput.cpp outputs/UDPOutput.h
+        outputs/UDPOutputWrapper.cpp outputs/UDPOutputWrapper.h
+        outputs/SharedMemoryOutput.cpp outputs/SharedMemoryOutput.h
+        outputs/HSVUDPOutput.h outputs/HSVUDPOutput.cpp
+        outputs/WebsocketOutputWrapper.cpp outputs/WebsocketOutputWrapper.h
+        outputs/WebsocketOutput.h 
+        
         HSVUDPSink.cpp HSVUDPSink.h
         RGBUDPSink.cpp RGBUDPSink.h
-        HSVUDPOutput.h HSVUDPOutput.cpp
         )
 
 add_executable(lightsd ${SOURCE_FILES})
