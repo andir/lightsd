@@ -38,7 +38,6 @@ set(SOURCE_FILES main.cpp FrameScheduler.cpp algorithm.cpp WebsocketOutput.h
         RGBUDPSink.cpp RGBUDPSink.h
         HSVUDPOutput.h HSVUDPOutput.cpp
         HSVUDPInputOperation.h HSVUDPInputOperation.cpp)
-#test.cpp
 
 add_executable(lightsd ${SOURCE_FILES})
 
