@@ -17,7 +17,7 @@ include_directories(mqtt_client_cpp/include)
 
 set(SOURCE_FILES main.cpp FrameScheduler.cpp algorithm.cpp WebsocketOutput.h
         rgb.h hsv.cpp buffer.h algorithm.h SharedMemoryBuffer.cpp SharedMemoryBuffer.h
-        MemFD.cpp MemFD.h MemMap.cpp MemMap.h Output.cpp Output.h
+        utils/MemFD.cpp utils/MemFD.h utils/MemMap.cpp utils/MemMap.h Output.cpp Output.h
         VariableStore/ValueType.cpp
         VariableStore/VariableStore.cpp
         VariableStore/InvalidVariableTypeException.cpp
@@ -28,12 +28,12 @@ set(SOURCE_FILES main.cpp FrameScheduler.cpp algorithm.cpp WebsocketOutput.h
         WebsocketOutputWrapper.cpp
         BellOperation.cpp BellOperation.h
         config.cpp
-        util.cpp util.h
+        utils/util.cpp utils/util.h
         RainbowOperation.cpp
         RotateOperation.cpp
         WorkerThread.cpp
         SharedMemoryOutput.cpp SharedMemoryOutput.h
-        RaindropOperation.cpp RaindropOperation.h util.cpp SharedMemoryOutput.cpp SharedMemoryOutput.h Operation.cpp BellOperation.h BellOperation.cpp SplashdropOperation.h SplashdropOperation.cpp HSVUDPSink.h
+        RaindropOperation.cpp RaindropOperation.h SharedMemoryOutput.cpp SharedMemoryOutput.h Operation.cpp BellOperation.h BellOperation.cpp SplashdropOperation.h SplashdropOperation.cpp HSVUDPSink.h
         HSVUDPSink.cpp HSVUDPSink.h
         RGBUDPSink.cpp RGBUDPSink.h
         HSVUDPOutput.h HSVUDPOutput.cpp

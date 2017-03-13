@@ -8,7 +8,7 @@
 #include "buffer.h"
 #include "VariableStore/BoundConcreteValueType.h"
 #include "hsv.h"
-#include "util.h"
+#include "utils/util.h"
 
 class Operation {
 protected:

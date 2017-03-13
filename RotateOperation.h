@@ -11,7 +11,7 @@
 #include "VariableStore/BoundConcreteValueType.h"
 #include "VariableStore/VariableStore.h"
 
-#include "util.h"
+#include "utils/util.h"
 
 
 class RotateOperation : public Operation {

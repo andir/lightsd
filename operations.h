@@ -13,7 +13,7 @@
 #include "VariableStore/VariableStore.h"
 #include "VariableStore/BoundConcreteValueType.h"
 #include "algorithm.h"
-#include "util.h"
+#include "utils/util.h"
 
 
 class ShadeOperation : public Operation {

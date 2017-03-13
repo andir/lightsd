@@ -8,7 +8,7 @@
 
 #include "rgb.h"
 #include "buffer.h"
-#include "MemMap.h"
+#include "utils/MemMap.h"
 
 class SharedMemoryBuffer {
 public:
