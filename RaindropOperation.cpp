@@ -80,9 +80,9 @@ void RaindropOperation::operator()(const AbstractBaseBuffer<HSV> &buffer) {
     for (auto &led : buffer) {
         assert(it != leds.end());
         auto &drop = *it++;
-        static const auto max_roll = 10000;
+        static const auto max_roll = 1000000;
         const auto roll = random_in_range(0, max_roll);
-        const auto bound = chance.getFloat() * max_roll;
+        const auto bound = (1 - chance.getFloat()) * max_roll;
 
         if (roll >= bound) {
             hitRaindrop(drop);
