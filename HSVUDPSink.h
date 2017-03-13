@@ -13,7 +13,7 @@
 #include <thread>
 
 #include "hsv.h"
-#include "buffer.h"
+#include "Buffer.h"
 
 #include <shared_mutex>
 

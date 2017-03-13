@@ -16,7 +16,7 @@ include_directories(mqtt_client_cpp/include)
 
 
 set(SOURCE_FILES main.cpp FrameScheduler.cpp algorithm.cpp WebsocketOutput.h
-        rgb.h hsv.cpp buffer.h algorithm.h SharedMemoryBuffer.cpp SharedMemoryBuffer.h
+        rgb.h hsv.cpp Buffer.h algorithm.h SharedMemoryBuffer.cpp SharedMemoryBuffer.h
         utils/MemFD.cpp utils/MemFD.h utils/MemMap.cpp utils/MemMap.h Output.cpp Output.h
         VariableStore/ValueType.cpp
         VariableStore/VariableStore.cpp

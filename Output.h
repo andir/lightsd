@@ -5,7 +5,7 @@
 #ifndef LIGHTSD_OUTPUT_H
 #define LIGHTSD_OUTPUT_H
 
-#include "buffer.h"
+#include "Buffer.h"
 #include "algorithm.h"
 
 class Output {

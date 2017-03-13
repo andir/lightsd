@@ -7,7 +7,7 @@
 
 
 #include "rgb.h"
-#include "buffer.h"
+#include "Buffer.h"
 #include "utils/MemMap.h"
 
 class SharedMemoryBuffer {

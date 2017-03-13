@@ -5,7 +5,7 @@
 #ifndef LIGHTSD_OPERATION_H
 #define LIGHTSD_OPERATION_H
 
-#include "buffer.h"
+#include "Buffer.h"
 #include "VariableStore/BoundConcreteValueType.h"
 #include "hsv.h"
 #include "utils/util.h"

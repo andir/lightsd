@@ -27,8 +27,6 @@ void RotateOperation::operator()(const AbstractBaseBuffer<HSV> &buffer) {
 
     const double steps_per_ms = step_width.getFloat() / 1000.0;
 
-
-
     step += steps_per_ms * time_elapsed;
     const int64_t integer_part = uint64_t(step);
     step = (integer_part % buffer.count()) + (step - integer_part);

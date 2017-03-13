@@ -1,5 +1,5 @@
 ---
-width: 150
+width: 4000
 fps: 60
 
 mqtt:
@@ -8,7 +8,7 @@ mqtt:
 
 
 sequence:
-#  - initRainbow
+  - initRainbow
 #  - raindrop:
 #      saturation_min: 0.1
 #      saturation_max: 0.8
@@ -42,7 +42,7 @@ sequence:
   - bell
 
   - rotate:
-      step_width: 0
+      step_width: 0.05
 
 #  - fade:
 #      min: 0.0
