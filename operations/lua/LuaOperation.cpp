@@ -39,6 +39,7 @@ lua_State* LuaOperation::openLua() {
     luaopen_base(L);
     luaopen_table(L);
     luaopen_io(L);
+    luaopen_os(L);
     luaopen_string(L);
     luaopen_math(L);
 
