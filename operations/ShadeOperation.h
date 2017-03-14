@@ -16,7 +16,9 @@ public:
     }
 
     virtual void operator()(const AbstractBaseBuffer<HSV> &buffer) {
-        algorithm::MaskBuffer(value.getValue(), buffer);
+        if (isEnabled()) {
+            algorithm::MaskBuffer(value.getFloat(), buffer);
+        }
     }
 
 private:
