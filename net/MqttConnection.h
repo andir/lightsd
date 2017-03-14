@@ -11,8 +11,8 @@
 #include <iostream>
 #include <experimental/string_view>
 #include <thread>
-#include "VariableStore/ValueType.h"
-#include "VariableStore/VariableStore.h"
+#include "../VariableStore/ValueType.h"
+#include "../VariableStore/VariableStore.h"
 
 class MqttConnection {
     bool thread_running;
@@ -46,6 +46,14 @@ private:
         }
         thread_running = false;
     }
+
+    bool connack_handler(bool sp, std::uint8_t connack_return_code);
+    bool publish_handler(std::uint8_t fixed_header,
+                         boost::optional <std::uint16_t> packet_id,
+                         std::string topic_name,
+                         std::string contents);
+
+    void close_handler();
 
 };
 

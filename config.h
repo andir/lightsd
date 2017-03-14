@@ -11,7 +11,7 @@
 #include "VariableStore/VariableStore.h"
 #include "outputs/Output.h"
 #include "operations/Operation.h"
-#include "MqttConnection.h"
+#include "net/MqttConnection.h"
 
 struct MqttConfig {
     const std::string broker;
