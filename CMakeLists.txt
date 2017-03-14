@@ -46,11 +46,18 @@ set(SOURCE_FILES main.cpp FrameScheduler.cpp algorithm.cpp
         outputs/SharedMemoryOutput.cpp outputs/SharedMemoryOutput.h
         outputs/HSVUDPOutput.h outputs/HSVUDPOutput.cpp
         outputs/WebsocketOutputWrapper.cpp outputs/WebsocketOutputWrapper.h
-        outputs/WebsocketOutput.h 
-        
+        outputs/WebsocketOutput.h
+        operations/lua/LuaOperation.cpp
+        operations/lua/LuaOperation.h
+        operations/lua/LuaHSVBuffer.cpp operations/lua/LuaHSVBuffer.h
+
         net/HSVUDPSink.cpp net/HSVUDPSink.h
         net/RGBUDPSink.cpp net/RGBUDPSink.h
-        utils/random.h)
+
+        utils/random.h
+        utils/luna.h
+
+        )
 
 add_executable(lightsd ${SOURCE_FILES})
 
@@ -58,6 +65,7 @@ target_link_libraries(lightsd m rt)
 target_link_libraries(lightsd pthread)
 target_link_libraries(lightsd crypto)
 target_link_libraries(lightsd ssl)
+target_link_libraries(lightsd luajit-5.1)
 target_link_libraries(lightsd ${Boost_LIBRARIES})
 #target_link_libraries(lightsd /usr/lib64/libboost_system.a)
 target_link_libraries(lightsd yaml-cpp)

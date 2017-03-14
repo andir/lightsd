@@ -8,7 +8,7 @@ mqtt:
 
 
 sequence:
-  - initRainbow
+#  - initRainbow
 #  - raindrop:
 #      saturation_min: 0.1
 #      saturation_max: 0.8
@@ -43,7 +43,10 @@ sequence:
 
   - rotate:
       step_width: 0.05
-
+   
+  - lua:
+      name: example
+      filename: example.lua
 #  - fade:
 #      min: 0.0
 #      max: 1

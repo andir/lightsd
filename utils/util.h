@@ -10,18 +10,16 @@
 
 template<typename T>
 inline static T
-getValueByKey(const std::string key, YAML::const_iterator start, YAML::const_iterator end, T default_value = 0) {
+getValueByKey(const std::string key, YAML::const_iterator start, YAML::const_iterator end, T default_value = T{}) {
     for (; start != end; start++) {
         const auto &v = *start;
         if (v.first.as<std::string>() == key) {
             return v.second.as<T>();
         }
     }
-    if (default_value == 0) {
-        return T{};
-    } else {
-        return default_value;
-    }
+
+    return default_value;
+
 }
 
 

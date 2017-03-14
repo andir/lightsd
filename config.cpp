@@ -18,6 +18,7 @@
 #include "operations/ShadeOperation.h"
 #include "operations/SolidColorOperation.h"
 #include "operations/FadeOperation.h"
+#include "operations/lua/LuaOperation.h"
 
 struct ConfigParsingException : public std::exception {
     const std::string s;
@@ -37,7 +38,7 @@ generateSequenceStep(VariableStore& store, const std::string &step_type, Iterato
 
     static const std::set<std::string> known_sequence_types = {
             "initrainbow"s, "rotate"s, "initsolidcolor"s, "shade"s, "fade"s, "raindrop"s,
-            "bell"s, "splashdrop"s, "udpinput"s, "hsvudpinput"s
+            "bell"s, "splashdrop"s, "udpinput"s, "hsvudpinput"s, "lua"s
     };
 
 
@@ -68,6 +69,8 @@ generateSequenceStep(VariableStore& store, const std::string &step_type, Iterato
             return std::make_unique<SplashdropOperation>(store, begin, end);
         } else if (lower_case_name == "hsvudpinput" || lower_case_name == "udpinput") {
             return std::make_unique<HSVUDPInputOperation>(store, begin, end);
+        } else if (lower_case_name == "lua") {
+            return std::make_unique<LuaOperation>(store, begin, end);
         } else {
         return nullptr;
         }
