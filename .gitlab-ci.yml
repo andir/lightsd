@@ -6,7 +6,7 @@ stages:
 
 before_script:
   - apt update
-  - apt install -y gcc g++ libwebsocketpp-dev cmake libboost-system-dev libyaml-cpp-dev libssl-dev git-core
+  - apt install -y gcc g++ libwebsocketpp-dev cmake libboost-system-dev libyaml-cpp-dev libssl-dev git-core libluajit-5.1-dev
   - git submodule init
   - git submodule update
 
