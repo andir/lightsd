@@ -9,8 +9,8 @@
 #include <vector>
 #include <memory>
 #include "VariableStore/VariableStore.h"
-#include "operations.h"
 #include "outputs/Output.h"
+#include "operations/Operation.h"
 #include "MqttVarStore.h"
 
 struct MqttConfig {

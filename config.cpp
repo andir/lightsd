@@ -15,6 +15,9 @@
 #include "operations/BellOperation.h"
 #include "operations/SplashdropOperation.h"
 #include "operations/HSVUDPInputOperation.h"
+#include "operations/ShadeOperation.h"
+#include "operations/SolidColorOperation.h"
+#include "operations/FadeOperation.h"
 
 struct ConfigParsingException : public std::exception {
     const std::string s;

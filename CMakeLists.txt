@@ -34,6 +34,7 @@ set(SOURCE_FILES main.cpp FrameScheduler.cpp algorithm.cpp
         operations/BellOperation.h operations/BellOperation.cpp
         operations/SplashdropOperation.h operations/SplashdropOperation.cpp
         operations/HSVUDPInputOperation.h operations/HSVUDPInputOperation.cpp
+        operations/ShadeOperation.h
         
         WorkerThread.cpp
 

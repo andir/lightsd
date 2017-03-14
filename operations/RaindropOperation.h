@@ -3,8 +3,8 @@
 
 #include <yaml-cpp/yaml.h>
 
+#include "Operation.h"
 
-#include "../operations.h"
 #include "../VariableStore/VariableStore.h"
 #include "../VariableStore/BoundConcreteValueType.h"
 

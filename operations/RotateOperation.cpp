@@ -3,7 +3,6 @@
 //
 
 #include "RotateOperation.h"
-#include "../operations.h"
 #include <yaml-cpp/yaml.h>
 
 RotateOperation::RotateOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end) :
