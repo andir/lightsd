@@ -12,8 +12,8 @@
 
 #include <thread>
 
-#include "rgb.h"
-#include "Buffer.h"
+#include "../rgb.h"
+#include "../Buffer.h"
 
 #include <shared_mutex>
 

@@ -14,7 +14,7 @@
 #include "../VariableStore/BoundConcreteValueType.h"
 
 
-#include "../HSVUDPSink.h"
+#include "../net/HSVUDPSink.h"
 
 class HSVUDPInputOperation : public Operation {
 

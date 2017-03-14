@@ -12,8 +12,8 @@
 
 #include <thread>
 
-#include "hsv.h"
-#include "Buffer.h"
+#include "../hsv.h"
+#include "../Buffer.h"
 
 #include <shared_mutex>
 

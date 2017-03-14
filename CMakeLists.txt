@@ -46,8 +46,8 @@ set(SOURCE_FILES main.cpp FrameScheduler.cpp algorithm.cpp
         outputs/WebsocketOutputWrapper.cpp outputs/WebsocketOutputWrapper.h
         outputs/WebsocketOutput.h 
         
-        HSVUDPSink.cpp HSVUDPSink.h
-        RGBUDPSink.cpp RGBUDPSink.h
+        net/HSVUDPSink.cpp net/HSVUDPSink.h
+        net/RGBUDPSink.cpp net/RGBUDPSink.h
         )
 
 add_executable(lightsd ${SOURCE_FILES})
