@@ -1,22 +1,7 @@
 #include "RaindropOperation.h"
 
 #include <cassert>
-#include <random>
-
-template<typename Engine = std::mt19937>
-// <std::ranlux48>, minstd_rand
-inline int random_in_range(const int lower, const int upper) {
-
-    if (lower >= upper) return lower;
-
-    static std::random_device rd; // obtain a random number from hardware
-    static Engine eng(rd()); // seed the generator
-    std::uniform_int_distribution<> distr(lower, upper); // define the range
-
-    const auto val = distr(eng);
-
-    return val;
-};
+#include "../utils/random.h"
 
 
 RaindropOperation::RaindropOperation(VariableStore
@@ -46,12 +31,12 @@ RaindropOperation::RaindropOperation(VariableStore
 
 
 void RaindropOperation::hitRaindrop(Raindrop &drop) {
-    const int saturation = random_in_range(saturation_min.getFloat() * 1000, saturation_max.getFloat() * 1000);
-    drop.color.hue = random_in_range(hue_min.getFloat(), hue_max.getFloat());
+    const int saturation = random_int_in_range(saturation_min.getFloat() * 1000, saturation_max.getFloat() * 1000);
+    drop.color.hue = random_int_in_range(hue_min.getFloat(), hue_max.getFloat());
     drop.color.saturation = float(saturation) / 1000.0f;
-    drop.color.value = float(random_in_range(value_min.getFloat() * 10000, value_max.getFloat() * 10000)) / 10000.0f;
+    drop.color.value = float(random_int_in_range(value_min.getFloat() * 10000, value_max.getFloat() * 10000)) / 10000.0f;
 
-    const auto decay_rate = float(random_in_range(
+    const auto decay_rate = float(random_int_in_range(
             decay_low.getFloat() * decay_resolution.getInteger() * 10000,
             decay_high.getFloat() * decay_resolution.getInteger() * 10000
     )) / (10000.0f * decay_resolution.getInteger());
@@ -81,7 +66,7 @@ void RaindropOperation::operator()(const AbstractBaseBuffer<HSV> &buffer) {
         assert(it != leds.end());
         auto &drop = *it++;
         static const auto max_roll = 1000000;
-        const auto roll = random_in_range(0, max_roll);
+        const auto roll = random_int_in_range(0, max_roll);
         const auto bound = (1 - chance.getFloat()) * max_roll;
 
         if (roll >= bound) {

@@ -48,7 +48,7 @@ set(SOURCE_FILES main.cpp FrameScheduler.cpp algorithm.cpp
         
         net/HSVUDPSink.cpp net/HSVUDPSink.h
         net/RGBUDPSink.cpp net/RGBUDPSink.h
-        )
+        utils/random.h)
 
 add_executable(lightsd ${SOURCE_FILES})
 
