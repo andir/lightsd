@@ -1,0 +1,15 @@
+---
+image: debian:testing
+
+stages:
+  - build
+
+before_script:
+  - apt update
+  - apt install -y gcc g++ libwebsocketpp-dev cmake libboost-system-dev libyaml-cpp-dev libssl-dev
+  - git submodule init
+  - git submodule update
+
+compile:
+  stage: build
+  script: cmake . && make
