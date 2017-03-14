@@ -224,7 +224,7 @@ ConfigPtr parseConfig(const std::string &filename) {
                     return "/lights/";
                 }
             }();
-            config->mqtt = std::make_unique<MqttVarStore>(config->store, broker, realm);
+            config->mqtt = std::make_unique<MqttConnection>(config->store, broker, realm);
         }
     }
 

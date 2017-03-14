@@ -2,7 +2,7 @@
 #include <map>
 #include <string>
 #include "WorkerThread.h"
-#include "MqttVarStore.h"
+#include "MqttConnection.h"
 #define MEASURE_TIME
 #ifdef MEASURE_TIME
 struct Measurment {

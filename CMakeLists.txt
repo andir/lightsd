@@ -21,7 +21,7 @@ set(SOURCE_FILES main.cpp FrameScheduler.cpp algorithm.cpp
         VariableStore/ValueType.cpp
         VariableStore/VariableStore.cpp
         VariableStore/InvalidVariableTypeException.cpp
-        MqttVarStore.cpp
+        MqttConnection.cpp MqttConnection.h
         
         config.cpp
 

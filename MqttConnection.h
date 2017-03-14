@@ -14,7 +14,7 @@
 #include "VariableStore/ValueType.h"
 #include "VariableStore/VariableStore.h"
 
-class MqttVarStore {
+class MqttConnection {
     bool thread_running;
     std::string realm;
     std::shared_ptr <VariableStore> store;
@@ -24,14 +24,14 @@ class MqttVarStore {
 
 
 public:
-    MqttVarStore(std::shared_ptr <VariableStore> store, const std::string broker, const std::string realm);
+    MqttConnection(std::shared_ptr <VariableStore> store, const std::string broker, const std::string realm);
 
     void stop() {
         if (!io_service.stopped())
             io_service.stop();
     }
 
-    ~MqttVarStore() {
+    ~MqttConnection() {
         stop();
         worker_thread.join();
     }

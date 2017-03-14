@@ -2,7 +2,7 @@
 // Created by andi on 10/11/16.
 //
 
-#include "MqttVarStore.h"
+#include "MqttConnection.h"
 
 #include <iostream>
 #include <fstream>
@@ -26,7 +26,7 @@ static std::string getClientId() {
 }
 
 
-MqttVarStore::MqttVarStore(std::shared_ptr <VariableStore> store, const std::string broker, const std::string realm) :
+MqttConnection::MqttConnection(std::shared_ptr <VariableStore> store, const std::string broker, const std::string realm) :
         realm(realm),
         store(store),
         mqtt_client(mqtt::make_client_no_strand(io_service, broker, 1883)) {
@@ -131,12 +131,12 @@ MqttVarStore::MqttVarStore(std::shared_ptr <VariableStore> store, const std::str
 
         if (!this->thread_running) {
             std::cout << "mqtt worker thread dead. Spawning new thread." << std::endl;
-            this->worker_thread = std::thread(std::bind(&MqttVarStore::run, this));
+            this->worker_thread = std::thread(std::bind(&MqttConnection::run, this));
         }
     });
 
 
     mqtt_client->connect();
-    worker_thread = std::thread(std::bind(&MqttVarStore::run, this));
+    worker_thread = std::thread(std::bind(&MqttConnection::run, this));
 
 }
