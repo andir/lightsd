@@ -5,7 +5,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
 
 include(cotire)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -O0 -ggdb -march=native ")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -O3 -ggdb -march=native ")
 
 #SET(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
 #SET(BUILD_SHARED_LIBRARIES OFF)
@@ -18,7 +18,11 @@ include_directories(mqtt_client_cpp/include)
 
 
 set(SOURCE_FILES main.cpp FrameScheduler.cpp algorithm.cpp 
-        rgb.h hsv.cpp Buffer.h algorithm.h SharedMemoryBuffer.cpp SharedMemoryBuffer.h
+        rgb.h rgb.cpp
+        hsv.h hsv.cpp
+        Buffer.h
+        algorithm.h
+        SharedMemoryBuffer.cpp SharedMemoryBuffer.h
         utils/MemFD.cpp utils/MemFD.h utils/MemMap.cpp utils/MemMap.h
         VariableStore/ValueType.cpp
         VariableStore/VariableStore.cpp

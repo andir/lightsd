@@ -9,6 +9,8 @@
 #include <iomanip>
 #include <iostream>
 
+struct HSV;
+
 struct RGB {
 
     using value_type = uint8_t;
@@ -45,6 +47,8 @@ struct RGB {
 
         return RGB{R, G, B};
     }
+
+    HSV toHSV();
 };
 
 
