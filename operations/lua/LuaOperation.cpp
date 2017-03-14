@@ -8,7 +8,7 @@
 
 
 LuaOperation::LuaOperation(VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end) :
-        Operation("lua" + getValueByKey<std::string>("name", begin, end, "unknown_script"), store, begin, end),
+        Operation("lua_" + getValueByKey<std::string>("name", begin, end, "unknown_script"), store, begin, end),
         luaState(openLua())
 {
 
