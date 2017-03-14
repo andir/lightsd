@@ -32,6 +32,9 @@ LuaOperation::~LuaOperation() {
 lua_State* LuaOperation::openLua() {
     auto L = lua_open();
 
+    luaJIT_setmode(L, -1, LUAJIT_MODE_ALLFUNC|LUAJIT_MODE_ON);
+
+
     // open some standard libs/operations
     luaopen_base(L);
     luaopen_table(L);

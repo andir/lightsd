@@ -15,10 +15,15 @@ public:
     }
 
     int set(lua_State *L) {
-        const float value = lua_tonumber(L, 4);
-        const float saturation = lua_tonumber(L, 3);
-        const float hue = lua_tonumber(L, 2);
-        const size_t index = lua_tointeger(L, 1);
+        const auto c = lua_gettop(L);
+        if (c != 5) {
+            return luaL_error(L, "expecting exactly 4 arguments");
+        }
+
+        const size_t index = lua_tointeger(L, 2);
+        const float hue = lua_tonumber(L, 3);
+        const float saturation = lua_tonumber(L, 4);
+        const float value = lua_tonumber(L, 5);
 
         if (index < buffer->size()) {
             auto& p = buffer->at(index);
