@@ -18,6 +18,16 @@ struct MqttConfig {
     const std::string realm;
 };
 
+struct ConfigParsingException : public std::exception {
+    const std::string s;
+
+    ConfigParsingException(std::string s) : s(s) {}
+
+    const char *what() const throw() {
+        return s.c_str();
+    }
+};
+
 class Config {
 public:
     Config();

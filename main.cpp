@@ -5,10 +5,10 @@
 #include <csignal>
 #include <thread>
 #include <stdlib.h>
+#include <iostream>
 
 #include "config.h"
 #include "WorkerThread.h"
-
 
 
 static WorkerThread worker_thread;
@@ -19,8 +19,12 @@ void sigHupHandler(int signum) {
     if (signum == SIGHUP) {
         static std::mutex m;
         std::unique_lock<std::mutex> lock(m);
-        auto conf = parseConfig(config_filename);
-        worker_thread.setConfig(std::move(conf));
+        try {
+                auto conf = parseConfig(config_filename);
+                worker_thread.setConfig(std::move(conf));
+        } catch(ConfigParsingException& e) {
+                std::cerr << "Failed to parse configuration: " << e.what() << std::endl;
+        }
     } else {
         exit(signum);
     }

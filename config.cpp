@@ -20,17 +20,6 @@
 #include "operations/FadeOperation.h"
 #include "operations/lua/LuaOperation.h"
 
-struct ConfigParsingException : public std::exception {
-    const std::string s;
-
-    ConfigParsingException(std::string s) : s(s) {}
-
-    const char *what() const throw() {
-        return s.c_str();
-    }
-};
-
-
 template<typename IteratorType1, typename IteratorType2>
 std::unique_ptr<Operation>
 generateSequenceStep(VariableStore& store, const std::string &step_type, IteratorType1 begin, IteratorType2 end) {
