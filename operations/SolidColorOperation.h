@@ -22,10 +22,8 @@ public:
 
 
     virtual void operator()(const AbstractBaseBuffer<HSV> &buffer) {
-        if (isEnabled()) {
-            const HSV color = {hue.getValue(), saturation.getValue(), value.getValue()};
-            algorithm::initSolidColor(buffer, color);
-        }
+        const HSV color = {hue.getValue(), saturation.getValue(), value.getValue()};
+        algorithm::initSolidColor(buffer, color);
     }
 };
 

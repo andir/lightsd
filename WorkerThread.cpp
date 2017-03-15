@@ -100,10 +100,13 @@ void WorkerThread::run() {
             Frame frame(scheduler);
 
             for (const auto &step : config->sequence) {
+                step->update();
+                if (step->isEnabled()) {
 #ifdef MEASURE_TIME
-                Measure(step->getName(), t);
+                    Measure(step->getName(), t);
 #endif
-                (*step)(buffer);
+                    (*step)(buffer);
+                }
             }
             for (const auto &output : config->outputs) {
                 (*output.second).draw(buffer);

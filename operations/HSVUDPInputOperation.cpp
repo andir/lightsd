@@ -14,7 +14,6 @@ HSVUDPInputOperation::~HSVUDPInputOperation() {
 
 
 void HSVUDPInputOperation::operator()(const AbstractBaseBuffer <HSV> &buffer) {
-    if (!enabled.getInteger()) return;
     auto buf = sink.get();
     if (buf == nullptr)
         return;

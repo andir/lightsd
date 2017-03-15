@@ -14,7 +14,6 @@ RGBUDPInputOperation::~RGBUDPInputOperation() {
 
 
 void RGBUDPInputOperation::operator()(const AbstractBaseBuffer <RGB> &buffer) {
-    if (!enabled.getInteger()) return;
     auto buf = sink.get();
     if (buf == nullptr)
         return;

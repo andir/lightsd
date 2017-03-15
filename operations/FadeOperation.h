@@ -35,9 +35,7 @@ public:
     }
 
     void operator()(const AbstractBaseBuffer<HSV> &buffer) {
-        if (isEnabled()) {
-            algorithm::PartialMaskBuffer(mask, buffer, from.getInteger());
-        }
+        algorithm::PartialMaskBuffer(mask, buffer, from.getInteger());
     }
 };
 

@@ -134,9 +134,6 @@ void SplashdropOperation::drawDrop(Drop &drop, const size_t index, const Abstrac
 
 
 void SplashdropOperation::operator()(const AbstractBaseBuffer<HSV> &buffer) {
-    if (!isEnabled())
-        return;
-
     if (drops.size() != buffer.size()) {
         std::cerr << "resizing()" << std::endl;
         drops.clear();

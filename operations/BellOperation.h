@@ -18,6 +18,7 @@ public:
     virtual ~BellOperation() {}
 
     virtual void operator()(const AbstractBaseBuffer<HSV> &buffer);
+    virtual void update();
 };
 
 

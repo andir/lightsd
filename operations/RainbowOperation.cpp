@@ -12,7 +12,5 @@ RainbowOperation::RainbowOperation(VariableStore &store, YAML::const_iterator be
 }
 
 void RainbowOperation::operator()(const AbstractBaseBuffer<HSV> &buffer) {
-    if (isEnabled()) {
-        algorithm::initRainbow(buffer);
-    }
+    algorithm::initRainbow(buffer);
 }

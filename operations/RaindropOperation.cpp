@@ -50,9 +50,6 @@ void RaindropOperation::Raindrop::decay() {
 }
 
 void RaindropOperation::operator()(const AbstractBaseBuffer<HSV> &buffer) {
-    if (!isEnabled())
-        return;
-
     if (buffer.size() != leds.size()) {
         leds.clear();
         leds.resize(buffer.size());

@@ -52,8 +52,6 @@ lua_State* LuaOperation::openLua() {
 }
 
 void LuaOperation::run(const AbstractBaseBuffer<HSV>& buffer) {
-    if (!isEnabled())
-        return;
     lua_pushnumber(luaState, buffer.size());
     lua_setglobal(luaState, "size");
 

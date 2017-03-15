@@ -19,13 +19,6 @@ protected:
         return a + b;
     }
 
-protected:
-
-
-    inline bool isEnabled() const {
-        return enabled.getInteger() >= 1;
-    }
-
 public:
     Operation(const std::string name, VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end) :
             name(name),
@@ -48,6 +41,11 @@ public:
     static const std::string INT;
 
     static const std::string FLOAT;
+
+    inline bool isEnabled() const {
+        return enabled.getInteger() >= 1;
+    }
+    virtual void update() {};
 };
 
 #endif //LIGHTSD_OPERATION_H
