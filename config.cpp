@@ -19,6 +19,7 @@
 #include "operations/SolidColorOperation.h"
 #include "operations/FadeOperation.h"
 #include "operations/lua/LuaOperation.h"
+#include "outputs/spi/SPIOutput.h"
 
 template<typename IteratorType1, typename IteratorType2>
 std::unique_ptr<Operation>
@@ -134,6 +135,7 @@ void parseOutputs(std::map<std::string, std::shared_ptr<Output>> &outputs, const
                 "udp"s,
                 "shm"s,
                 "hsvudp"s,
+                "spi"s
         };
         const std::string type = node.second["type"].as<std::string>();
 
@@ -158,6 +160,9 @@ void parseOutputs(std::map<std::string, std::shared_ptr<Output>> &outputs, const
             outputs[output_name] = std::move(p);
         } else if (type == "hsvudp") {
             auto p = std::make_unique<HSVUDPOutput>(params);
+            outputs[output_name] = std::move(p);
+        } else if (type == "spi") {
+            auto p = std::make_unique<SPIOutput>(params);
             outputs[output_name] = std::move(p);
         } else {
             throw ConfigParsingException("Unknown output type.");

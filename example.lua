@@ -1,6 +1,6 @@
-
-
 function render(pBuffer)
+--    print(os.time())
+
    local buffer = HSVBuffer(pBuffer)
    local size = buffer:size()
 

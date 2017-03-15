@@ -8,20 +8,20 @@ mqtt:
 
 
 sequence:
-#  - initRainbow
-#  - raindrop:
-#      saturation_min: 0.1
-#      saturation_max: 0.8
-#      hue_min: 10
-#      hue_max: 320
-#
-#      value_min: 0.1
-#      value_max: 0.7
-#
-#      chance: 0.999
-#      decay_low: 0.9
-#      decay_high: 0.99
-#      decat_resolution: 100000
+  - initRainbow
+  - raindrop:
+      saturation_min: 0.1
+      saturation_max: 0.8
+      hue_min: 10
+      hue_max: 320
+
+      value_min: 0.1
+      value_max: 0.7
+
+      chance: 0.999
+      decay_low: 0.9
+      decay_high: 0.99
+      decat_resolution: 100000
 
   - splashdrop:
       enabled: 0
@@ -45,6 +45,7 @@ sequence:
       step_width: 0.05
    
   - lua:
+      enabled: 0
       name: example
       filename: example.lua
 #  - fade:
@@ -66,6 +67,10 @@ outputs:
     params:
       port: 9000
 
+#  SPI1:
+#    type: spi
+#    params:
+#      device: /dev/spidev.0
 #  SHM:
 #    type: shm
 #    params:
