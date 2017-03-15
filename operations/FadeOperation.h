@@ -23,11 +23,11 @@ public:
             to("fade/to", Operation::INT, store, getValueByKey<int>("to", start, end)) {
 
         // FIXME: as soon as the vars are observable recalculate the mask on change
-        if (to.getInteger() <= from.getInteger() || min.getFloat() >= max.getFloat())
+        if (to.getValue() <= from.getValue() || min.getValue() >= max.getValue())
             return;
 
-        const size_t length = (to.getInteger() - from.getInteger());
-        const float diff = max.getFloat() - min.getFloat();
+        const size_t length = (to.getValue() - from.getValue());
+        const float diff = max.getValue() - min.getValue();
         const float step = diff / length;
         for (size_t i = 0; i < length; i++) {
             mask.push_back(step * i);
@@ -35,7 +35,7 @@ public:
     }
 
     void operator()(const AbstractBaseBuffer<HSV> &buffer) {
-        algorithm::PartialMaskBuffer(mask, buffer, from.getInteger());
+        algorithm::PartialMaskBuffer(mask, buffer, from.getValue());
     }
 };
 

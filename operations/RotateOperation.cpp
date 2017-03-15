@@ -24,7 +24,7 @@ void RotateOperation::operator()(const AbstractBaseBuffer<HSV> &buffer) {
     // time since last rotation in miliseconds
     uint64_t time_elapsed = timeMeasurment.measure();
 
-    const double steps_per_ms = step_width.getFloat() / 1000.0;
+    const double steps_per_ms = step_width.getValue() / 1000.0;
 
     step += steps_per_ms * time_elapsed;
     const int64_t integer_part = uint64_t(step);
