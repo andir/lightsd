@@ -3,30 +3,13 @@
 //
 
 #include "SplashdropOperation.h"
+#include "../utils/random.h"
 #include <cassert>
 
 SplashdropOperation::SplashdropOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end) :
     Operation("splashdrop", store, start, end)
 {
 }
-
-#include <random>
-
-template<typename Engine = std::mt19937>
-// <std::ranlux48>, minstd_rand
-inline int random_in_range(const int lower, const int upper) {
-
-    if (lower >= upper) return lower;
-
-    static std::random_device rd; // obtain a random number from hardware
-    static Engine eng(rd()); // seed the generator
-    std::uniform_int_distribution<> distr(lower, upper); // define the range
-
-    const auto val = distr(eng);
-
-    return val;
-};
-
 
 void SplashdropOperation::draw(const AbstractBaseBuffer<HSV> &buffer) {
 
@@ -148,7 +131,7 @@ void SplashdropOperation::operator()(const AbstractBaseBuffer<HSV> &buffer) {
     for (auto &drop : drops) {
         const float chance = 0.001;
         static const auto max_roll = 10000;
-        const auto roll = random_in_range(0, max_roll);
+        const auto roll = random_int_in_range(0, max_roll);
         const auto bound = chance * max_roll;
 
         if (roll < bound) {
