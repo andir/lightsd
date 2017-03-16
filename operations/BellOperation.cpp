@@ -11,7 +11,7 @@ BellOperation::BellOperation(VariableStore &store, YAML::const_iterator begin, Y
 
 void BellOperation::operator()(const AbstractBaseBuffer<HSV> &buffer) {
     const float perc = 0.10f;
-   unsigned int time_passed = 0;
+    unsigned int time_passed = 0;
 
     if (state == 0) {
         time_measurment.reset();
