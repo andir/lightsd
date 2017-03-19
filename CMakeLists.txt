@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.5)
 project(lightsd)
-
+set(CPACK_PACKAGE_VERSION_MAJOR "1")
+set(CPACK_PACKAGE_VERSION_MINOR "0")
+set(CPACK_PACKAGE_VERSION_PATCH "0")
+set(CPACK_PACKAGE_CONTACT "andreas@rammhold.de")
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMake")
 
 include(cotire)
@@ -71,6 +74,7 @@ endif()
 
 
 add_executable(lightsd ${SOURCE_FILES})
+install(TARGETS lightsd DESTINATION bin)
 
 target_link_libraries(lightsd m rt)
 target_link_libraries(lightsd pthread)
@@ -83,3 +87,4 @@ target_link_libraries(lightsd yaml-cpp)
 
 cotire(lightsd)
 
+include(CPack)

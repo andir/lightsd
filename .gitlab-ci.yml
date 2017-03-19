@@ -12,4 +12,7 @@ before_script:
 
 compile:
   stage: build
-  script: cmake . && make
+  script:
+    - cmake .
+    - make
+    - cpack -G DEB && dpkg -i lightsd-*.deb && whereis lightsd
