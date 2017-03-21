@@ -20,8 +20,9 @@ public:
 
     virtual ~LuaOperation();
 
-    void operator()(const AbstractBaseBuffer<HSV> &buffer) {
-        run(buffer);
+    BufferType operator()(BufferType &buffer) {
+        run(*buffer);
+        return buffer; // FIXME: 
     }
 };
 

@@ -10,23 +10,31 @@
 #include "../hsv.h"
 #include "../utils/util.h"
 
+#include <memory>
+
 class Operation {
 protected:
     const std::string name;
     BoundConcreteValue<int> enabled;
+    BoundConcreteValue<float> alpha;
+
 
     static inline std::string concat(const std::string a, const std::string b) {
         return a + b;
     }
 
 public:
+
+    using BufferType = std::shared_ptr<AbstractBaseBuffer<HSV> >;
+
     Operation(const std::string name, VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end) :
             name(name),
-            enabled(concat(name, "/enabled"), Operation::BOOLEAN, store, getValueByKey<int>("enabled", begin, end, 1)) {}
+            enabled(concat(name, "/enabled"), Operation::BOOLEAN, store, getValueByKey<int>("enabled", begin, end, 1)),
+            alpha(concat(name, "/alpha"), Operation::FLOAT, store, getValueByKey<float>("alpha", begin, end, 1)) {}
 
     virtual ~Operation() {}
 
-    virtual void operator()(const AbstractBaseBuffer<HSV> &buffer) = 0;
+    virtual BufferType operator()(BufferType &buffer) = 0;
 
     inline std::string getName() const { return name; }
 
@@ -46,6 +54,7 @@ public:
         return enabled.getInteger() >= 1;
     }
     virtual void update() {};
+    virtual float getAlpha() const { return alpha.getValue(); }
 };
 
 #endif //LIGHTSD_OPERATION_H

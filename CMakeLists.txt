@@ -64,14 +64,8 @@ set(SOURCE_FILES main.cpp FrameScheduler.cpp algorithm.cpp
         utils/random.h
         utils/luna.h
 
-        outputs/spi/SPI.cpp outputs/spi/SPI.h outputs/spi/SPIOutput.cpp outputs/spi/SPIOutput.h)
-option(WITH_I2C "Enable I2C support (rpi only)" OFF)
-
-if(WITH_I2C)
-    message(STATUS "WITH_I2C")
-    add_definitions(-DWITH_I2C=1)
-endif()
-
+        outputs/spi/SPI.cpp outputs/spi/SPI.h outputs/spi/SPIOutput.cpp outputs/spi/SPIOutput.h
+)
 
 add_executable(lightsd ${SOURCE_FILES})
 install(TARGETS lightsd DESTINATION bin)

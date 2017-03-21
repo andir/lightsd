@@ -116,11 +116,11 @@ void SplashdropOperation::drawDrop(Drop &drop, const size_t index, const Abstrac
 }
 
 
-void SplashdropOperation::operator()(const AbstractBaseBuffer<HSV> &buffer) {
-    if (drops.size() != buffer.size()) {
+Operation::BufferType SplashdropOperation::operator()(Operation::BufferType &buffer) {
+    if (drops.size() != (*buffer).size()) {
         std::cerr << "resizing()" << std::endl;
         drops.clear();
-        drops.resize(buffer.size());
+        drops.resize((*buffer).size());
         for (auto& drop : drops) {
             drop.color.value = 0;
             drop.state = IDLE;
@@ -139,8 +139,10 @@ void SplashdropOperation::operator()(const AbstractBaseBuffer<HSV> &buffer) {
             std::cout << "hit()" << i << std::endl;
         }
 
-        drawDrop(drop, i++, buffer);
+        drawDrop(drop, i++, *buffer);
     }
+
+    return buffer;
 }
 
 
