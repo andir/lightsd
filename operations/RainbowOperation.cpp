@@ -11,6 +11,7 @@ RainbowOperation::RainbowOperation(VariableStore &store, YAML::const_iterator be
         Operation("rainbow", store, begin, end) {
 }
 
-void RainbowOperation::operator()(const AbstractBaseBuffer<HSV> &buffer) {
-    algorithm::initRainbow(buffer);
+Operation::BufferType RainbowOperation::operator()(Operation::BufferType &buffer) {
+        algorithm::initRainbow(*buffer);
+        return buffer;
 }

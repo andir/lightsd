@@ -42,7 +42,7 @@ public:
 
     void draw(const AbstractBaseBuffer<HSV> &buffer);
 
-    void operator()(const AbstractBaseBuffer<HSV> &buffer);
+    Operation::BufferType operator()(Operation::BufferType &buffer);
 
 };
 

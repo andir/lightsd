@@ -21,9 +21,9 @@ public:
             value("color/value",Operation::HSV_VALUE,  store, getValueByKey<float>("value", start, end)) {}
 
 
-    virtual void operator()(const AbstractBaseBuffer<HSV> &buffer) {
+    virtual BufferType operator()(BufferType &buffer) {
         const HSV color = {hue.getValue(), saturation.getValue(), value.getValue()};
-        algorithm::initSolidColor(buffer, color);
+        algorithm::initSolidColor(*buffer, color);
     }
 };
 

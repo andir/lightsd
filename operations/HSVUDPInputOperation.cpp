@@ -13,13 +13,14 @@ HSVUDPInputOperation::~HSVUDPInputOperation() {
 }
 
 
-void HSVUDPInputOperation::operator()(const AbstractBaseBuffer <HSV> &buffer) {
+Operation::BufferType HSVUDPInputOperation::operator()(Operation::BufferType &buffer) {
     auto buf = sink.get();
     if (buf == nullptr)
-        return;
+        return buffer;
 
-    for (size_t i = 0; i < buffer.size() && i < buf->size(); i++) {
+    for (size_t i = 0; i < (*buffer).size() && i < buf->size(); i++) {
         const auto& e = buf->at(i);
-        buffer.at(i) = e;
+        (*buffer).at(i) = e;
     }
+    return buffer;
 }

@@ -17,7 +17,7 @@ public:
     BellOperation(VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end);
     virtual ~BellOperation() {}
 
-    virtual void operator()(const AbstractBaseBuffer<HSV> &buffer);
+    virtual Operation::BufferType operator()(Operation::BufferType &buffer);
     virtual void update();
 };
 

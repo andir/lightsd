@@ -34,8 +34,8 @@ public:
         }
     }
 
-    void operator()(const AbstractBaseBuffer<HSV> &buffer) {
-        algorithm::PartialMaskBuffer(mask, buffer, from.getValue());
+    BufferType operator()(BufferType &buffer) {
+        algorithm::PartialMaskBuffer(mask, *buffer, from.getValue());
     }
 };
 

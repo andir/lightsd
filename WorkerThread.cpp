@@ -85,7 +85,8 @@ void WorkerThread::run() {
         };
 
         FrameScheduler scheduler(config->fps);
-        AllocatedBuffer<HSV> buffer(config->width);
+        Operation::BufferType buffer(std::make_unique<AllocatedBuffer<HSV> >(config->width));
+
 #ifdef MEASURE_TIME
         unsigned int counter = 0;
 #endif
@@ -105,11 +106,11 @@ void WorkerThread::run() {
 #ifdef MEASURE_TIME
                     Measure(step->getName(), t);
 #endif
-                    (*step)(buffer);
+                    buffer = (*step)(buffer);
                 }
             }
             for (const auto &output : config->outputs) {
-                (*output.second).draw(buffer);
+                (*output.second).draw(*buffer);
             }
 #ifdef MEASURE_TIME
             counter ++;

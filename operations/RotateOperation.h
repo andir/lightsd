@@ -23,7 +23,7 @@ public:
 
     virtual ~RotateOperation();
 
-    virtual void operator()(const AbstractBaseBuffer<HSV> &buffer);
+    virtual Operation::BufferType operator()(Operation::BufferType &buffer);
 };
 
 

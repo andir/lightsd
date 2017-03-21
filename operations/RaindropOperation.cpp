@@ -49,17 +49,17 @@ void RaindropOperation::Raindrop::decay() {
     this->color.value *= factor;
 }
 
-void RaindropOperation::operator()(const AbstractBaseBuffer<HSV> &buffer) {
-    if (buffer.size() != leds.size()) {
+Operation::BufferType RaindropOperation::operator()(Operation::BufferType &buffer) {
+    if ((*buffer).size() != leds.size()) {
         leds.clear();
-        leds.resize(buffer.size());
+        leds.resize((*buffer).size());
         for (auto &l : leds) {
             l.color.value = 0.0f;
         }
     }
 
     auto it = leds.begin();
-    for (auto &led : buffer) {
+    for (auto &led : *buffer) {
         assert(it != leds.end());
         auto &drop = *it++;
         static const auto max_roll = 1000000;
@@ -73,4 +73,5 @@ void RaindropOperation::operator()(const AbstractBaseBuffer<HSV> &buffer) {
         led = drop.color;
         drop.decay();
     }
+    return buffer;
 }

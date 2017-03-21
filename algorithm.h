@@ -21,12 +21,7 @@ namespace {
     };
 }
 
-
 namespace algorithm {
-
-//    RGB HSV2RGB(const HSV &hsv) {
-//        return hsv.toRGB();
-//    }
 
     template<typename ColorType>
     inline constexpr ColorType LinearColor(const float step) {

@@ -15,10 +15,9 @@ public:
             value("shade/value", Operation::FLOAT_0_1, store, getValueByKey<float>("value", start, end)) {
     }
 
-    virtual void operator()(const AbstractBaseBuffer<HSV> &buffer) {
-        if (isEnabled()) {
-            algorithm::MaskBuffer(value.getFloat(), buffer);
-        }
+    virtual BufferType operator()(BufferType &buffer) {
+        algorithm::MaskBuffer(value.getValue(), *buffer);
+        return buffer;
     }
 
 private:

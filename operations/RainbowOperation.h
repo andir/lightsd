@@ -15,7 +15,7 @@ public:
 
     virtual ~RainbowOperation() {}
 
-    virtual void operator()(const AbstractBaseBuffer<HSV> &buffer);
+    virtual Operation::BufferType operator()(BufferType &buffer);
 };
 
 
