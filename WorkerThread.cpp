@@ -53,7 +53,7 @@ public:
 };
 #endif
 
-WorkerThread::WorkerThread() : config_ptr(nullptr), doRun(true) {
+WorkerThread::WorkerThread() : doRun(true), config_ptr(nullptr) {
 
 }
 
