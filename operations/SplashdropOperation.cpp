@@ -110,6 +110,9 @@ void SplashdropOperation::drawDrop(Drop &drop, const size_t index, const Abstrac
 
             break;
         }
+        case IDLE:
+        default:
+            break;
     }
 
     buffer.at(index) = drop.color;
