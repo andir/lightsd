@@ -21,7 +21,7 @@ sequence:
       chance: 0.999
       decay_low: 0.9
       decay_high: 0.99
-      decat_resolution: 100000
+      decay_resolution: 100000
 
   - splashdrop:
       enabled: 0
