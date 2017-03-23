@@ -43,9 +43,9 @@ public:
                         measurment.min = delay;
                 } else {
                         measurment.average /= 2;
-                        if (delay > measurment.max) {
+                        if (uint64_t(delay) > measurment.max) {
                                 measurment.max = delay;
-                        } else if (delay < measurment.min) {
+                        } else if (uint64_t(delay) < measurment.min) {
                                 measurment.min = delay;
                         }
                 }
