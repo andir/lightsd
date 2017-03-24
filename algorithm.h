@@ -103,7 +103,8 @@ namespace algorithm {
 
     template<typename Container>
     void PartialMaskBuffer(const std::vector<float> &mask, Container &data, const size_t offset) {
-        if (mask.size() == 0 || data.size() == 0) return;
+        if (mask.size() == 0 || data.size() == 0 || mask.size() > data.size()) return;
+        
         using value_type = typename Container::value_type;
         auto data_begin = data.begin() + offset;
         if (data_begin > data.end()) {
@@ -115,11 +116,9 @@ namespace algorithm {
 
         // mask is bigger then the remaining part of the
         // data buffer it should be applied to
-        if ((mask.size() - offset) > (data.count() - offset)) {
-            auto new_mask_end = mask_begin + (data.count() - offset);
-
-            assert(new_mask_end <= mask_end);
-            mask_end = new_mask_end;
+        if (mask.size() >= (data.size() - offset)) {
+                auto new_mask_end = mask_begin + (data.count() - offset);
+                mask_end = new_mask_end - 1;
         }
 
         assert(size_t(mask_end - mask_begin) <= data.count() - offset);
