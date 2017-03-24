@@ -36,6 +36,7 @@ Operation::BufferType BellOperation::operator()(Operation::BufferType &buffer) {
             (*buffer).at(i) = HSV{0.0f, 0.0f, 0.0f};
     }
     state++;
+    return buffer;
 }
 
 void BellOperation::update() {

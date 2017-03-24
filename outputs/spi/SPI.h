@@ -29,10 +29,10 @@ class SPI {
 
     enum { BITS_PER_WORD = 8 };
 
-    const uint8_t mode;
-    const uint32_t speed;
     const std::string device;
-
+    const uint32_t speed;
+    const uint8_t mode;
+    
     int fd;
 
 public:

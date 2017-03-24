@@ -11,25 +11,17 @@
 
 template<typename EnclosedValue>
 class BoundConcreteValue : public ValueType {
-    using CallbackType = std::function<void (const EnclosedValue&)>;
+    using CallbackType = typename ConcreteValueType<EnclosedValue>::CallbackType;
     std::string name;
     VariableStore &store;
     std::shared_ptr <ConcreteValueType<EnclosedValue >> value;
-    CallbackType callback;
-
-    inline void notify(const EnclosedValue t) {
-        if (callback != nullptr) {
-            callback(value->getValue());
-        }
-    }
 
 public:
     BoundConcreteValue(const std::string name, const std::string description, VariableStore &store, EnclosedValue initial_value, CallbackType cb = nullptr) :
             name(name),
             store(store),
-            value(std::make_shared<ConcreteValueType<EnclosedValue >>(initial_value)) {
+            value(std::make_shared<ConcreteValueType<EnclosedValue >>(initial_value, cb)) {
         store.registerVar(name, description, value);
-        callback = cb;
     }
 
     ~BoundConcreteValue() {
@@ -59,7 +51,6 @@ public:
     virtual void setFloat(const float v) {
         if (std::is_same<float, EnclosedValue>::value) {
             value->setFloat(v);
-            notify(v);
         } else {
             // FIXME: add some fast way of error reporting
             assert(false && "Invalid setter used");
@@ -69,7 +60,6 @@ public:
     virtual void setInteger(const int v) {
         if (std::is_same<int, EnclosedValue>::value) {
             value->setInteger(v);
-            notify(v);
         } else {
             // FIXME: add some fast way of error reporting
             assert(false && "Invalid setter used");

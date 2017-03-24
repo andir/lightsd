@@ -23,12 +23,6 @@ getValueByKey(const std::string key, YAML::const_iterator start, YAML::const_ite
 }
 
 
-static int
-getValueByKeyInt(const std::string key, YAML::const_iterator start, YAML::const_iterator end, int default_value = 0);
-
-static float getValueByKeyFloat(const std::string key, YAML::const_iterator start, YAML::const_iterator end,
-                                float default_value = 0.0f);
-
 template<class TimeDimension = std::chrono::milliseconds>
 struct MeasureTime {
 

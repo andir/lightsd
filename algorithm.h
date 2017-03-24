@@ -103,6 +103,7 @@ namespace algorithm {
 
     template<typename Container>
     void PartialMaskBuffer(const std::vector<float> &mask, Container &data, const size_t offset) {
+        if (mask.size() == 0 || data.size() == 0) return;
         using value_type = typename Container::value_type;
         auto data_begin = data.begin() + offset;
         if (data_begin > data.end()) {
@@ -121,7 +122,7 @@ namespace algorithm {
             mask_end = new_mask_end;
         }
 
-        assert(mask_end - mask_begin <= data.count() - offset);
+        assert(size_t(mask_end - mask_begin) <= data.count() - offset);
 
         std::transform(
                 mask_begin, mask_end, data_begin, data_begin, Mask<value_type>()

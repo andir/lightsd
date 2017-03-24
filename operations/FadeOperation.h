@@ -54,7 +54,11 @@ public:
 
     BufferType operator()(BufferType &buffer) {
         std::lock_guard<std::mutex> l(mutex);
+        if (mask.size() == 0)
+            return buffer;
+
         algorithm::PartialMaskBuffer(mask, *buffer, from.getValue());
+        return buffer;
     }
 };
 
