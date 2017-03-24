@@ -26,42 +26,70 @@ namespace {
     }
 };
 
-template<typename IntervalValueType>
+template<typename InternalValueType>
 class ConcreteValueType : public ValueType {
+public:
+    using CallbackType = std::function<void (const InternalValueType&)>;
 
-    IntervalValueType value;
+private:
+    InternalValueType value;
     Type type;
+    CallbackType callback;
+
+    inline void notify(const InternalValueType t) {
+        if (callback != nullptr) {
+            callback(getValue());
+        }
+    }
 
 public:
-    ConcreteValueType(IntervalValueType initial_value) : value(initial_value) {
+    ConcreteValueType(InternalValueType initial_value, CallbackType cb = nullptr) : value(initial_value), callback(cb) {
 
     }
 
     inline Type getType() const {
-        return determineType<IntervalValueType>();
+        return determineType<InternalValueType>();
     }
 
     virtual float getFloat() const {
-        return getValue<float>();
+        if (std::is_same<float, InternalValueType>::value) {
+                return getValue<float>();
+        } else {
+                assert(false && "Invalid getter used");
+        }
     }
 
     virtual int getInteger() const {
-        return getValue<int>();
+        if (std::is_same<int, InternalValueType>::value) {
+                return getValue<int>();
+        } else {
+                assert(false && "Invalid getter used");
+        }
     }
 
     virtual void setInteger(const int v) {
-        setValue<IntervalValueType>(v);
+        if (std::is_same<int, InternalValueType>::value) {
+                notify(v);
+                setValue<InternalValueType>(v);
+        } else {
+                assert(false && "Invalid setter used");
+        }
     }
 
     virtual void setFloat(const float v) {
-        setValue<IntervalValueType>(v);
+        if (std::is_same<float, InternalValueType>::value) {
+                notify(v);
+                setValue<InternalValueType>(v);
+        } else {
+                assert(false && "Invalid setter used");
+        }
     }
 
-    virtual inline IntervalValueType getValue() const {
-        return getValue<IntervalValueType>();
+    virtual inline InternalValueType getValue() const {
+        return getValue<InternalValueType>();
     }
 
-    virtual inline void setValue(IntervalValueType v) {
+    virtual inline void setValue(InternalValueType v) {
         value = v;
     }
 
@@ -69,24 +97,24 @@ public:
 private:
     template<typename TargetType>
     TargetType
-    getValue(typename std::enable_if<!std::is_same<IntervalValueType, TargetType>::value, int>::type = 0) const {
+    getValue(typename std::enable_if<!std::is_same<InternalValueType, TargetType>::value, int>::type = 0) const {
         throw InvalidVariableTypeException();
     }
 
     template<typename TargetType>
     TargetType
-    getValue(typename std::enable_if<std::is_same<IntervalValueType, TargetType>::value, int>::type = 0) const {
+    getValue(typename std::enable_if<std::is_same<InternalValueType, TargetType>::value, int>::type = 0) const {
         return value;
     }
 
 
     template<typename TargetType>
-    void setValue(typename std::enable_if<!std::is_same<IntervalValueType, TargetType>::value, TargetType>::type v) {
+    void setValue(typename std::enable_if<!std::is_same<InternalValueType, TargetType>::value, TargetType>::type v) {
         throw InvalidVariableTypeException();
     }
 
     template<typename TargetType>
-    void setValue(typename std::enable_if<std::is_same<IntervalValueType, TargetType>::value, TargetType>::type v) {
+    void setValue(typename std::enable_if<std::is_same<InternalValueType, TargetType>::value, TargetType>::type v) {
         value = v;
     }
 };

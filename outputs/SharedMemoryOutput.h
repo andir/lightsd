@@ -10,9 +10,8 @@
 #include "Output.h"
 
 class SharedMemoryOutput : public Output {
-    SharedMemoryBuffer shmBuffer;
     const std::string filename;
-
+    SharedMemoryBuffer shmBuffer;
 
 public:
     SharedMemoryOutput(const YAML::Node &params);

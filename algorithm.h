@@ -121,7 +121,7 @@ namespace algorithm {
                 mask_end = new_mask_end - 1;
         }
 
-        assert(mask_end - mask_begin <= data.count() - offset);
+        assert(size_t(mask_end - mask_begin) <= data.count() - offset);
 
         std::transform(
                 mask_begin, mask_end, data_begin, data_begin, Mask<value_type>()

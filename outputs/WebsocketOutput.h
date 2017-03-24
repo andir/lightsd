@@ -248,7 +248,6 @@ private:
 
 
         size_t count = 0;
-        const auto &end = buffer.end();
         for (const auto &e: buffer) {
             RGB v = e.toRGB();
             ss << "[" << int(v.red) << "," << int(v.green) << "," << int(v.blue) << "]";

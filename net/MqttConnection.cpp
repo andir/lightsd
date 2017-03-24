@@ -106,7 +106,7 @@ bool MqttConnection::publish_handler(std::uint8_t fixed_header, boost::optional<
                                 spt->setFloat(boost::lexical_cast<float>(contents));
                                 break;
                             case ValueType::Type::INTEGER:
-                                spt->setFloat(boost::lexical_cast<int>(contents));
+                                spt->setInteger(boost::lexical_cast<int>(contents));
                                 break;
                             default:
                                 std::cerr << "Unable to parse " << contents << std::endl;

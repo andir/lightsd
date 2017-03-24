@@ -85,8 +85,6 @@ std::string HSV::string() const {
 
 
 HSV HSV::operator-(const HSV &rhs) const {
-    const auto hd = hue - rhs.hue;
-
     auto a = value_type(fmod(hue - rhs.hue, 360));
     if (a < 0)
         a = 360 + a;
