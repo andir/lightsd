@@ -6,10 +6,14 @@
 class ValueType {
 public:
     enum class Type {
-        FLOAT, INTEGER, UNKNOWN
+        FLOAT, INTEGER, UNKNOWN, BOOLEAN
     };
 
     virtual Type getType() const = 0;
+
+    virtual bool getBool() const = 0;
+
+    virtual void setBool(const bool) = 0;
 
     virtual float getFloat() const = 0;
 
@@ -23,6 +27,7 @@ public:
 
 
 std::ostream &operator<<(std::ostream &os, const ValueType &obj);
+std::ostream &operator<<(std::ostream &os, const ValueType::Type t);
 
 
 #endif //VARIABLESTORE_VALUETYPE_H

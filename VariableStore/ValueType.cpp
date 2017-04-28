@@ -4,11 +4,37 @@
 
 #include "ValueType.h"
 
+std::ostream &operator<<(std::ostream &os, const ValueType::Type t) {
+    switch (t) {
+        case ValueType::Type::FLOAT:
+            os << "FLOAT";
+            break;
+        case ValueType::Type::INTEGER:
+            os << "INTEGER";
+            break;
+        case ValueType::Type::BOOLEAN:
+            os << "BOOL";
+            break;
+        default:
+            os << "UNKNOWN";
+    }
+    return os;
+}
+
 std::ostream &operator<<(std::ostream &os, const ValueType &obj) {
-    if (obj.getType() == ValueType::Type::FLOAT) {
-        os << obj.getFloat();
-    } else {
-        os << obj.getInteger();
+    const auto t = obj.getType();
+    switch (t) {
+        case ValueType::Type::FLOAT:
+            os << obj.getFloat();
+            break;
+        case ValueType::Type::INTEGER:
+            os << obj.getInteger();
+            break;
+        case ValueType::Type::BOOLEAN:
+            os << obj.getBool();
+            break;
+        default:
+            os << "(unknown type)";
     }
     return os;
 }

@@ -42,7 +42,13 @@ public:
             assert(false && "Invalid getter used");
         }
     }
-
+    virtual bool getBool() const {
+        if (std::is_same<bool, EnclosedValue>::value) {
+            return value->getBool();
+        } else {
+            assert(false && "Invalid getter used");
+        }
+    }
     virtual void setFloat(const float v) {
         if (std::is_same<float, EnclosedValue>::value) {
             value->setFloat(v);
@@ -55,6 +61,15 @@ public:
     virtual void setInteger(const int v) {
         if (std::is_same<int, EnclosedValue>::value) {
             value->setInteger(v);
+        } else {
+            // FIXME: add some fast way of error reporting
+            assert(false && "Invalid setter used");
+        }
+    }
+
+    virtual void setBool(const bool v) {
+        if (std::is_same<bool, EnclosedValue>::value) {
+            value->setBool(v);
         } else {
             // FIXME: add some fast way of error reporting
             assert(false && "Invalid setter used");

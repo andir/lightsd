@@ -17,7 +17,7 @@ class Config;
 class Operation {
 protected:
     const std::string name;
-    BoundConcreteValue<int> enabled;
+    BoundConcreteValue<bool> enabled;
     BoundConcreteValue<float> alpha;
 
 
@@ -31,7 +31,7 @@ public:
 
     Operation(const std::string name, VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end) :
             name(name),
-            enabled(concat(name, "/enabled"), Operation::BOOLEAN, store, getValueByKey<int>("enabled", begin, end, 1)),
+            enabled(concat(name, "/enabled"), Operation::BOOLEAN, store, getValueByKey<bool>("enabled", begin, end, 1)),
             alpha(concat(name, "/alpha"), Operation::FLOAT, store, getValueByKey<float>("alpha", begin, end, 1)) {}
 
     virtual ~Operation() {}
@@ -53,7 +53,7 @@ public:
     static const std::string FLOAT;
 
     inline bool isEnabled() const {
-        return enabled.getInteger() >= 1;
+        return enabled.getBool();
     }
     virtual void update(const Config * const ) {};
     virtual float getAlpha() const { return alpha.getValue(); }

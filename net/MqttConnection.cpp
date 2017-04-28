@@ -3,6 +3,7 @@
 //
 
 #include "MqttConnection.h"
+#include "../VariableStore/InvalidVariableTypeException.h"
 
 #include <iostream>
 #include <fstream>
@@ -25,8 +26,19 @@ static std::string getClientId() {
     }
 }
 
+namespace boost {
+    template<>
+    bool lexical_cast<bool, std::string>(const std::string &arg) {
+        std::istringstream ss(arg);
+        bool b;
+        ss >> std::boolalpha >> b;
+        return b;
+    }
+}
 
-MqttConnection::MqttConnection(std::shared_ptr <VariableStore> store, const std::string broker, const std::string realm) :
+
+MqttConnection::MqttConnection(std::shared_ptr<VariableStore> store, const std::string broker, const std::string realm)
+        :
         realm(realm),
         store(store),
         mqtt_client(mqtt::make_client_no_strand(io_service, broker, 1883)) {
@@ -39,12 +51,12 @@ MqttConnection::MqttConnection(std::shared_ptr <VariableStore> store, const std:
         std::cout << "MQTT error: " << ec.message() << std::endl;
     });
 
-    mqtt_client->set_connack_handler([this](bool sp, std::uint8_t connack_return_code){
+    mqtt_client->set_connack_handler([this](bool sp, std::uint8_t connack_return_code) {
         return this->connack_handler(sp, connack_return_code);
     });
 
     mqtt_client->set_publish_handler([this](std::uint8_t fixed_header,
-                                            boost::optional <std::uint16_t> packet_id,
+                                            boost::optional<std::uint16_t> packet_id,
                                             std::string topic_name,
                                             std::string contents) {
         return this->publish_handler(fixed_header, packet_id, topic_name, contents);
@@ -66,6 +78,9 @@ bool MqttConnection::connack_handler(bool sp, std::uint8_t connack_return_code) 
         std::stringstream key_ss, value_ss;
         key_ss << this->realm << e;
         const auto &val = this->store->getVar(e);
+
+        std::cerr << "subscribing to " << key_ss.str() << " type: " << val->getType() << std::endl;
+
         value_ss << *val;
         mqtt_client->publish(key_ss.str(), value_ss.str());
         mqtt_client->publish(key_ss.str() + "/type", this->store->getTypeName(e));
@@ -100,26 +115,37 @@ bool MqttConnection::publish_handler(std::uint8_t fixed_header, boost::optional<
                 auto spt = this->store->getVar(s);
                 if (spt != nullptr) {
                     try {
+                        try {
 
-                        switch (spt->getType()) {
-                            case ValueType::Type::FLOAT:
-                                spt->setFloat(boost::lexical_cast<float>(contents));
-                                break;
-                            case ValueType::Type::INTEGER:
-                                spt->setInteger(boost::lexical_cast<int>(contents));
-                                break;
-                            default:
-                                std::cerr << "Unable to parse " << contents << std::endl;
+                            switch (spt->getType()) {
+                                case ValueType::Type::FLOAT:
+                                    spt->setFloat(boost::lexical_cast<float>(contents));
+                                    break;
+                                case ValueType::Type::INTEGER:
+                                    spt->setInteger(boost::lexical_cast<int>(contents));
+                                    break;
+                                case ValueType::Type::BOOLEAN:
+                                    if (contents == "1") contents = "true";
+                                    else if (contents == "0") contents = "false";
+                                    spt->setBool(boost::lexical_cast<bool>(contents));
+                                    break;
+                                default:
+                                    std::cerr << "Unable to parse " << contents << std::endl;
+                            }
+                        } catch (boost::bad_lexical_cast &ex) {
+                            std::cerr << ex.what() << std::endl;
                         }
-                    } catch (boost::bad_lexical_cast &ex) {
+
+                        std::stringstream publish_ss, value_ss;
+
+                        publish_ss << this->realm << s;
+                        value_ss << *spt;
+                        mqtt_client->publish(publish_ss.str(), value_ss.str(), mqtt::qos::at_most_once, true);
+                    }
+                    catch (InvalidVariableTypeException &ex) {
+                        std::cerr << "Faled to handle set " << topic_name << " with value: " << contents << std::endl;
                         std::cerr << ex.what() << std::endl;
                     }
-                    std::stringstream publish_ss, value_ss;
-
-                    publish_ss << this->realm << s;
-                    value_ss << *spt;
-
-                    mqtt_client->publish(publish_ss.str(), value_ss.str(), mqtt::qos::at_most_once, true);
                 }
             }
         }
