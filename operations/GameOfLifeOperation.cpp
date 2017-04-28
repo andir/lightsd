@@ -17,7 +17,8 @@ GameOfLifeOperation::GameOfLifeOperation(VariableStore &store, YAML::const_itera
         v4("gameoflife/v4", Operation::BOOLEAN, store, getValueByKey<bool>("v4", start, end, true)),
         v5("gameoflife/v5", Operation::BOOLEAN, store, getValueByKey<bool>("v5", start, end, true)),
         v6("gameoflife/v6", Operation::BOOLEAN, store, getValueByKey<bool>("v6", start, end, true)),
-        v7("gameoflife/v7", Operation::BOOLEAN, store, getValueByKey<bool>("v7", start, end, false))
+        v7("gameoflife/v7", Operation::BOOLEAN, store, getValueByKey<bool>("v7", start, end, false)),
+        randomizeColor("gameoflife/randomizeColor", Operation::BOOLEAN, store, getValueByKey<bool>("randomizeColor", start, end, true))
 {
 }
 
@@ -48,7 +49,13 @@ void GameOfLifeOperation::update(const Config* const cfg) {
             if (random_int_in_range(0, 100) < 5) {
                 value = def_value;
             }
-            led = HSV{default_hue.getValue(), default_saturation.getValue(), value};
+            float hue;
+            if (randomizeColor.getBool()) {
+                hue = random_int_in_range(0, 360);
+            } else {
+                hue = default_hue.getValue();
+            }
+            led = HSV{hue, default_saturation.getValue(), value};
         }
     }
 
@@ -100,8 +107,16 @@ void GameOfLifeOperation::update(const Config* const cfg) {
                         return 0.0f;
                 }
             }();
-            state[i] = default_color;
-            state[i].value = new_value;
+
+            auto &e = state[i];
+            if (e.value <= 0.0f) {
+                e = default_color;
+                if (randomizeColor.getBool()) {
+                    e.hue = random_int_in_range(0, 360);
+                }
+            } else {
+                e.value = new_value;
+            }
         }
 
         // recalc the delta after each new frame
