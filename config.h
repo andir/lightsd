@@ -1,9 +1,4 @@
-//
-// Created by andi on 10/12/16.
-//
-
-#ifndef LIGHTSD_CONFIG_H
-#define LIGHTSD_CONFIG_H
+#pragma once
 
 #include <map>
 #include <vector>
@@ -47,6 +42,3 @@ typedef std::unique_ptr<Config> ConfigPtr;
 
 
 ConfigPtr parseConfig(const std::string &filename);
-
-
-#endif //LIGHTSD_CONFIG_H

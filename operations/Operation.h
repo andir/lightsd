@@ -12,6 +12,8 @@
 
 #include <memory>
 
+class Config;
+
 class Operation {
 protected:
     const std::string name;
@@ -53,7 +55,7 @@ public:
     inline bool isEnabled() const {
         return enabled.getInteger() >= 1;
     }
-    virtual void update() {};
+    virtual void update(const Config * const ) {};
     virtual float getAlpha() const { return alpha.getValue(); }
 };
 

@@ -19,6 +19,8 @@
 #include "operations/SolidColorOperation.h"
 #include "operations/FadeOperation.h"
 #include "operations/lua/LuaOperation.h"
+#include "operations/GameOfLifeOperation.h"
+
 #include "outputs/spi/SPIOutput.h"
 
 template<typename IteratorType1, typename IteratorType2>
@@ -28,7 +30,7 @@ generateSequenceStep(VariableStore& store, const std::string &step_type, Iterato
 
     static const std::set<std::string> known_sequence_types = {
             "initrainbow"s, "rotate"s, "initsolidcolor"s, "shade"s, "fade"s, "raindrop"s,
-            "bell"s, "splashdrop"s, "udpinput"s, "hsvudpinput"s, "lua"s
+            "bell"s, "splashdrop"s, "udpinput"s, "hsvudpinput"s, "lua"s, "gameoflife"s
     };
 
 
@@ -61,6 +63,8 @@ generateSequenceStep(VariableStore& store, const std::string &step_type, Iterato
             return std::make_unique<HSVUDPInputOperation>(store, begin, end);
         } else if (lower_case_name == "lua") {
             return std::make_unique<LuaOperation>(store, begin, end);
+        } else if (lower_case_name == "gameoflife") {
+            return std::make_unique<GameOfLifeOperation>(store, begin, end);
         } else {
         return nullptr;
         }

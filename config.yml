@@ -26,6 +26,9 @@ sequence:
   - splashdrop:
       enabled: 0
 
+  - gameoflife:
+      enabled: 0
+
   - udpinput:
       enabled: 0
       port: 1337
