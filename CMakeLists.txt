@@ -57,6 +57,7 @@ set(SOURCE_FILES main.cpp FrameScheduler.cpp algorithm.cpp
         operations/lua/LuaOperation.cpp
         operations/lua/LuaOperation.h
         operations/lua/LuaHSVBuffer.cpp operations/lua/LuaHSVBuffer.h
+        operations/GameOfLifeOperation.cpp operations/GameOfLifeOperation.h
 
         net/HSVUDPSink.cpp net/HSVUDPSink.h
         net/RGBUDPSink.cpp net/RGBUDPSink.h

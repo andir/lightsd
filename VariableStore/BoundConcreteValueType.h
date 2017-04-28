@@ -1,9 +1,4 @@
-//
-// Created by andi on 10/11/16.
-//
-
-#ifndef LIGHTSD_BOUNDCONCRETEVALUETYPE_H
-#define LIGHTSD_BOUNDCONCRETEVALUETYPE_H
+#pragma once
 
 #include <memory>
 #include "ConcreteValueType.h"
@@ -70,6 +65,3 @@ public:
         return value->getValue();
     }
 };
-
-
-#endif //LIGHTSD_BOUNDCONCRETEVALUETYPE_H

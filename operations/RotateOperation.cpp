@@ -36,5 +36,6 @@ Operation::BufferType RotateOperation::operator()(Operation::BufferType &buffer)
     //std::cerr << "steps_per_ms:" << steps_per_ms << " step: " << step << " offset: " << offset << " end: " << end << std::endl;
     std::rotate(&(*buffer).at(0), &(*buffer).at(0) + offset, end);
 
+    step = std::fmod(step, float(buffer->size()));
     return buffer;
 }
