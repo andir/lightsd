@@ -56,6 +56,7 @@ void GameOfLifeOperation::update(const Config* const cfg) {
     if (frame_counter % cfg->fps == 0) {
         std::vector<HSV> state(output.size());
         // once a second recalculate a new state
+        auto default_color = HSV{default_hue.getValue(), default_saturation.getValue(), 0.0};
         for (size_t i = 0; i < output.size(); i++) {
             const size_t l_index = i == 0 ? output.size() - 1 : i - 1;
             const size_t r_index = i == output.size() - 1 ? 0 : i + 1;
@@ -99,7 +100,7 @@ void GameOfLifeOperation::update(const Config* const cfg) {
                         return 0.0f;
                 }
             }();
-            state[i] = t;
+            state[i] = default_color;
             state[i].value = new_value;
         }
 
