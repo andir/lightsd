@@ -6,7 +6,7 @@ BellOperation::BellOperation(VariableStore &store, YAML::const_iterator begin, Y
         Operation("bell", store, begin, end),
         state(0),
         milliseconds(2000) {
-    enabled.setInteger(0);
+    enabled.setBool(false);
 }
 
 Operation::BufferType BellOperation::operator()(Operation::BufferType &buffer) {
@@ -40,5 +40,5 @@ Operation::BufferType BellOperation::operator()(Operation::BufferType &buffer) {
 }
 
 void BellOperation::update() {
-    if (!isEnabled()) state =0;
+    if (!isEnabled()) state = 0;
 }

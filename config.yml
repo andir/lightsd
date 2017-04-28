@@ -24,14 +24,14 @@ sequence:
       decay_resolution: 100000
 
   - splashdrop:
-      enabled: 0
+      enabled: false
 
   - gameoflife:
-      enabled: 0
+      enabled: true
 
-  - udpinput:
-      enabled: 0
-      port: 1337
+#  - udpinput:
+#      enabled: 0
+#      port: 1337
 
 
 #  - initSolidColor:
@@ -45,10 +45,10 @@ sequence:
   - bell
 
   - rotate:
-      step_width: 0.05
+      step_width: 0
    
   - lua:
-      enabled: 0
+      enabled: false
       name: example
       filename: example.lua
 #  - fade:

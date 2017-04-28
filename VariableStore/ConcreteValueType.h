@@ -24,6 +24,11 @@ namespace {
     constexpr ValueType::Type determineType<int>() {
         return ValueType::Type::INTEGER;
     }
+
+    template<>
+    constexpr ValueType::Type determineType<bool>() {
+        return ValueType::Type::BOOLEAN;
+    }
 };
 
 template<typename InternalValueType>
@@ -44,7 +49,7 @@ private:
 
 public:
     ConcreteValueType(InternalValueType initial_value, CallbackType cb = nullptr) : value(initial_value), callback(cb) {
-
+        std::cerr << getType() << std::endl;
     }
 
     inline Type getType() const {
@@ -56,6 +61,14 @@ public:
                 return getValue<float>();
         } else {
                 assert(false && "Invalid getter used");
+        }
+    }
+
+    virtual bool getBool() const {
+        if (std::is_same<bool, InternalValueType>::value) {
+            return getValue<bool>();
+        } else {
+            assert(false && "Invalid getter used");
         }
     }
 
@@ -85,6 +98,15 @@ public:
         }
     }
 
+    virtual void setBool(const bool v) {
+        if (std::is_same<bool, InternalValueType>::value) {
+            notify(v);
+            setValue<InternalValueType>(v);
+        } else {
+            assert(false && "Invalid setter used");
+        }
+    }
+
     virtual inline InternalValueType getValue() const {
         return getValue<InternalValueType>();
     }
@@ -98,6 +120,9 @@ private:
     template<typename TargetType>
     TargetType
     getValue(typename std::enable_if<!std::is_same<InternalValueType, TargetType>::value, int>::type = 0) const {
+        static_assert("You did something wrong.");
+        std::cerr << "tried to get variable. Wrong getter for this type: " << determineType<TargetType>() << std::endl;
+        std::cerr << "correct type for this var is: " << determineType<InternalValueType>() << std::endl;
         throw InvalidVariableTypeException();
     }
 
@@ -110,6 +135,8 @@ private:
 
     template<typename TargetType>
     void setValue(typename std::enable_if<!std::is_same<InternalValueType, TargetType>::value, TargetType>::type v) {
+        static_assert("You did something wrong.");
+        std::cerr << "tried to set variable" << std::endl;
         throw InvalidVariableTypeException();
     }
 
@@ -117,6 +144,8 @@ private:
     void setValue(typename std::enable_if<std::is_same<InternalValueType, TargetType>::value, TargetType>::type v) {
         value = v;
     }
+
+
 };
 
 
