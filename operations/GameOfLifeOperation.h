@@ -25,6 +25,8 @@ class GameOfLifeOperation : public Operation {
     BoundConcreteValue<bool> v7;
 
 
+    BoundConcreteValue<float> speed;
+    BoundConcreteValue<bool> randomizeColor;
 
     std::vector<HSV> output;
     std::vector<HSV> delta;

@@ -17,7 +17,9 @@ GameOfLifeOperation::GameOfLifeOperation(VariableStore &store, YAML::const_itera
         v4("gameoflife/v4", Operation::BOOLEAN, store, getValueByKey<bool>("v4", start, end, true)),
         v5("gameoflife/v5", Operation::BOOLEAN, store, getValueByKey<bool>("v5", start, end, true)),
         v6("gameoflife/v6", Operation::BOOLEAN, store, getValueByKey<bool>("v6", start, end, true)),
-        v7("gameoflife/v7", Operation::BOOLEAN, store, getValueByKey<bool>("v7", start, end, false))
+        v7("gameoflife/v7", Operation::BOOLEAN, store, getValueByKey<bool>("v7", start, end, false)),
+        randomizeColor("gameoflife/randomizeColor", Operation::BOOLEAN, store, getValueByKey<bool>("randomizeColor", start, end, true)),
+        speed("gameoflife/speed", Operation::BOOLEAN, store, getValueByKey<float>("speed", start, end, 1.0f))
 {
 }
 
@@ -48,14 +50,21 @@ void GameOfLifeOperation::update(const Config* const cfg) {
             if (random_int_in_range(0, 100) < 5) {
                 value = def_value;
             }
-            led = HSV{default_hue.getValue(), default_saturation.getValue(), value};
+            float hue;
+            if (randomizeColor.getBool()) {
+                hue = random_int_in_range(0, 360);
+            } else {
+                hue = default_hue.getValue();
+            }
+            led = HSV{hue, default_saturation.getValue(), value};
         }
     }
 
     // main update loop
-    if (frame_counter % cfg->fps == 0) {
+    if (frame_counter % int(cfg->fps * speed.getFloat()) == 0) {
         std::vector<HSV> state(output.size());
         // once a second recalculate a new state
+        auto default_color = HSV{default_hue.getValue(), default_saturation.getValue(), 0.0};
         for (size_t i = 0; i < output.size(); i++) {
             const size_t l_index = i == 0 ? output.size() - 1 : i - 1;
             const size_t r_index = i == output.size() - 1 ? 0 : i + 1;
@@ -99,8 +108,15 @@ void GameOfLifeOperation::update(const Config* const cfg) {
                         return 0.0f;
                 }
             }();
-            state[i] = t;
-            state[i].value = new_value;
+
+            auto &e = state[i];
+            if (e.value <= 0.0f) {
+                e = default_color;
+                if (randomizeColor.getBool()) {
+                    e.hue = random_int_in_range(0, 360);
+                }
+            }
+            e.value = new_value;
         }
 
         // recalc the delta after each new frame
@@ -123,7 +139,6 @@ void GameOfLifeOperation::update(const Config* const cfg) {
     });
 
     frame_counter += 1;
-
     frame_counter %= cfg->fps;
 }
 
