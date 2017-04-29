@@ -8,6 +8,7 @@
 #include "outputs/UDPOutputWrapper.h"
 #include "outputs/HSVUDPOutput.h"
 #include "outputs/SharedMemoryOutput.h"
+#include "outputs/DevMemOutput.h"
 
 #include "operations/RainbowOperation.h"
 #include "operations/RotateOperation.h"
@@ -139,7 +140,8 @@ void parseOutputs(std::map<std::string, std::shared_ptr<Output>> &outputs, const
                 "udp"s,
                 "shm"s,
                 "hsvudp"s,
-                "spi"s
+                "spi"s,
+                "devmem"s,
         };
         const std::string type = node.second["type"].as<std::string>();
 
@@ -167,6 +169,9 @@ void parseOutputs(std::map<std::string, std::shared_ptr<Output>> &outputs, const
             outputs[output_name] = std::move(p);
         } else if (type == "spi") {
             auto p = std::make_unique<SPIOutput>(params);
+            outputs[output_name] = std::move(p);
+        } else if (type == "devmem") {
+            auto p = std::make_unique<DevMemOutput>(params);
             outputs[output_name] = std::move(p);
         } else {
             throw ConfigParsingException("Unknown output type.");

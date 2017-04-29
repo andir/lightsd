@@ -1,6 +1,6 @@
 ---
 width: 1000
-fps: 30
+fps: 1
 
 mqtt:
   broker: whisky.w17.io
@@ -69,7 +69,10 @@ outputs:
     type: websocket
     params:
       port: 9000
-
+  CrashMe:
+    type: devmem
+    params:
+      filename: /dev/mem
 #  SPI1:
 #    type: spi
 #    params:

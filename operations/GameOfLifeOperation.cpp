@@ -72,7 +72,6 @@ void GameOfLifeOperation::update(const Config* const cfg) {
             const auto &t = output.at(i);
             const auto &l = output[l_index];
             const auto &r = output[r_index];
-
             uint8_t parent_value = 0;
             if (l.value > 0.1) {
                 parent_value += 4;

@@ -26,6 +26,7 @@ set(SOURCE_FILES main.cpp FrameScheduler.cpp algorithm.cpp
         Buffer.h
         algorithm.h
         SharedMemoryBuffer.cpp SharedMemoryBuffer.h
+        DevMemBuffer.cpp DevMemBuffer.h
         utils/MemFD.cpp utils/MemFD.h utils/MemMap.cpp utils/MemMap.h
         VariableStore/ValueType.cpp
         VariableStore/VariableStore.cpp
@@ -51,6 +52,7 @@ set(SOURCE_FILES main.cpp FrameScheduler.cpp algorithm.cpp
         outputs/UDPOutput.cpp outputs/UDPOutput.h
         outputs/UDPOutputWrapper.cpp outputs/UDPOutputWrapper.h
         outputs/SharedMemoryOutput.cpp outputs/SharedMemoryOutput.h
+        outputs/DevMemOutput.cpp outputs/DevMemOutput.h
         outputs/HSVUDPOutput.h outputs/HSVUDPOutput.cpp
         outputs/WebsocketOutputWrapper.cpp outputs/WebsocketOutputWrapper.h
         outputs/WebsocketOutput.h
