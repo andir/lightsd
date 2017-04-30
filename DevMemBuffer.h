@@ -4,6 +4,27 @@
 #include "utils/MemMap.h"
 
 class DevMemBuffer {
+public:
+    struct LargeRGB {
+        union {
+            uint32_t _allocator;
+            struct {
+                uint8_t r;
+                uint8_t g;
+                uint8_t b;
+                uint8_t empty;
+            };
+        };
+
+        inline LargeRGB &operator=(const RGB &rhs) {
+                r = rhs.red;
+                g = rhs.green;
+                b = rhs.blue;
+                return *this;
+        }
+    };
+
+
 //    MemFD memfd;
     int fd;
     size_t count_offset;
@@ -11,7 +32,7 @@ class DevMemBuffer {
     MemMap memmapCount;
     MemMap memmapData;
 
-    AllocatedBuffer<RGB> buffer;
+    AllocatedBuffer<LargeRGB> buffer;
 
     void _resize(const size_t size);
 
@@ -29,7 +50,7 @@ public:
     }
 
 
-    AllocatedBuffer<RGB> *get() {
+    AllocatedBuffer<LargeRGB> *get() {
         return &buffer;
     }
 

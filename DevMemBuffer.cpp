@@ -17,10 +17,10 @@ DevMemBuffer::DevMemBuffer(const std::string filename, size_t size, size_t count
     assert(fd >= 0);
 
     assert(memmapCount.open(fd, sizeof(uint32_t), count_offset));
-    assert(memmapData.open(fd, sizeof(RGB) * size, data_offset));
+    assert(memmapData.open(fd, sizeof(LargeRGB) * size, data_offset));
     
-    auto ptr = memmapData.get<RGB>();
-    buffer = AllocatedBuffer<RGB>(size, ptr);
+    auto ptr = memmapData.get<LargeRGB>();
+    buffer = AllocatedBuffer<LargeRGB>(size, ptr);
 }
 
 void DevMemBuffer::close() {
@@ -38,13 +38,13 @@ void DevMemBuffer::_resize(const size_t size) {
        // update data buffer
        buffer.release();
        memmapData.close();
-       assert(memmapData.open(fd, size * sizeof(RGB), data_offset));
-       auto bufferPtr = memmapData.get<RGB>();
+       assert(memmapData.open(fd, size * sizeof(LargeRGB), data_offset));
+       auto bufferPtr = memmapData.get<LargeRGB>();
         
        // update count buffer
        auto ptr = memmapCount.get<uint32_t>();
        ptr[0] = size;
 
-       buffer = AllocatedBuffer<RGB>(size, bufferPtr);
+       buffer = AllocatedBuffer<LargeRGB>(size, bufferPtr);
 
 }
