@@ -7,9 +7,10 @@
 #include <iostream>
 #include <fcntl.h>
 #include <unistd.h>
+#include <numeric>
 
-DevMemBuffer::DevMemBuffer(const std::string filename, size_t size, size_t count_offset, size_t data_offset) :
-        size(size),
+DevMemBuffer::DevMemBuffer(const std::string filename, std::vector<size_t> sizes, size_t count_offset, size_t data_offset) :
+        sizes(sizes),
         count_offset(count_offset),
         data_offset(data_offset),
         buffer(0, nullptr) {
@@ -17,11 +18,7 @@ DevMemBuffer::DevMemBuffer(const std::string filename, size_t size, size_t count
     fd = open(filename.c_str(), O_RDWR);
     assert(fd >= 0);
 
-    assert(memmapCount.open(fd, sizeof(uint32_t), count_offset));
-    assert(memmapData.open(fd, sizeof(LargeRGB) * size, data_offset));
-    
-    auto ptr = memmapData.get<LargeRGB>();
-    buffer = AllocatedBuffer<LargeRGB>(size, ptr);
+    _resize(sizes);
 }
 
 void DevMemBuffer::close() {
@@ -29,28 +26,34 @@ void DevMemBuffer::close() {
         ::close(fd);
     buffer.release();
     memmapData.close();
-    memmapCount.close();
+    memmapConfig.close();
 }
 
 DevMemBuffer::~DevMemBuffer() {
     close();
 }
 
-void DevMemBuffer::_resize(const size_t size) {
+void DevMemBuffer::_resize(const std::vector<size_t> sizes) {
        // update data buffer
        buffer.release();
        memmapData.close();
-       assert(memmapData.open(fd, size * sizeof(LargeRGB), data_offset));
+
+      const auto sum = std::accumulate(sizes.begin(), sizes.end(), 0);
+
+       assert(memmapData.open(fd, sum * sizeof(LargeRGB), data_offset));
        auto bufferPtr = memmapData.get<LargeRGB>();
 
        // update count buffer
-       buffer = AllocatedBuffer<LargeRGB>(size, bufferPtr);
+       buffer = AllocatedBuffer<LargeRGB>(sum, bufferPtr);
 
-       this->size = size;
-       writeSize();
+       writeSizes();
 }
 
-void DevMemBuffer::writeSize() {
-       auto ptr = memmapCount.get<uint32_t>();
-       ptr[0] = size;
+void DevMemBuffer::writeSizes() {
+    auto ptr = memmapConfig.get<WS2812Settings>();
+
+    size_t i = 0;
+    for (const auto& e : sizes) {
+        ptr->led_count[i++] = e;
+    }
 }

@@ -73,6 +73,9 @@ outputs:
     type: devmem
     params:
       filename: /dev/mem
+      lengths:
+        - 1202
+        - 1000
 #  SPI1:
 #    type: spi
 #    params:

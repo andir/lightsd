@@ -1,10 +1,24 @@
 #pragma once
+
+#include <vector>
 #include "rgb.h"
 #include "Buffer.h"
 #include "utils/MemMap.h"
 
 class DevMemBuffer {
 public:
+
+
+    struct WS2812Settings {
+        uint32_t t0l;
+        uint32_t t0h;
+        uint32_t t1l;
+        uint32_t t1h;
+        uint32_t res;
+        uint32_t read_addr;
+        uint32_t led_count[50];
+    };
+
     struct LargeRGB {
         union {
             uint32_t _allocator;
@@ -25,35 +39,33 @@ public:
         }
     };
 
-
-//    MemFD memfd;
     int fd;
-    size_t size;
+    std::vector<size_t> sizes;
     size_t count_offset;
     size_t data_offset;
-    MemMap memmapCount;
+    MemMap memmapConfig;
     MemMap memmapData;
 
     AllocatedBuffer<LargeRGB> buffer;
 
-    void _resize(const size_t size);
+    void _resize(const std::vector<size_t> sizes);
 public:
-    DevMemBuffer(const std::string filename = "/dev/mem", size_t size = 16000, size_t count_offset = 0x40000000, size_t data_offset = 0x18000000);
+    DevMemBuffer(const std::string filename = "/dev/mem", std::vector<size_t> sizes = {16000}, size_t count_offset = 0x40000000, size_t data_offset = 0x18000000);
 
     ~DevMemBuffer();
 
     void close();
 
-    inline void ensureSize(const size_t size) {
-        if (size != buffer.size()) {
-                _resize(size);
-        }
-    }
+//    inline void ensureSize(const size_t size) {
+//        if (size != buffer.size()) {
+//                _resize(size);
+//        }
+//    }
 
 
     AllocatedBuffer<LargeRGB> *get() {
         return &buffer;
     }
-    void writeSize();  
+    void writeSizes();
 };
 
