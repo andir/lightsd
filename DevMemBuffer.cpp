@@ -34,6 +34,7 @@ void DevMemBuffer::close() {
 DevMemBuffer::~DevMemBuffer() {
     close();
 }
+
 void DevMemBuffer::_resize(const size_t size) {
        // update data buffer
        buffer.release();

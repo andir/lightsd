@@ -9,9 +9,9 @@ public:
         union {
             uint32_t _allocator;
             struct {
-                uint8_t r;
-                uint8_t g;
                 uint8_t b;
+                uint8_t g;
+                uint8_t r;
                 uint8_t empty;
             };
         };
@@ -20,6 +20,7 @@ public:
                 r = rhs.red;
                 g = rhs.green;
                 b = rhs.blue;
+                empty = 0;
                 return *this;
         }
     };
