@@ -9,7 +9,7 @@ class DevMemBuffer {
 public:
 
 
-    struct WS2812Settings {
+    struct FPGASettings {
         uint32_t t0l;
         uint32_t t0h;
         uint32_t t1l;

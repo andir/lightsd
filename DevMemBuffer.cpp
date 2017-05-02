@@ -50,7 +50,7 @@ void DevMemBuffer::_resize(const std::vector<size_t> sizes) {
 }
 
 void DevMemBuffer::writeSizes() {
-    auto ptr = memmapConfig.get<WS2812Settings>();
+    auto ptr = memmapConfig.get<FPGASettings>();
 
     size_t i = 0;
     for (const auto& e : sizes) {
