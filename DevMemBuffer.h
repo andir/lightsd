@@ -28,6 +28,7 @@ public:
 
 //    MemFD memfd;
     int fd;
+    size_t size;
     size_t count_offset;
     size_t data_offset;
     MemMap memmapCount;
@@ -36,7 +37,6 @@ public:
     AllocatedBuffer<LargeRGB> buffer;
 
     void _resize(const size_t size);
-
 public:
     DevMemBuffer(const std::string filename = "/dev/mem", size_t size = 16000, size_t count_offset = 0x40000000, size_t data_offset = 0x18000000);
 
@@ -54,6 +54,6 @@ public:
     AllocatedBuffer<LargeRGB> *get() {
         return &buffer;
     }
-
+    void writeSize();  
 };
 

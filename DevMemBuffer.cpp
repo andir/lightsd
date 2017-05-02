@@ -9,9 +9,10 @@
 #include <unistd.h>
 
 DevMemBuffer::DevMemBuffer(const std::string filename, size_t size, size_t count_offset, size_t data_offset) :
-        count_offset(count_offset), data_offset(data_offset),
+        size(size),
+        count_offset(count_offset),
+        data_offset(data_offset),
         buffer(0, nullptr) {
-
 
     fd = open(filename.c_str(), O_RDWR);
     assert(fd >= 0);
@@ -41,11 +42,15 @@ void DevMemBuffer::_resize(const size_t size) {
        memmapData.close();
        assert(memmapData.open(fd, size * sizeof(LargeRGB), data_offset));
        auto bufferPtr = memmapData.get<LargeRGB>();
-        
-       // update count buffer
-       auto ptr = memmapCount.get<uint32_t>();
-       ptr[0] = size;
 
+       // update count buffer
        buffer = AllocatedBuffer<LargeRGB>(size, bufferPtr);
 
+       this->size = size;
+       writeSize();
+}
+
+void DevMemBuffer::writeSize() {
+       auto ptr = memmapCount.get<uint32_t>();
+       ptr[0] = size;
 }

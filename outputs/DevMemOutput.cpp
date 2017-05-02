@@ -32,6 +32,7 @@ void DevMemOutput::draw(const AbstractBaseBuffer<HSV> &buffer) {
     std::transform(buffer.begin(), buffer.end(), buf.begin(), [](const auto &p) {
         return p.toRGB();
     });
+    devMemBuffer.writeSize();
 }
 
 
@@ -41,4 +42,5 @@ void DevMemOutput::draw(const std::vector <HSV> &buffer) {
     std::transform(buffer.begin(), buffer.end(), buf.begin(), [](const auto &p) {
         return p.toRGB();
     });
+    devMemBuffer.writeSize();
 }
