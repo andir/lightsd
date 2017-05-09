@@ -18,11 +18,26 @@ namespace {
         if (f) return f.as<std::vector<size_t>>();
         return {100};
     }
+
+    size_t parse_count_offset(const YAML::Node &params) {
+        const auto f = params["configuration_offset"];
+        if (f) return f.as<size_t>();
+        return 0x40000000;
+    }
+
+    size_t parse_data_offset(const YAML::Node &params) {
+        const auto f = params["data_offset"];
+        if (f) return f.as<size_t>();
+        return 0x1ff00000;
+    }
 }
 
 DevMemOutput::DevMemOutput(const YAML::Node &params) : filename(parse_filename(params)),
                                                        devMemBuffer(parse_filename(params),
-                                                                    parse_sizes(params)) {
+                                                                    parse_sizes(params),
+                                                                    parse_count_offset(params),
+                                                                    parse_data_offset(params)
+                                                       ) {
 }
 
 
@@ -31,7 +46,7 @@ void DevMemOutput::draw(const AbstractBaseBuffer<HSV> &buffer) {
     std::transform(buffer.begin(), buffer.end(), buf.begin(), [](const auto &p) {
         return p.toRGB();
     });
-    devMemBuffer.writeSizes();
+    devMemBuffer.writeConfiguration();
 }
 
 
@@ -40,5 +55,5 @@ void DevMemOutput::draw(const std::vector<HSV> &buffer) {
     std::transform(buffer.begin(), buffer.end(), buf.begin(), [](const auto &p) {
         return p.toRGB();
     });
-    devMemBuffer.writeSizes();
+    devMemBuffer.writeConfiguration();
 }

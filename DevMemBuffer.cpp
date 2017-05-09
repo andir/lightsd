@@ -9,16 +9,16 @@
 #include <unistd.h>
 #include <numeric>
 
-DevMemBuffer::DevMemBuffer(const std::string filename, std::vector<size_t> sizes, size_t count_offset, size_t data_offset) :
+DevMemBuffer::DevMemBuffer(const std::string filename, std::vector<size_t> sizes, size_t configuration_offset, size_t data_offset) :
         sizes(sizes),
-        count_offset(count_offset),
+        count_offset(configuration_offset),
         data_offset(data_offset),
         buffer(0, nullptr) {
 
     fd = open(filename.c_str(), O_RDWR);
     assert(fd >= 0);
 
-    assert(memmapConfig.open(fd, sizeof(FPGASettings), count_offset));
+    assert(memmapConfig.open(fd, sizeof(FPGASettings), configuration_offset));
     _resize(sizes);
 }
 
@@ -47,10 +47,10 @@ void DevMemBuffer::_resize(const std::vector<size_t> sizes) {
        // update count buffer
        buffer = AllocatedBuffer<LargeRGB>(sum, bufferPtr);
 
-       writeSizes();
+    writeConfiguration();
 }
 
-void DevMemBuffer::writeSizes() {
+void DevMemBuffer::writeConfiguration() {
     auto ptr = memmapConfig.get<FPGASettings>();
 
     assert(ptr != nullptr);
