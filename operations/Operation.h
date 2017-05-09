@@ -55,7 +55,9 @@ public:
     inline bool isEnabled() const {
         return enabled.getBool();
     }
-    virtual void update(const Config * const ) {};
+
+    virtual void update(const Config *const) {};
+
     virtual float getAlpha() const { return alpha.getValue(); }
 };
 

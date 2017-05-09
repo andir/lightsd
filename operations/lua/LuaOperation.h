@@ -11,10 +11,12 @@
 
 class LuaOperation : public Operation {
 
-    lua_State* luaState;
-    lua_State* openLua();
+    lua_State *luaState;
 
-    void run(const AbstractBaseBuffer<HSV>& buffer);
+    lua_State *openLua();
+
+    void run(const AbstractBaseBuffer<HSV> &buffer);
+
 public:
     LuaOperation(VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end);
 

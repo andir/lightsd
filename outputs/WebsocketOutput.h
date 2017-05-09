@@ -17,7 +17,7 @@
 
 #include "../rgb.h"
 
-typedef websocketpp::server <websocketpp::config::asio> server;
+typedef websocketpp::server<websocketpp::config::asio> server;
 
 using websocketpp::connection_hdl;
 using websocketpp::lib::placeholders::_1;
@@ -100,7 +100,7 @@ public:
     }
 
     void stop() {
-        lock_guard <mutex> guard(m_action_lock);
+        lock_guard<mutex> guard(m_action_lock);
         const connection_hdl hdl = std::shared_ptr<void>(nullptr);
 
         m_actions.push(action(QUIT, hdl));
@@ -114,7 +114,7 @@ public:
 
     void on_open(connection_hdl hdl) {
         {
-            lock_guard <mutex> guard(m_action_lock);
+            lock_guard<mutex> guard(m_action_lock);
             //std::cout << "on_open" << std::endl;
             m_actions.push(action(SUBSCRIBE, hdl));
         }
@@ -123,7 +123,7 @@ public:
 
     void on_close(connection_hdl hdl) {
         {
-            lock_guard <mutex> guard(m_action_lock);
+            lock_guard<mutex> guard(m_action_lock);
             //std::cout << "on_close" << std::endl;
             m_actions.push(action(UNSUBSCRIBE, hdl));
         }
@@ -142,7 +142,7 @@ public:
 
     void push_message(std::string msg) {
         {
-            lock_guard <mutex> guard(m_action_lock);
+            lock_guard<mutex> guard(m_action_lock);
             const connection_hdl hdl = std::shared_ptr<void>(nullptr);
             m_actions.push(action(MESSAGE, hdl, msg));
         }
@@ -151,7 +151,7 @@ public:
 
     void process_messages() {
         while (1) {
-            unique_lock <mutex> lock(m_action_lock);
+            unique_lock<mutex> lock(m_action_lock);
 
             while (m_actions.empty()) {
                 m_action_cond.wait(lock);
@@ -167,13 +167,13 @@ public:
             lock.unlock();
 
             if (a.type == SUBSCRIBE) {
-                lock_guard <mutex> guard(m_connection_lock);
+                lock_guard<mutex> guard(m_connection_lock);
                 m_connections.insert(a.hdl);
             } else if (a.type == UNSUBSCRIBE) {
-                lock_guard <mutex> guard(m_connection_lock);
+                lock_guard<mutex> guard(m_connection_lock);
                 m_connections.erase(a.hdl);
             } else if (a.type == MESSAGE) {
-                lock_guard <mutex> guard(m_connection_lock);
+                lock_guard<mutex> guard(m_connection_lock);
 
                 con_list::iterator it;
                 websocketpp::lib::error_code ec;
@@ -191,11 +191,11 @@ public:
     }
 
 private:
-    typedef std::set <connection_hdl, std::owner_less<connection_hdl>> con_list;
+    typedef std::set<connection_hdl, std::owner_less<connection_hdl>> con_list;
 
     server m_server;
     con_list m_connections;
-    std::queue <action> m_actions;
+    std::queue<action> m_actions;
 
     mutex m_action_lock;
     mutex m_connection_lock;
@@ -224,11 +224,11 @@ public:
     }
 
 
-    void draw(const AbstractBaseBuffer <HSV> &buffer) {
+    void draw(const AbstractBaseBuffer<HSV> &buffer) {
         _draw(buffer);
     }
 
-    void draw(const std::vector <HSV> &buffer) {
+    void draw(const std::vector<HSV> &buffer) {
         _draw(buffer);
     }
 

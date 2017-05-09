@@ -15,9 +15,11 @@ class BellOperation : public Operation {
 
 public:
     BellOperation(VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end);
+
     virtual ~BellOperation() {}
 
     virtual Operation::BufferType operator()(Operation::BufferType &buffer);
+
     virtual void update();
 };
 

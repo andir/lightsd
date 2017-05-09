@@ -20,10 +20,10 @@ void sigHupHandler(int signum) {
         static std::mutex m;
         std::unique_lock<std::mutex> lock(m);
         try {
-                auto conf = parseConfig(config_filename);
-                worker_thread.setConfig(std::move(conf));
-        } catch(ConfigParsingException& e) {
-                std::cerr << "Failed to parse configuration: " << e.what() << std::endl;
+            auto conf = parseConfig(config_filename);
+            worker_thread.setConfig(std::move(conf));
+        } catch (ConfigParsingException &e) {
+            std::cerr << "Failed to parse configuration: " << e.what() << std::endl;
         }
     } else {
         exit(signum);

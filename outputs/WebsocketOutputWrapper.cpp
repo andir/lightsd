@@ -26,7 +26,7 @@ void WebsocketOutputWrapper::draw(const AbstractBaseBuffer<HSV> &buffer) {
     output->draw(buffer);
 }
 
-void WebsocketOutputWrapper::draw(const std::vector <HSV> &buffer) {
+void WebsocketOutputWrapper::draw(const std::vector<HSV> &buffer) {
     if (output == nullptr) {
         output = std::make_unique<WebsocketOutput>(port);
     }

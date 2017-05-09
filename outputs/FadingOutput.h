@@ -8,25 +8,27 @@
 
 template<typename ColorModel, typename ChildT>
 class FadingOutput {
-    FrameScheduler& scheduler;
+    FrameScheduler &scheduler;
 
     std::vector<ColorModel> lastFrame;
     std::vector<ColorModel> diff;
 
-    ChildT& child;
+    ChildT &child;
 public:
 
-    FadingOutput(FrameScheduler& scheduler, ChildT& child) : scheduler(scheduler), child(child) {}
+    FadingOutput(FrameScheduler &scheduler, ChildT &child) : scheduler(scheduler), child(child) {}
 
-    void draw(const std::vector<HSV>& buffer) {
+    void draw(const std::vector<HSV> &buffer) {
         _draw(buffer);
     }
-    void draw(const AbstractBaseBuffer<HSV>& buffer) {
+
+    void draw(const AbstractBaseBuffer <HSV> &buffer) {
         _draw(buffer);
     }
+
 private:
     template<typename Container>
-    void _draw(const Container& buffer) {
+    void _draw(const Container &buffer) {
         if (lastFrame.empty()) {
             lastFrame.resize(buffer.count());
             auto ot = lastFrame.begin();
@@ -49,11 +51,11 @@ private:
         const size_t steps = 10;
 
 
-       // diff = old - new
+        // diff = old - new
 
 
         std::transform(lastFrame.begin(), lastFrame.end(), buffer.begin(), diff.begin(),
-                       [steps](const auto& lastf, const auto& newf){
+                       [steps](const auto &lastf, const auto &newf) {
 //                           auto diff = HSV{
 //                                   (newf.hue - lastf.hue) / steps,
 //                                   (newf.saturation - lastf.saturation) / steps,
@@ -73,14 +75,15 @@ private:
 //                return (lastf - newf) / steps;
 //            }
 
-        });
+                       });
 
-        for (size_t i = 0 ; i < steps; i++) {
+        for (size_t i = 0; i < steps; i++) {
             Frame frame(scheduler);
             MeasureTime t1;
             size_t counter = 0;
-            std::transform(lastFrame.begin(), lastFrame.end(), diff.begin(), lastFrame.begin(), [this, &buffer, &i, &counter](auto& lastf, const auto& difff){
-                const auto f = lastf + difff;
+            std::transform(lastFrame.begin(), lastFrame.end(), diff.begin(), lastFrame.begin(),
+                           [this, &buffer, &i, &counter](auto &lastf, const auto &difff) {
+                               const auto f = lastf + difff;
 //                std::cout << "(" << i << ")" << lastf.string() << " + " << difff.string() << " = " << f.string() << std::endl;
 //                std::cout << "target: " << buffer.at(counter).string() << std::endl;
 //                counter ++;
@@ -101,8 +104,8 @@ private:
 ////                        assert(f.hue - phue <= 24.0f);
 ////                    }
 //                }
-                return f;
-            });
+                               return f;
+                           });
 //            std::cout << "\t----------" << std::endl;
             child.draw(lastFrame);
             //std::this_thread::sleep_for(std::chrono::milliseconds((1000 / 120) - t1.measure()));

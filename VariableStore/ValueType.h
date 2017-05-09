@@ -27,6 +27,7 @@ public:
 
 
 std::ostream &operator<<(std::ostream &os, const ValueType &obj);
+
 std::ostream &operator<<(std::ostream &os, const ValueType::Type t);
 
 

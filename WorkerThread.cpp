@@ -3,54 +3,58 @@
 #include <string>
 #include "WorkerThread.h"
 #include "net/MqttConnection.h"
+
 #define MEASURE_TIME
 #ifdef MEASURE_TIME
 struct Measurment {
-        uint64_t average;
-        uint64_t max;
-        uint64_t min;
-        uint64_t count;
+    uint64_t average;
+    uint64_t max;
+    uint64_t min;
+    uint64_t count;
 };
 
 
 struct Timeing {
-        std::map<std::string, struct Measurment> measurments;
+    std::map<std::string, struct Measurment> measurments;
 
 
-        void report() {
-                for (auto const& e : measurments) {
-                        std::string const& name = e.first;
-                        Measurment const& m = e.second;
+    void report() {
+        for (auto const &e : measurments) {
+            std::string const &name = e.first;
+            Measurment const &m = e.second;
 
-                        std::cerr << name << " average: " << m.average << " max: " << m.max << " min: " << m.min << " count: " << m.count << std::endl;
-                }
+            std::cerr << name << " average: " << m.average << " max: " << m.max << " min: " << m.min << " count: "
+                      << m.count << std::endl;
         }
+    }
 };
 
 class Measure {
-        Timeing& timeing;
-        struct Measurment& measurment;
-        MeasureTime<std::chrono::nanoseconds> measureTime;
+    Timeing &timeing;
+    struct Measurment &measurment;
+    MeasureTime<std::chrono::nanoseconds> measureTime;
 public:
-        Measure(std::string name, Timeing& t) : timeing(t), measurment(t.measurments[name]) {
+    Measure(std::string name, Timeing &t) : timeing(t), measurment(t.measurments[name]) {
+    }
+
+    ~Measure() {
+        auto delay = measureTime.measure();
+        measurment.average += delay;
+        measurment.count++;
+        if (measurment.count == 1) {
+            measurment.max = delay;
+            measurment.min = delay;
+        } else {
+            measurment.average /= 2;
+            if (uint64_t(delay) > measurment.max) {
+                measurment.max = delay;
+            } else if (uint64_t(delay) < measurment.min) {
+                measurment.min = delay;
+            }
         }
-        ~Measure() {
-                auto delay = measureTime.measure();
-                measurment.average += delay;
-                measurment.count ++;
-                if (measurment.count == 1) {
-                        measurment.max = delay;
-                        measurment.min = delay;
-                } else {
-                        measurment.average /= 2;
-                        if (uint64_t(delay) > measurment.max) {
-                                measurment.max = delay;
-                        } else if (uint64_t(delay) < measurment.min) {
-                                measurment.min = delay;
-                        }
-                }
-        }
+    }
 };
+
 #endif
 
 WorkerThread::WorkerThread() : doRun(true), config_ptr(nullptr) {
@@ -59,13 +63,13 @@ WorkerThread::WorkerThread() : doRun(true), config_ptr(nullptr) {
 
 
 void WorkerThread::setConfig(ConfigPtr cfg) {
-    std::lock_guard <std::mutex> lock(config_mutex);
+    std::lock_guard<std::mutex> lock(config_mutex);
     new_config_ptr = std::move(cfg);
 }
 
 
 ConfigPtr WorkerThread::getConfig() {
-    std::lock_guard <std::mutex> lock(config_mutex);
+    std::lock_guard<std::mutex> lock(config_mutex);
     if (new_config_ptr != nullptr) {
         return std::move(new_config_ptr);
     }
@@ -113,7 +117,7 @@ void WorkerThread::run() {
                 (*output.second).draw(*buffer);
             }
 #ifdef MEASURE_TIME
-            counter ++;
+            counter++;
             if (counter % (5 * config->fps) == 0) {
                 t.report();
             }

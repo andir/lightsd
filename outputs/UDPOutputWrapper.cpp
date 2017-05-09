@@ -24,7 +24,7 @@ void UDPOutputWrapper::draw(const AbstractBaseBuffer<HSV> &buffer) {
     output.draw(buffer);
 }
 
-void UDPOutputWrapper::draw(const std::vector <HSV> &buffer) {
+void UDPOutputWrapper::draw(const std::vector<HSV> &buffer) {
     output.draw(buffer);
 }
 

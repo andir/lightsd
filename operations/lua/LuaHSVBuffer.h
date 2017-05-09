@@ -7,11 +7,11 @@
 
 class LuaHSVBuffer {
 
-    const AbstractBaseBuffer<HSV>* buffer;
+    const AbstractBaseBuffer<HSV> *buffer;
 
 public:
 
-    LuaHSVBuffer(lua_State *L) :  buffer(((AbstractBaseBuffer<HSV>*)(lua_touserdata(L, 1)))) {
+    LuaHSVBuffer(lua_State *L) : buffer(((AbstractBaseBuffer<HSV> *) (lua_touserdata(L, 1)))) {
     }
 
     int set(lua_State *L) {
@@ -26,7 +26,7 @@ public:
         const float value = lua_tonumber(L, 5);
 
         if (index < buffer->size()) {
-            auto& p = buffer->at(index);
+            auto &p = buffer->at(index);
             p.hue = hue;
             p.saturation = saturation;
             p.value = value;

@@ -12,7 +12,7 @@ class MemMap {
 public:
     MemMap();
 
-    bool open(const int fd, const size_t size, const size_t offset=0);
+    bool open(const int fd, const size_t size, const size_t offset = 0);
 
     void close();
 

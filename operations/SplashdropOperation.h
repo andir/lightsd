@@ -32,10 +32,13 @@ class SplashdropOperation : public Operation {
     std::vector<Drop> drops;
 
 
-    void hitDrop(Drop& drop);
-    void decayDrop(Drop& drop);
-    void drawSplash(const Drop &drop,const size_t index, const AbstractBaseBuffer<HSV> &buffer, const size_t width);
-    void drawDrop(Drop&, const size_t index, const AbstractBaseBuffer<HSV> &buffer);
+    void hitDrop(Drop &drop);
+
+    void decayDrop(Drop &drop);
+
+    void drawSplash(const Drop &drop, const size_t index, const AbstractBaseBuffer<HSV> &buffer, const size_t width);
+
+    void drawDrop(Drop &, const size_t index, const AbstractBaseBuffer<HSV> &buffer);
 
 public:
     SplashdropOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end);

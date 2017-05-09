@@ -21,9 +21,8 @@ protected:
 
 public:
     Iterator(const BufferType *const buffer, size_t pos, bool end = false) : buffer(buffer),
-                                                           pos(pos),
-                                                           end(end)
-    {
+                                                                             pos(pos),
+                                                                             end(end) {
     }
 
     Iterator(this_type &&other) :

@@ -36,7 +36,7 @@ class RaindropOperation : public Operation {
     };
 
 
-    std::vector <Raindrop> leds;
+    std::vector<Raindrop> leds;
 
     void hitRaindrop(Raindrop &drop);
 

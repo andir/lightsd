@@ -26,6 +26,7 @@ struct ConfigParsingException : public std::exception {
 class Config {
 public:
     Config();
+
     ~Config();
 
     size_t fps;

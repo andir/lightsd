@@ -26,7 +26,7 @@
 
 template<typename IteratorType1, typename IteratorType2>
 std::unique_ptr<Operation>
-generateSequenceStep(VariableStore& store, const std::string &step_type, IteratorType1 begin, IteratorType2 end) {
+generateSequenceStep(VariableStore &store, const std::string &step_type, IteratorType1 begin, IteratorType2 end) {
     using namespace std::string_literals;
 
     static const std::set<std::string> known_sequence_types = {
@@ -67,13 +67,13 @@ generateSequenceStep(VariableStore& store, const std::string &step_type, Iterato
         } else if (lower_case_name == "gameoflife") {
             return std::make_unique<GameOfLifeOperation>(store, begin, end);
         } else {
-        return nullptr;
+            return nullptr;
         }
     }
 };
 
 void
-parseSequence(VariableStore& store, std::vector<std::unique_ptr<Operation>> &steps, const YAML::Node &sequence_node) {
+parseSequence(VariableStore &store, std::vector<std::unique_ptr<Operation>> &steps, const YAML::Node &sequence_node) {
     assert(sequence_node.Type() == YAML::NodeType::Sequence);
 
     for (const auto node : sequence_node) {
@@ -187,8 +187,6 @@ ConfigPtr parseConfig(const std::string &filename) {
     YAML::Node yaml_config = YAML::LoadFile(filename);
 
 
-
-
     if (yaml_config["width"]) {
         config->width = yaml_config["width"].as<size_t>();
     } else {
@@ -239,8 +237,7 @@ ConfigPtr parseConfig(const std::string &filename) {
 
 
 Config::Config() :
-    store(std::make_shared<VariableStore>())
-{
+        store(std::make_shared<VariableStore>()) {
 }
 
 Config::~Config() {
