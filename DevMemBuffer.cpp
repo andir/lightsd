@@ -18,6 +18,7 @@ DevMemBuffer::DevMemBuffer(const std::string filename, std::vector<size_t> sizes
     fd = open(filename.c_str(), O_RDWR);
     assert(fd >= 0);
 
+    assert(memmapConfig.open(fd, sizeof(FPGASettings), count_offset));
     _resize(sizes);
 }
 
@@ -52,8 +53,12 @@ void DevMemBuffer::_resize(const std::vector<size_t> sizes) {
 void DevMemBuffer::writeSizes() {
     auto ptr = memmapConfig.get<FPGASettings>();
 
+    assert(ptr != nullptr);
+
     size_t i = 0;
     for (const auto& e : sizes) {
         ptr->led_count[i++] = e;
     }
+
+    ptr->read_addr = (uint32_t)data_offset;
 }

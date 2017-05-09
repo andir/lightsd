@@ -50,8 +50,7 @@ public:
 
     void _resize(const std::vector<size_t> sizes);
 public:
-    DevMemBuffer(const std::string filename = "/dev/mem", std::vector<size_t> sizes = {16000}, size_t count_offset = 0x40000000, size_t data_offset = 0x18000000);
-
+    DevMemBuffer(const std::string filename = "/dev/mem", std::vector<size_t> sizes = {16000}, size_t count_offset = 0x40000000, size_t data_offset = 0x1ff00000);
     ~DevMemBuffer();
 
     void close();
