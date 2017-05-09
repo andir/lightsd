@@ -50,21 +50,14 @@ public:
 
     void _resize(const std::vector<size_t> sizes);
 public:
-    DevMemBuffer(const std::string filename = "/dev/mem", std::vector<size_t> sizes = {16000}, size_t count_offset = 0x40000000, size_t data_offset = 0x1ff00000);
+    DevMemBuffer(const std::string filename = "/dev/mem", std::vector<size_t> sizes = {16000}, size_t configuration_offset = 0x40000000, size_t data_offset = 0x1ff00000);
     ~DevMemBuffer();
 
     void close();
 
-//    inline void ensureSize(const size_t size) {
-//        if (size != buffer.size()) {
-//                _resize(size);
-//        }
-//    }
-
-
     AllocatedBuffer<LargeRGB> *get() {
         return &buffer;
     }
-    void writeSizes();
+    void writeConfiguration();
 };
 
