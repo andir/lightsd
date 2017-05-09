@@ -1,10 +1,4 @@
-//
-// Created by andi on 11/12/16.
-//
-
-#ifndef LIGHTSD_SHAREDMEMORYOUTPUT_H
-#define LIGHTSD_SHAREDMEMORYOUTPUT_H
-
+#pragma once
 #include <yaml-cpp/yaml.h>
 #include "../SharedMemoryBuffer.h"
 #include "Output.h"
@@ -22,5 +16,3 @@ public:
 
     virtual void draw(const std::vector <HSV> &buffer);
 };
-
-#endif //LIGHTSD_SHAREDMEMORYOUTPUT_H
