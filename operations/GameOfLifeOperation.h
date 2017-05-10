@@ -34,8 +34,11 @@ class GameOfLifeOperation : public Operation {
 public:
 
     GameOfLifeOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end);
+
     virtual ~GameOfLifeOperation() {}
-    void update(const Config* const);
+
+    void update(const Config *const);
+
     virtual BufferType operator()(BufferType &buffer);
 };
 

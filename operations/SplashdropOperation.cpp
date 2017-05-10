@@ -7,15 +7,14 @@
 #include <cassert>
 
 SplashdropOperation::SplashdropOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end) :
-    Operation("splashdrop", store, start, end)
-{
+        Operation("splashdrop", store, start, end) {
 }
 
 void SplashdropOperation::draw(const AbstractBaseBuffer<HSV> &buffer) {
 
 }
 
-void SplashdropOperation::hitDrop(Drop& drop) {
+void SplashdropOperation::hitDrop(Drop &drop) {
 
 
     if (drop.state != IDLE)
@@ -36,10 +35,11 @@ void SplashdropOperation::decayDrop(Drop &drop) {
         return;
     }
 
-    drop.color.value *=  1.0f - drop.rate;
+    drop.color.value *= 1.0f - drop.rate;
 }
 
-void SplashdropOperation::drawSplash(const Drop &drop,const size_t index, const AbstractBaseBuffer<HSV> &buffer, const size_t width) {
+void SplashdropOperation::drawSplash(const Drop &drop, const size_t index, const AbstractBaseBuffer<HSV> &buffer,
+                                     const size_t width) {
     size_t left = width;
     size_t right = width;
 
@@ -59,12 +59,12 @@ void SplashdropOperation::drawSplash(const Drop &drop,const size_t index, const 
         auto e = drop.color;
         e.value -= i * drop.rate;
         if (i < left) {
-            auto& b = buffer.at(index - i);
+            auto &b = buffer.at(index - i);
             b = e;
         }
 
         if (i < right) {
-            auto& b = buffer.at(index + i);
+            auto &b = buffer.at(index + i);
             b = e;
         }
     }
@@ -124,7 +124,7 @@ Operation::BufferType SplashdropOperation::operator()(Operation::BufferType &buf
         std::cerr << "resizing()" << std::endl;
         drops.clear();
         drops.resize((*buffer).size());
-        for (auto& drop : drops) {
+        for (auto &drop : drops) {
             drop.color.value = 0;
             drop.state = IDLE;
         }

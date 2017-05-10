@@ -19,14 +19,15 @@ class FrameScheduler {
 
 public:
     FrameScheduler(const int rate);
+
     void delay(const uint64_t duration);
 };
 
 class Frame {
-    FrameScheduler& scheduler;
+    FrameScheduler &scheduler;
     MeasureTime<> measureTime;
 public:
-    Frame(FrameScheduler& scheduler) : scheduler(scheduler) {
+    Frame(FrameScheduler &scheduler) : scheduler(scheduler) {
     }
 
     ~Frame() {

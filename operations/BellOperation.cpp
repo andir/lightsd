@@ -10,8 +10,8 @@ BellOperation::BellOperation(VariableStore &store, YAML::const_iterator begin, Y
 }
 
 Operation::BufferType BellOperation::operator()(Operation::BufferType &buffer) {
-   const float perc = 0.10f;
-   unsigned int time_passed = 0;
+    const float perc = 0.10f;
+    unsigned int time_passed = 0;
 
     if (state == 0) {
         time_measurment.reset();

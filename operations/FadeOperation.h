@@ -34,7 +34,7 @@ class FadeOperation : public Operation {
 
     template<typename T>
     inline auto getCallback() {
-        return [this](const T&) {
+        return [this](const T &) {
             this->recalcMask();
         };
     }
@@ -49,7 +49,6 @@ public:
 
         recalcMask();
     }
-
 
 
     BufferType operator()(BufferType &buffer) {

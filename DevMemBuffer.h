@@ -31,11 +31,11 @@ public:
         };
 
         inline LargeRGB &operator=(const RGB &rhs) {
-                r = rhs.red;
-                g = rhs.green;
-                b = rhs.blue;
-                empty = 0;
-                return *this;
+            r = rhs.red;
+            g = rhs.green;
+            b = rhs.blue;
+            empty = 0;
+            return *this;
         }
     };
 
@@ -49,8 +49,11 @@ public:
     AllocatedBuffer<LargeRGB> buffer;
 
     void _resize(const std::vector<size_t> sizes);
+
 public:
-    DevMemBuffer(const std::string filename = "/dev/mem", std::vector<size_t> sizes = {16000}, size_t configuration_offset = 0x40000000, size_t data_offset = 0x1ff00000);
+    DevMemBuffer(const std::string filename = "/dev/mem", std::vector<size_t> sizes = {16000},
+                 size_t configuration_offset = 0x40000000, size_t data_offset = 0x1ff00000);
+
     ~DevMemBuffer();
 
     void close();
@@ -58,6 +61,7 @@ public:
     AllocatedBuffer<LargeRGB> *get() {
         return &buffer;
     }
+
     void writeConfiguration();
 };
 

@@ -9,10 +9,11 @@ class BoundConcreteValue : public ValueType {
     using CallbackType = typename ConcreteValueType<EnclosedValue>::CallbackType;
     std::string name;
     VariableStore &store;
-    std::shared_ptr <ConcreteValueType<EnclosedValue >> value;
+    std::shared_ptr<ConcreteValueType<EnclosedValue >> value;
 
 public:
-    BoundConcreteValue(const std::string name, const std::string description, VariableStore &store, EnclosedValue initial_value, CallbackType cb = nullptr) :
+    BoundConcreteValue(const std::string name, const std::string description, VariableStore &store,
+                       EnclosedValue initial_value, CallbackType cb = nullptr) :
             name(name),
             store(store),
             value(std::make_shared<ConcreteValueType<EnclosedValue >>(initial_value, cb)) {
@@ -42,6 +43,7 @@ public:
             assert(false && "Invalid getter used");
         }
     }
+
     virtual bool getBool() const {
         if (std::is_same<bool, EnclosedValue>::value) {
             return value->getBool();
@@ -49,6 +51,7 @@ public:
             assert(false && "Invalid getter used");
         }
     }
+
     virtual void setFloat(const float v) {
         if (std::is_same<float, EnclosedValue>::value) {
             value->setFloat(v);

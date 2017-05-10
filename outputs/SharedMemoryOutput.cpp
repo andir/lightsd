@@ -34,7 +34,7 @@ void SharedMemoryOutput::draw(const AbstractBaseBuffer<HSV> &buffer) {
 }
 
 
-void SharedMemoryOutput::draw(const std::vector <HSV> &buffer) {
+void SharedMemoryOutput::draw(const std::vector<HSV> &buffer) {
     shmBuffer.ensureSize(buffer.size());
     const auto &buf = *shmBuffer.get();
     std::transform(buffer.begin(), buffer.end(), buf.begin(), [](const auto &p) {

@@ -7,23 +7,23 @@
 
 template<typename Output1, typename Output2>
 class DuplicationOutput : public Output {
-    Output1& out1;
-    Output2& out2;
+    Output1 &out1;
+    Output2 &out2;
 public:
-    DuplicationOutput(Output1& o1, Output2& o2) : out1(o1), out2(o2) {}
+    DuplicationOutput(Output1 &o1, Output2 &o2) : out1(o1), out2(o2) {}
 
 
-    void draw(const std::vector<HSV>& e) {
+    void draw(const std::vector <HSV> &e) {
         _draw(e);
     }
 
-    void draw(const AbstractBaseBuffer<HSV>& e) {
+    void draw(const AbstractBaseBuffer <HSV> &e) {
         _draw(e);
     }
 
 private:
     template<typename Container>
-            void _draw(const Container& buffer) {
+    void _draw(const Container &buffer) {
         out1.draw(buffer);
         out2.draw(buffer);
     }

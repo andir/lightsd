@@ -12,6 +12,6 @@ RainbowOperation::RainbowOperation(VariableStore &store, YAML::const_iterator be
 }
 
 Operation::BufferType RainbowOperation::operator()(Operation::BufferType &buffer) {
-        algorithm::initRainbow(*buffer);
-        return buffer;
+    algorithm::initRainbow(*buffer);
+    return buffer;
 }

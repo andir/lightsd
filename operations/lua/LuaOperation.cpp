@@ -9,8 +9,7 @@
 
 LuaOperation::LuaOperation(VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end) :
         Operation("lua_" + getValueByKey<std::string>("name", begin, end, "unknown_script"), store, begin, end),
-        luaState(openLua())
-{
+        luaState(openLua()) {
 
     const auto fn = getValueByKey<std::string>("filename", begin, end, "");
 
@@ -29,10 +28,10 @@ LuaOperation::~LuaOperation() {
     }
 }
 
-lua_State* LuaOperation::openLua() {
+lua_State *LuaOperation::openLua() {
     auto L = lua_open();
 
-    luaJIT_setmode(L, -1, LUAJIT_MODE_ALLFUNC|LUAJIT_MODE_ON);
+    luaJIT_setmode(L, -1, LUAJIT_MODE_ALLFUNC | LUAJIT_MODE_ON);
 
 
     // open some standard libs/operations
@@ -51,12 +50,12 @@ lua_State* LuaOperation::openLua() {
     return L;
 }
 
-void LuaOperation::run(const AbstractBaseBuffer<HSV>& buffer) {
+void LuaOperation::run(const AbstractBaseBuffer<HSV> &buffer) {
     lua_pushnumber(luaState, buffer.size());
     lua_setglobal(luaState, "size");
 
     lua_getglobal(luaState, "render");
-    lua_pushlightuserdata(luaState, (void*)&buffer);
+    lua_pushlightuserdata(luaState, (void *) &buffer);
     if (lua_pcall(luaState, 1, 0, 0) != 0) {
         std::cerr << "LUA error: " << lua_tostring(luaState, -1) << std::endl;
     }

@@ -17,8 +17,9 @@ public:
     SolidColorOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end) :
             Operation("color", store, start, end),
             hue("color/hue", Operation::HSV_HUE, store, getValueByKey<float>("hue", start, end)),
-            saturation("color/saturation", Operation::HSV_SATURATION, store, getValueByKey<float>("saturation", start, end)),
-            value("color/value",Operation::HSV_VALUE,  store, getValueByKey<float>("value", start, end)) {}
+            saturation("color/saturation", Operation::HSV_SATURATION, store,
+                       getValueByKey<float>("saturation", start, end)),
+            value("color/value", Operation::HSV_VALUE, store, getValueByKey<float>("value", start, end)) {}
 
 
     virtual BufferType operator()(BufferType &buffer) {

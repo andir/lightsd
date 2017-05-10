@@ -22,4 +22,4 @@ The main dependencies are
 - libssl-dev (for the websocket stuff etc..)
 - libluajit-5.1-dev (for the lua plugin api)
 
-The build process is run by `cmake`. Consult the [gitlab-ci configuration](.gitlab-ci.yml) to see the full build process. 
+The build process is run by `cmake`. Consult the [gitlab-ci configuration](.gitlab-ci.yml) to see the full build process.

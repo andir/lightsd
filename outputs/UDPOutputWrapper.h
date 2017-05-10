@@ -14,7 +14,7 @@ public:
 
     virtual void draw(const AbstractBaseBuffer<HSV> &buffer);
 
-    virtual void draw(const std::vector <HSV> &buffer);
+    virtual void draw(const std::vector<HSV> &buffer);
 };
 
 #endif //LIGHTSD_UDPOUTPUTWRAPPER_H

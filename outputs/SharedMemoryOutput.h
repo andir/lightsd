@@ -1,4 +1,5 @@
 #pragma once
+
 #include <yaml-cpp/yaml.h>
 #include "../SharedMemoryBuffer.h"
 #include "Output.h"
@@ -14,5 +15,5 @@ public:
 
     virtual void draw(const AbstractBaseBuffer<HSV> &buffer);
 
-    virtual void draw(const std::vector <HSV> &buffer);
+    virtual void draw(const std::vector<HSV> &buffer);
 };

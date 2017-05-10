@@ -4,8 +4,8 @@
 
 const char LuaHSVBuffer::className[] = "HSVBuffer";
 
-const Luna<LuaHSVBuffer>::RegType LuaHSVBuffer::Register[] {
-        { "set", &LuaHSVBuffer::set },
-        { "size", &LuaHSVBuffer::size },
-        { 0 },
+const Luna<LuaHSVBuffer>::RegType LuaHSVBuffer::Register[]{
+        {"set",  &LuaHSVBuffer::set},
+        {"size", &LuaHSVBuffer::size},
+        {0},
 };

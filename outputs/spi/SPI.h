@@ -8,6 +8,7 @@
 extern "C" {
 #include <linux/spi/spidev.h>
 };
+
 #include <cstdint>
 #include <string>
 #include <fcntl.h>
@@ -20,25 +21,28 @@ struct SPIError : public std::exception {
     const std::string s;
 
     SPIError(std::string s) : s(s) {}
-    const char* what() const throw() {
+
+    const char *what() const throw() {
         return s.c_str();
     }
 };
 
 class SPI {
 
-    enum { BITS_PER_WORD = 8 };
+    enum {
+        BITS_PER_WORD = 8
+    };
 
     const std::string device;
     const uint32_t speed;
     const uint8_t mode;
-    
+
     int fd;
 
 public:
-    SPI(const std::string device="/dev/spidev.0", const uint32_t speed=3200000, const uint8_t mode=0) :
+    SPI(const std::string device = "/dev/spidev.0", const uint32_t speed = 3200000, const uint8_t mode = 0) :
             device(device), speed(speed), mode(mode), fd(open(device.c_str(), O_RDWR)) {
-            init();
+        init();
     }
 
     void init() {
@@ -90,12 +94,12 @@ public:
         }
     }
 
-    void write(const uint8_t* buffer, const size_t len) {
+    void write(const uint8_t *buffer, const size_t len) {
         if (buffer == nullptr) return;
         if (len == 0) return;
 
         struct spi_ioc_transfer tr;
-        tr.tx_buf  =(unsigned long)buffer;
+        tr.tx_buf = (unsigned long) buffer;
         tr.rx_buf = 0;
         tr.len = len;
         tr.delay_usecs = 0;
