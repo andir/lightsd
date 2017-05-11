@@ -29,12 +29,12 @@ Operation::BufferType BellOperation::operator()(Operation::BufferType &buffer) {
     }
 
 
-    auto pixel = HSV{hue.getValue(), saturation.getValue(), value.getValue() * shade};
+    const auto pixel = HSV{hue.getValue(), saturation.getValue(), value.getValue() * shade};
 
     for (size_t i = 0; i < (*buffer).size(); i++) {
         const int p = i * perc;
 
-        int z = (time_passed / 1000) % 2;
+        const int z = (time_passed / 1000) % 2;
 
         if (p % 2 == z)
             (*buffer).at(i) = pixel;
