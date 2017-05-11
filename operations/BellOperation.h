@@ -13,6 +13,10 @@ class BellOperation : public Operation {
 
     MeasureTime<> time_measurment;
 
+    BoundConcreteValue<float> hue;
+    BoundConcreteValue<float> saturation;
+    BoundConcreteValue<float> value;
+
 public:
     BellOperation(VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end);
 
