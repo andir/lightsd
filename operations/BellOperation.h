@@ -9,13 +9,15 @@
 
 class BellOperation : public Operation {
     int state;
-    unsigned int milliseconds;
 
     MeasureTime<> time_measurment;
 
     BoundConcreteValue<float> hue;
     BoundConcreteValue<float> saturation;
     BoundConcreteValue<float> value;
+
+    BoundConcreteValue<int> duration_milliseconds;
+    BoundConcreteValue<int> fade_milliseconds;
 
 public:
     BellOperation(VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end);

@@ -38,3 +38,14 @@ std::ostream &operator<<(std::ostream &os, const ValueType &obj) {
     }
     return os;
 }
+
+void ValueType::addOnChangeCallback(std::function<void(ValueType*)> cb) {
+    if (cb != nullptr)
+        callbacks.push_back(cb);
+}
+
+void ValueType::triggerCallbacks() {
+    for (auto &cb : callbacks) {
+        cb(this);
+    }
+}

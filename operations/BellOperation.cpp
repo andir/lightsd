@@ -5,16 +5,20 @@
 BellOperation::BellOperation(VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end) :
         Operation("bell", store, begin, end),
         state(0),
-        milliseconds(2000),
         hue("bell/hue", Operation::HSV_HUE, store, getValueByKey<float>("hue", begin, end, 0.0f)),
-        saturation("bell/saturation", Operation::HSV_SATURATION, store, getValueByKey<float>("saturation", begin, end, 1.0f)),
-        value("bell/value", Operation::HSV_VALUE, store, getValueByKey<float>("value", begin, end, 1.0f)) {
+        saturation("bell/saturation", Operation::HSV_SATURATION, store,
+                   getValueByKey<float>("saturation", begin, end, 1.0f)),
+        value("bell/value", Operation::HSV_VALUE, store, getValueByKey<float>("value", begin, end, 1.0f)),
+        duration_milliseconds("bell/duration", Operation::INT, store,
+                              getValueByKey<int>("duration", begin, end, 5000)),
+        fade_milliseconds("bell/fade_duration", Operation::INT, store,
+                              getValueByKey<int>("fade_duration", begin, end, 750)){
     enabled.setBool(false);
 }
 
 Operation::BufferType BellOperation::operator()(Operation::BufferType &buffer) {
     const float perc = 0.10f;
-    unsigned int time_passed = 0;
+    int time_passed = 0;
 
     if (state == 0) {
         time_measurment.reset();
@@ -22,10 +26,16 @@ Operation::BufferType BellOperation::operator()(Operation::BufferType &buffer) {
         time_passed = time_measurment.measure();
     }
 
+    if (time_passed > duration_milliseconds.getValue()) {
+        enabled.setBool(false);
+        state = 0;
+        return buffer;
+    }
+
     float shade = 0.8f;
 
-    if (time_passed < milliseconds) {
-        shade *= float(time_passed) / milliseconds;
+    if (time_passed < fade_milliseconds.getValue()) {
+        shade *= float(time_passed) / fade_milliseconds.getValue();
     }
 
 

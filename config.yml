@@ -69,13 +69,13 @@ outputs:
     type: websocket
     params:
       port: 9000
-  CrashMe:
-    type: devmem
-    params:
-      filename: /dev/mem
-      lengths:
-        - 1202
-        - 1000
+#  CrashMe:
+#    type: devmem
+#    params:
+#      filename: /dev/mem
+#      lengths:
+#        - 1202
+#        - 1000
 #  SPI1:
 #    type: spi
 #    params:

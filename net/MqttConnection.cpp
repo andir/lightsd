@@ -9,22 +9,6 @@
 #include <fstream>
 #include <string>
 
-static std::string getClientId() {
-    static std::string mac;
-
-    if (mac.length() != 0)
-        return mac;
-
-    std::ifstream f("/sys/class/net/eth0/address");
-
-    if (f.good()) {
-        std::string line;
-        std::getline(f, line);
-        return line;
-    } else {
-        return "foo";
-    }
-}
 
 namespace boost {
     template<>
@@ -35,7 +19,32 @@ namespace boost {
         return b;
     }
 }
+namespace {
+    template<typename T>
+    inline void publish_value(auto &client, const auto &realm, const auto &key, const T &val) {
+        std::stringstream publish_ss, value_ss;
+        publish_ss << realm << key;
+        value_ss << val;
+        client->publish(publish_ss.str(), value_ss.str(), mqtt::qos::at_most_once, true);
+    }
 
+    static std::string getClientId() {
+        static std::string mac;
+
+        if (mac.length() != 0)
+            return mac;
+
+        std::ifstream f("/sys/class/net/eth0/address");
+
+        if (f.good()) {
+            std::string line;
+            std::getline(f, line);
+            return line;
+        } else {
+            return "foo";
+        }
+    }
+}
 
 MqttConnection::MqttConnection(std::shared_ptr<VariableStore> store, const std::string broker, const std::string realm)
         :
@@ -70,6 +79,12 @@ MqttConnection::MqttConnection(std::shared_ptr<VariableStore> store, const std::
     mqtt_client->connect();
     worker_thread = std::thread(std::bind(&MqttConnection::run, this));
 
+    for (const auto &e : this->store->keys()) {
+        auto val = this->store->getVar(e);
+        val->addOnChangeCallback([this,e](ValueType* t){
+            publish_value(this->mqtt_client, this->realm, e, *t);
+        });
+    }
 }
 
 bool MqttConnection::connack_handler(bool sp, std::uint8_t connack_return_code) {
@@ -135,12 +150,6 @@ bool MqttConnection::publish_handler(std::uint8_t fixed_header, boost::optional<
                         } catch (boost::bad_lexical_cast &ex) {
                             std::cerr << ex.what() << std::endl;
                         }
-
-                        std::stringstream publish_ss, value_ss;
-
-                        publish_ss << this->realm << s;
-                        value_ss << *spt;
-                        mqtt_client->publish(publish_ss.str(), value_ss.str(), mqtt::qos::at_most_once, true);
                     }
                     catch (InvalidVariableTypeException &ex) {
                         std::cerr << "Faled to handle set " << topic_name << " with value: " << contents << std::endl;
@@ -152,6 +161,7 @@ bool MqttConnection::publish_handler(std::uint8_t fixed_header, boost::optional<
     }
     return true;
 }
+
 
 void MqttConnection::close_handler() {
     std::cout << "mqtt connection closed." << std::endl;
