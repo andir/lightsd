@@ -5,6 +5,10 @@
 
 class ValueType {
 public:
+    using CallbackType = std::function<void(ValueType *)>;
+private:
+    std::vector<CallbackType> callbacks;
+public:
     enum class Type {
         FLOAT, INTEGER, UNKNOWN, BOOLEAN
     };
@@ -23,8 +27,10 @@ public:
 
     virtual void setInteger(const int) = 0;
 
-};
+    virtual void addOnChangeCallback(std::function<void(ValueType *)>);
 
+    virtual void triggerCallbacks();
+};
 
 std::ostream &operator<<(std::ostream &os, const ValueType &obj);
 

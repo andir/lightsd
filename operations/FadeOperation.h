@@ -32,9 +32,8 @@ class FadeOperation : public Operation {
         }
     }
 
-    template<typename T>
     inline auto getCallback() {
-        return [this](const T &) {
+        return [this](ValueType*) {
             this->recalcMask();
         };
     }
@@ -42,10 +41,10 @@ class FadeOperation : public Operation {
 public:
     FadeOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end) :
             Operation("fade", store, start, end),
-            min("fade/min", Operation::FLOAT_0_1, store, getValueByKey<float>("min", start, end), getCallback<float>()),
-            max("fade/max", Operation::FLOAT_0_1, store, getValueByKey<float>("max", start, end), getCallback<float>()),
-            from("fade/from", Operation::INT, store, getValueByKey<int>("from", start, end), getCallback<int>()),
-            to("fade/to", Operation::INT, store, getValueByKey<int>("to", start, end), getCallback<int>()) {
+            min("fade/min", Operation::FLOAT_0_1, store, getValueByKey<float>("min", start, end), getCallback()),
+            max("fade/max", Operation::FLOAT_0_1, store, getValueByKey<float>("max", start, end), getCallback()),
+            from("fade/from", Operation::INT, store, getValueByKey<int>("from", start, end), getCallback()),
+            to("fade/to", Operation::INT, store, getValueByKey<int>("to", start, end), getCallback()) {
 
         recalcMask();
     }

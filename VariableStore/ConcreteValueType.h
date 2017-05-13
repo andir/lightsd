@@ -33,23 +33,18 @@ namespace {
 
 template<typename InternalValueType>
 class ConcreteValueType : public ValueType {
-public:
-    using CallbackType = std::function<void(const InternalValueType &)>;
-
 private:
     InternalValueType value;
     Type type;
-    CallbackType callback;
 
-    inline void notify(const InternalValueType t) {
-        if (callback != nullptr) {
-            callback(getValue());
-        }
+    inline void notify() {
+        std::cerr << "triggering callbacks " << std::endl;
+        triggerCallbacks();
     }
 
 public:
-    ConcreteValueType(InternalValueType initial_value, CallbackType cb = nullptr) : value(initial_value), callback(cb) {
-        std::cerr << getType() << std::endl;
+    ConcreteValueType(InternalValueType initial_value, CallbackType cb = nullptr) : value(initial_value) {
+        addOnChangeCallback(cb);
     }
 
     inline Type getType() const {
@@ -82,8 +77,8 @@ public:
 
     virtual void setInteger(const int v) {
         if (std::is_same<int, InternalValueType>::value) {
-            notify(v);
             setValue<InternalValueType>(v);
+            notify();
         } else {
             assert(false && "Invalid setter used");
         }
@@ -91,8 +86,8 @@ public:
 
     virtual void setFloat(const float v) {
         if (std::is_same<float, InternalValueType>::value) {
-            notify(v);
             setValue<InternalValueType>(v);
+            notify();
         } else {
             assert(false && "Invalid setter used");
         }
@@ -100,8 +95,8 @@ public:
 
     virtual void setBool(const bool v) {
         if (std::is_same<bool, InternalValueType>::value) {
-            notify(v);
             setValue<InternalValueType>(v);
+            notify();
         } else {
             assert(false && "Invalid setter used");
         }
