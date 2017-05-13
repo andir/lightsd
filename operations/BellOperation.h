@@ -16,6 +16,8 @@ class BellOperation : public Operation {
     BoundConcreteValue<float> saturation;
     BoundConcreteValue<float> value;
 
+    BoundConcreteValue<bool> unlock_enable;
+
     BoundConcreteValue<int> duration_milliseconds;
     BoundConcreteValue<int> fade_milliseconds;
 
