@@ -34,7 +34,7 @@ namespace {
 template<typename InternalValueType>
 class ConcreteValueType : public ValueType {
 private:
-    InternalValueType value;
+    std::atomic<InternalValueType> value;
     Type type;
 
     inline void notify() {
