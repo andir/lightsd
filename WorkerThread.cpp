@@ -121,6 +121,7 @@ void WorkerThread::run() {
                 }
             }
             for (const auto &output : config->outputs) {
+                Measure(output.first, t);
                 (*output.second).draw(*buffer);
             }
 #ifdef MEASURE_TIME
