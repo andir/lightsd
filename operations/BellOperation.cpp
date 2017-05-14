@@ -14,7 +14,7 @@ BellOperation::BellOperation(VariableStore &store, YAML::const_iterator begin, Y
                               getValueByKey<int>("duration", begin, end, 5000)),
         fade_milliseconds("bell/fade_duration", Operation::INT, store,
                           getValueByKey<int>("fade_duration", begin, end, 750)) {
-    enabled.setBool(false);
+    enabled = false;
 }
 
 Operation::BufferType BellOperation::operator()(Operation::BufferType &buffer) {
@@ -54,10 +54,7 @@ Operation::BufferType BellOperation::operator()(Operation::BufferType &buffer) {
         const int p = i * perc;
         const int z = (time_passed / 1000) % 2;
 
-        if (p % 2 == z)
-            (*buffer).at(i) = pixel;
-        else
-            (*buffer).at(i) = other_pixel;
+        (*buffer).at(i) = (p % 2 == z) ? pixel : other_pixel;
     }
 
     state++;
