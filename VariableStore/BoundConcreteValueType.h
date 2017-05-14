@@ -82,4 +82,20 @@ public:
     EnclosedValue getValue() const {
         return value->getValue();
     }
+
+    operator EnclosedValue() const {
+        return getValue();
+    }
+
+    BoundConcreteValue& operator=(const EnclosedValue v) {
+        if (std::is_same<bool, EnclosedValue>::value) {
+            value->setBool(v);
+        } else if (std::is_same<int, EnclosedValue>::value) {
+            value->setInteger(v);
+        } else if (std::is_same<float, EnclosedValue>::value) {
+            value->setFloat(v);
+        }
+
+        return *this;
+    }
 };

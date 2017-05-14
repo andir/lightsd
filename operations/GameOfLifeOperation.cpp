@@ -47,27 +47,27 @@ void GameOfLifeOperation::update(const Config *const cfg) {
     // Initialize the buffer with random state being populated
     if (!initialized) {
         initialized = true;
-        const auto def_value = default_value.getValue();
+        const auto def_value = default_value;
         for (auto &led : this->output) {
             float value = 0.0f;
             if (random_int_in_range(0, 100) < 5) {
                 value = def_value;
             }
             float hue;
-            if (randomizeColor.getBool()) {
+            if (randomizeColor) {
                 hue = random_int_in_range(0, 360);
             } else {
-                hue = default_hue.getValue();
+                hue = default_hue;
             }
-            led = HSV{hue, default_saturation.getValue(), value};
+            led = HSV{hue, default_saturation, value};
         }
     }
 
     // main update loop
-    if (frame_counter % int(cfg->fps * speed.getFloat()) == 0) {
+    if (frame_counter % int(cfg->fps * speed) == 0) {
         std::vector<HSV> state(output.size());
         // once a second recalculate a new state
-        auto default_color = HSV{default_hue.getValue(), default_saturation.getValue(), 0.0};
+        auto default_color = HSV{default_hue, default_saturation, 0.0};
         for (size_t i = 0; i < output.size(); i++) {
             const size_t l_index = i == 0 ? output.size() - 1 : i - 1;
             const size_t r_index = i == output.size() - 1 ? 0 : i + 1;
@@ -91,21 +91,21 @@ void GameOfLifeOperation::update(const Config *const cfg) {
             const auto new_value = [&]() {
                 switch (parent_value) {
                     case 7:
-                        return (float) v7.getValue();
+                        return (float) v7;
                     case 6:
-                        return (float) v6.getValue();
+                        return (float) v6;
                     case 5:
-                        return (float) v5.getValue();
+                        return (float) v5;
                     case 4:
-                        return (float) v4.getValue();
+                        return (float) v4;
                     case 3:
-                        return (float) v3.getValue();
+                        return (float) v3;
                     case 2:
-                        return (float) v2.getValue();
+                        return (float) v2;
                     case 1:
-                        return (float) v1.getValue();
+                        return (float) v1;
                     case 0:
-                        return (float) v0.getValue();
+                        return (float) v0;
                     default:
                         return 0.0f;
                 }
@@ -114,7 +114,7 @@ void GameOfLifeOperation::update(const Config *const cfg) {
             auto &e = state[i];
             if (e.value <= 0.0f) {
                 e = default_color;
-                if (randomizeColor.getBool()) {
+                if (randomizeColor) {
                     e.hue = random_int_in_range(0, 360);
                 }
             }

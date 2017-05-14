@@ -37,16 +37,16 @@ RaindropOperation::RaindropOperation(VariableStore
 
 
 void RaindropOperation::hitRaindrop(Raindrop &drop) {
-    const int saturation = random_int_in_range(saturation_min.getValue() * 1000, saturation_max.getValue() * 1000);
-    drop.color.hue = random_int_in_range(hue_min.getValue(), hue_max.getValue());
+    const int saturation = random_int_in_range(saturation_min * 1000, saturation_max * 1000);
+    drop.color.hue = random_int_in_range(hue_min, hue_max);
     drop.color.saturation = float(saturation) / 1000.0f;
     drop.color.value =
-            float(random_int_in_range(value_min.getValue() * 10000, value_max.getValue() * 10000)) / 10000.0f;
+            float(random_int_in_range(value_min * 10000, value_max * 10000)) / 10000.0f;
 
     const auto decay_rate = float(random_int_in_range(
-            decay_low.getValue() * decay_resolution.getValue() * 10000,
-            decay_high.getValue() * decay_resolution.getValue() * 10000
-    )) / (10000.0f * decay_resolution.getValue());
+            decay_low * decay_resolution * 10000,
+            decay_high * decay_resolution * 10000
+    )) / (10000.0f * decay_resolution);
 
     drop.decay_rate = decay_rate;
 }
@@ -71,7 +71,7 @@ Operation::BufferType RaindropOperation::operator()(Operation::BufferType &buffe
         auto &drop = *it++;
         static const auto max_roll = 1000000;
         const auto roll = random_int_in_range(0, max_roll);
-        const auto bound = (1 - chance.getValue()) * max_roll;
+        const auto bound = (1 - chance) * max_roll;
 
         if (roll >= bound) {
             hitRaindrop(drop);
