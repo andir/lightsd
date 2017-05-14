@@ -25,7 +25,7 @@ struct Timeing {
     std::map<std::string, struct Measurment> measurments;
 
     void report() {
-        for (auto const &e : measurments) {
+        for (auto &e : measurments) {
             std::string const &name = e.first;
             Measurment &m = e.second;
 
