@@ -53,12 +53,12 @@ public:
     static const std::string FLOAT;
 
     inline bool isEnabled() const {
-        return enabled.getBool();
+        return enabled;
     }
 
     virtual void update(const Config *const) {};
 
-    virtual float getAlpha() const { return alpha.getValue(); }
+    virtual float getAlpha() const { return alpha; }
 };
 
 #endif //LIGHTSD_OPERATION_H

@@ -9,10 +9,7 @@ BellOperation::BellOperation(VariableStore &store, YAML::const_iterator begin, Y
         saturation("bell/saturation", Operation::HSV_SATURATION, store,
                    getValueByKey<float>("saturation", begin, end, 1.0f)),
         value("bell/value", Operation::HSV_VALUE, store, getValueByKey<float>("value", begin, end, 1.0f)),
-
         unlock_enable("bell/unlock_enable", Operation::BOOLEAN, store, getValueByKey<bool>("unlock_enable", begin, end, false)),
-
-
         duration_milliseconds("bell/duration", Operation::INT, store,
                               getValueByKey<int>("duration", begin, end, 5000)),
         fade_milliseconds("bell/fade_duration", Operation::INT, store,
@@ -30,23 +27,23 @@ Operation::BufferType BellOperation::operator()(Operation::BufferType &buffer) {
         time_passed = time_measurment.measure();
     }
 
-    if (time_passed > duration_milliseconds.getValue()) {
-        enabled.setBool(false);
-        unlock_enable.setBool(false);
+    if (time_passed > duration_milliseconds) {
+        enabled = false;
+        unlock_enable = false;
         state = 0;
         return buffer;
     }
 
     float shade = 0.8f;
 
-    if (time_passed < fade_milliseconds.getValue()) {
-        shade *= float(time_passed) / fade_milliseconds.getValue();
+    if (time_passed < fade_milliseconds) {
+        shade *= float(time_passed) / fade_milliseconds;
     }
 
 
-    const auto pixel = HSV{hue.getValue(), saturation.getValue(), value.getValue() * shade};
+    const auto pixel = HSV{hue.getValue(), saturation, value * shade};
     const auto other_pixel = [this]() -> HSV{
-        if (unlock_enable.getValue()) {
+        if (unlock_enable) {
             return HSV{120.0f, 1.0f, 1.0f};
         } else {
             return HSV{0.0f, 0.0f, 0.0f};

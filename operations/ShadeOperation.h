@@ -16,7 +16,7 @@ public:
     }
 
     virtual BufferType operator()(BufferType &buffer) {
-        algorithm::MaskBuffer(value.getValue(), *buffer);
+        algorithm::MaskBuffer(value, *buffer);
         return buffer;
     }
 

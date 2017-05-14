@@ -21,9 +21,8 @@ public:
                        getValueByKey<float>("saturation", start, end)),
             value("color/value", Operation::HSV_VALUE, store, getValueByKey<float>("value", start, end)) {}
 
-
     virtual BufferType operator()(BufferType &buffer) {
-        const HSV color = {hue.getValue(), saturation.getValue(), value.getValue()};
+        const HSV color = {hue, saturation, value};
         algorithm::initSolidColor(*buffer, color);
         return buffer;
     }

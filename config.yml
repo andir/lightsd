@@ -1,6 +1,6 @@
 ---
 width: 1000
-fps: 1
+fps: 20
 
 mqtt:
   broker: whisky.w17.io
