@@ -9,7 +9,8 @@ BellOperation::BellOperation(VariableStore &store, YAML::const_iterator begin, Y
         saturation("bell/saturation", Operation::HSV_SATURATION, store,
                    getValueByKey<float>("saturation", begin, end, 1.0f)),
         value("bell/value", Operation::HSV_VALUE, store, getValueByKey<float>("value", begin, end, 1.0f)),
-        unlock_enable("bell/unlock_enable", Operation::BOOLEAN, store, getValueByKey<bool>("unlock_enable", begin, end, false)),
+        unlock_enable("bell/unlock_enable", Operation::BOOLEAN, store,
+                      getValueByKey<bool>("unlock_enable", begin, end, false)),
         duration_milliseconds("bell/duration", Operation::INT, store,
                               getValueByKey<int>("duration", begin, end, 5000)),
         fade_milliseconds("bell/fade_duration", Operation::INT, store,
@@ -42,7 +43,7 @@ Operation::BufferType BellOperation::operator()(Operation::BufferType &buffer) {
 
 
     const auto pixel = HSV{hue.getValue(), saturation, value * shade};
-    const auto other_pixel = [this]() -> HSV{
+    const auto other_pixel = [this]() -> HSV {
         if (unlock_enable) {
             return HSV{120.0f, 1.0f, 1.0f};
         } else {
