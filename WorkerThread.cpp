@@ -11,20 +11,27 @@ struct Measurment {
     uint64_t max;
     uint64_t min;
     uint64_t count;
+
+    void reset() {
+        average = 0;
+        max = 0;
+        min = 0;
+        count = 0;
+    }
 };
 
 
 struct Timeing {
     std::map<std::string, struct Measurment> measurments;
 
-
     void report() {
-        for (auto const &e : measurments) {
+        for (auto &e : measurments) {
             std::string const &name = e.first;
-            Measurment const &m = e.second;
+            Measurment &m = e.second;
 
             std::cerr << name << " average: " << m.average << " max: " << m.max << " min: " << m.min << " count: "
                       << m.count << std::endl;
+            m.reset();
         }
     }
 };
@@ -114,6 +121,7 @@ void WorkerThread::run() {
                 }
             }
             for (const auto &output : config->outputs) {
+                Measure(output.first, t);
                 (*output.second).draw(*buffer);
             }
 #ifdef MEASURE_TIME
