@@ -20,8 +20,8 @@ namespace boost {
     }
 }
 namespace {
-    template<typename T>
-    inline void publish_value(auto &client, const auto &realm, const auto &key, const T &val) {
+    template<typename T, typename CT, typename CR, typename TK>
+    inline void publish_value(CT &client, const CR &realm, const TK &key, const T &val) {
         std::stringstream publish_ss, value_ss;
         publish_ss << realm << key;
         value_ss << val;

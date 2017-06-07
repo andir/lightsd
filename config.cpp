@@ -38,9 +38,6 @@ generateSequenceStep(VariableStore &store, const std::string &step_type, Iterato
     const auto lower_case_name = boost::algorithm::to_lower_copy(step_type);
     const auto it = known_sequence_types.find(lower_case_name);
 
-
-    assert(&store != nullptr);
-
     if (it == known_sequence_types.end()) {
         throw ConfigParsingException("The selected step_type wasn't found.");
     } else {

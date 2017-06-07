@@ -115,7 +115,7 @@ private:
     template<typename TargetType>
     TargetType
     getValue(typename std::enable_if<!std::is_same<InternalValueType, TargetType>::value, int>::type = 0) const {
-        static_assert("You did something wrong.");
+        static_assert((!std::is_same<InternalValueType, TargetType>::value) && "You did something wrong.");
         std::cerr << "tried to get variable. Wrong getter for this type: " << determineType<TargetType>() << std::endl;
         std::cerr << "correct type for this var is: " << determineType<InternalValueType>() << std::endl;
         throw InvalidVariableTypeException();
