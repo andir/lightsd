@@ -2,6 +2,7 @@
 // Created by andi on 10/12/16.
 //
 #include "WebsocketOutputWrapper.h"
+#include "WebsocketOutput.h"
 
 #include <yaml-cpp/node/node.h>
 

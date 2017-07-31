@@ -8,10 +8,10 @@
 
 #include <yaml-cpp/yaml.h>
 #include "Output.h"
-#include "WebsocketOutput.h"
 
 class WebsocketOutputWrapper : public Output {
-    std::unique_ptr<WebsocketOutput> output;
+    // internal pointer to the websocket output
+    std::unique_ptr<Output> output;
     int port;
 public:
     WebsocketOutputWrapper(const YAML::Node &params);
