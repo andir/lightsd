@@ -10,66 +10,10 @@
 #include "outputs/SharedMemoryOutput.h"
 #include "outputs/DevMemOutput.h"
 
-#include "operations/RainbowOperation.h"
-#include "operations/RotateOperation.h"
-#include "operations/RaindropOperation.h"
-#include "operations/BellOperation.h"
-#include "operations/SplashdropOperation.h"
-#include "operations/HSVUDPInputOperation.h"
-#include "operations/ShadeOperation.h"
-#include "operations/SolidColorOperation.h"
-#include "operations/FadeOperation.h"
-#include "operations/lua/LuaOperation.h"
-#include "operations/GameOfLifeOperation.h"
+#include "config_sequence.h"
 
 #include "outputs/spi/SPIOutput.h"
 
-template<typename Iter1, typename Iter2> 
-struct SequenceGenerator {
-        virtual std::unique_ptr<Operation> operator()(VariableStore&, Iter1, Iter2) = 0;
-};
-
-template<typename T, typename Iter1, typename Iter2>
-struct SSequenceGenerator : SequenceGenerator<Iter1, Iter2> {
-        virtual std::unique_ptr<Operation> operator()(VariableStore &store, Iter1 begin, Iter2 end) {
-                return std::make_unique<T>(store, begin, end);
-        }
-};
-template<typename T, typename Iter1, typename Iter2, typename GeneratorType=SequenceGenerator<Iter1, Iter2> >
-inline std::unique_ptr<GeneratorType> make_generator() {
-        return std::make_unique<SSequenceGenerator<T, Iter1, Iter2>>();
-}
-
-template<typename Iter1, typename Iter2>
-std::unique_ptr<Operation>
-generateSequenceStep(VariableStore &store, const std::string &step_type, Iter1 begin, Iter2 end) {
-    using GeneratorType = std::unique_ptr<SequenceGenerator<Iter1, Iter2> >;
-
-    static std::map<std::string, GeneratorType> types;
-    if (types.size() == 0) {
-            types["bell"] = make_generator<BellOperation, Iter1, Iter2>();
-            types["gameoflife"] = make_generator<GameOfLifeOperation, Iter1, Iter2>();
-            types["hsvudpinput"] = make_generator<HSVUDPInputOperation, Iter1, Iter2>();
-            types["initrainbow"] = make_generator<RainbowOperation, Iter1, Iter2>();
-            types["initsolidcolor"] = make_generator<SolidColorOperation, Iter1, Iter2>();
-            types["lua"] = make_generator<LuaOperation, Iter1, Iter2>();
-            types["raindrop"] = make_generator<RaindropOperation, Iter1, Iter2>();
-            types["rotate"] = make_generator<RotateOperation, Iter1, Iter2>();
-            types["shade"] = make_generator<ShadeOperation, Iter1, Iter2>();
-            types["splashdrop"] = make_generator<SplashdropOperation, Iter1, Iter2>();
-            types["udpinput"] = make_generator<HSVUDPInputOperation, Iter1, Iter2>();
-    }
-
-    const auto lower_case_name = boost::algorithm::to_lower_copy(step_type);
-    const auto it = types.find(lower_case_name);
-
-    if (it == types.end()) {
-        throw ConfigParsingException("The selected step_type wasn't found.");
-    } else {
-        auto& func = *(it->second);
-        return func(store, begin, end);
-    }
-};
 
 void
 parseSequence(VariableStore &store, std::vector<std::unique_ptr<Operation>> &steps, const YAML::Node &sequence_node) {
