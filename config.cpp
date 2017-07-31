@@ -63,6 +63,8 @@ ConfigPtr parseConfig(const std::string &filename) {
 
 
 Config::Config() :
+        fps(30),
+        width(100),
         store(std::make_shared<VariableStore>()) {
 }
 

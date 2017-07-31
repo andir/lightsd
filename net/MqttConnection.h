@@ -16,7 +16,7 @@
 
 class MqttConnection {
     bool thread_running;
-    std::string realm;
+    const std::string realm;
     std::shared_ptr<VariableStore> store;
     boost::asio::io_service io_service;
     std::shared_ptr<mqtt::client<boost::asio::ip::tcp::socket, mqtt::null_strand>> mqtt_client;
@@ -24,7 +24,7 @@ class MqttConnection {
 
 
 public:
-    MqttConnection(std::shared_ptr<VariableStore> store, const std::string broker, const std::string realm);
+    MqttConnection(std::shared_ptr<VariableStore>& store, const std::string& broker, const std::string& realm);
 
     void stop() {
         if (!io_service.stopped())

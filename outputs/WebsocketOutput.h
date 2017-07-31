@@ -47,7 +47,7 @@ typedef std::string message_type;
 struct action {
     action(action_type t, connection_hdl h) : type(t), hdl(h) {}
 
-    action(action_type t, connection_hdl h, message_type m)
+    action(action_type t, connection_hdl h, message_type& m)
             : type(t), hdl(h), msg(m) {}
 
     action_type type;
@@ -209,7 +209,7 @@ class WebsocketOutput : public Output {
     thread accept_thread;
 public:
 
-    WebsocketOutput(int port) :
+    explicit WebsocketOutput(int port) :
             process_thread(bind(&broadcast_server::process_messages, &server)),
             accept_thread(bind(&broadcast_server::run, &server, port)) {
     }

@@ -11,7 +11,7 @@ class LuaHSVBuffer {
 
 public:
 
-    LuaHSVBuffer(lua_State *L) : buffer(((AbstractBaseBuffer<HSV> *) (lua_touserdata(L, 1)))) {
+    explicit LuaHSVBuffer(lua_State *L) : buffer(static_cast<AbstractBaseBuffer<HSV>* >(lua_touserdata(L, 1))) {
     }
 
     int set(lua_State *L) {

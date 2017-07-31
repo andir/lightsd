@@ -19,7 +19,7 @@ public:
     const std::string filename;
     int fd;
 
-    MemFD(const std::string filename);
+    explicit MemFD(const std::string& filename);
 
     bool open(unsigned int flags);
 

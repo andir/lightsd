@@ -14,7 +14,7 @@ class DevMemOutput : public Output {
     DevMemBuffer devMemBuffer;
 
 public:
-    DevMemOutput(const YAML::Node &params);
+    explicit DevMemOutput(const YAML::Node &params);
 
     virtual ~DevMemOutput() {};
 

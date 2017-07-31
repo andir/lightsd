@@ -18,7 +18,7 @@ class FrameScheduler {
     std::chrono::steady_clock::time_point _stop;
 
 public:
-    FrameScheduler(const int rate);
+    explicit FrameScheduler(const int rate);
 
     void delay(const uint64_t duration);
 };

@@ -20,7 +20,7 @@ extern "C" {
 struct SPIError : public std::exception {
     const std::string s;
 
-    SPIError(std::string s) : s(s) {}
+    explicit SPIError(const std::string& s) : s(s) {}
 
     const char *what() const throw() {
         return s.c_str();
@@ -40,7 +40,7 @@ class SPI {
     int fd;
 
 public:
-    SPI(const std::string device = "/dev/spidev.0", const uint32_t speed = 3200000, const uint8_t mode = 0) :
+    SPI(const std::string& device = "/dev/spidev.0", const uint32_t speed = 3200000, const uint8_t mode = 0) :
             device(device), speed(speed), mode(mode), fd(open(device.c_str(), O_RDWR)) {
         init();
     }

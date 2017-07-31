@@ -19,9 +19,9 @@ class HSVUDPOutput : public Output {
     udp::endpoint endpoint;
 
 public:
-    HSVUDPOutput(const YAML::Node &params);
+    explicit HSVUDPOutput(const YAML::Node &params);
 
-    HSVUDPOutput(const std::string destination, const std::string port);
+    HSVUDPOutput(const std::string& destination, const std::string& port);
 
     void draw(const std::vector<HSV> &buffer);
 

@@ -16,7 +16,7 @@ struct MqttConfig {
 struct ConfigParsingException : public std::exception {
     const std::string s;
 
-    ConfigParsingException(std::string s) : s(s) {}
+    explicit ConfigParsingException(const std::string& s) : s(s) {}
 
     const char *what() const throw() {
         return s.c_str();

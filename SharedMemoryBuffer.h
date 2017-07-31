@@ -43,7 +43,7 @@ private:
     void _resize(const size_t size);
 
 public:
-    SharedMemoryBuffer(const std::string filename, size_t size);
+    SharedMemoryBuffer(const std::string& filename, size_t size);
 
     ~SharedMemoryBuffer();
 

@@ -8,13 +8,13 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-int _shm_open(const std::string filename) {
+int _shm_open(const std::string& filename) {
     int fd = shm_open(filename.c_str(), O_CREAT | O_TRUNC | O_RDWR, S_IWUSR | S_IRUSR | S_IWGRP | S_IRGRP);
 
     return fd;
 }
 
-SharedMemoryBuffer::SharedMemoryBuffer(const std::string filename, size_t size) :
+SharedMemoryBuffer::SharedMemoryBuffer(const std::string& filename, size_t size) :
         buffer(0, nullptr) {
 
     fd = _shm_open(filename);

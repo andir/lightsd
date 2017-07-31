@@ -15,7 +15,7 @@ class SPIOutput : public Output {
     SPI spi;
     std::vector<RGB> output_buffer;
 public:
-    SPIOutput(const YAML::Node &params);
+    explicit SPIOutput(const YAML::Node &params);
 
     void draw(const AbstractBaseBuffer<HSV> &buffer);
 

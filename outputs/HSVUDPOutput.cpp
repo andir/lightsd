@@ -6,7 +6,7 @@
 
 
 inline std::string
-getValueOrDefault(const std::string name, const YAML::Node &params, const std::string default_value) {
+getValueOrDefault(const std::string& name, const YAML::Node &params, const std::string& default_value) {
     if (params[name]) {
         return params[name].as<std::string>();
     }
@@ -18,7 +18,7 @@ HSVUDPOutput::HSVUDPOutput(const YAML::Node &params)
         : HSVUDPOutput(getValueOrDefault("host", params, "127.0.0.1"), getValueOrDefault("port", params, "1338")) {
 }
 
-HSVUDPOutput::HSVUDPOutput(const std::string destination, const std::string port) :
+HSVUDPOutput::HSVUDPOutput(const std::string& destination, const std::string& port) :
         socket(io_service, udp::endpoint(udp::v4(), 0)),
         resolver(io_service) {
     endpoint = *resolver.resolve({udp::v4(), destination, port});

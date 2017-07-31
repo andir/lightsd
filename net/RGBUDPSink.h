@@ -33,7 +33,7 @@ class RGBUDPSink {
 
 public:
 
-    RGBUDPSink(const int port);
+    explicit RGBUDPSink(const int port);
 
     ~RGBUDPSink();
 

@@ -9,7 +9,7 @@ class SharedMemoryOutput : public Output {
     SharedMemoryBuffer shmBuffer;
 
 public:
-    SharedMemoryOutput(const YAML::Node &params);
+    explicit SharedMemoryOutput(const YAML::Node &params);
 
     virtual ~SharedMemoryOutput() {};
 

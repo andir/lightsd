@@ -30,7 +30,7 @@ namespace {
 #endif
 
 
-MemFD::MemFD(const std::string filename) : filename(filename) {
+MemFD::MemFD(const std::string& filename) : filename(filename), fd(0) {
 }
 
 MemFD::~MemFD() {

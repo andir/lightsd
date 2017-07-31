@@ -33,7 +33,7 @@ class HSVUDPSink {
 
 public:
 
-    HSVUDPSink(const int port);
+    explicit HSVUDPSink(const int port);
 
     ~HSVUDPSink();
 

@@ -85,7 +85,7 @@ namespace algorithm {
     }
 
     template<typename Iterator>
-    void Fade(Iterator from, Iterator to) {
+    void Fade(Iterator& from, Iterator& to) {
         using value_type = typename Iterator::value_type;
         const size_t length = (from > to) ? from - to : to - from;
 
@@ -95,7 +95,7 @@ namespace algorithm {
         const float step = 1.0f / length;
         size_t i = 0;
         Mask<value_type> m;
-        for (auto it = from; it != to; it++, i++) {
+        for (auto it = from; it != to; ++it, ++i) {
             const float factor = step * i;
             *it = m(factor, *it);
         }
