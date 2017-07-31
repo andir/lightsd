@@ -35,6 +35,7 @@ set(SOURCE_FILES main.cpp FrameScheduler.cpp algorithm.cpp
         
         config.cpp config.h
         config_sequence.cpp config_sequence.h
+        config_output.cpp config_output.h
 
         utils/util.cpp utils/util.h
         operations/Operation.cpp operations/Operation.h
