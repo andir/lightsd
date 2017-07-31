@@ -203,7 +203,7 @@ private:
 };
 
 
-class WebsocketOutput {
+class WebsocketOutput : public Output {
     broadcast_server server;
     thread process_thread;
     thread accept_thread;
