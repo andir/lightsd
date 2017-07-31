@@ -38,6 +38,7 @@ generateSequenceStep(VariableStore &store, const std::string &step_type, YAML::c
 
     static std::map<std::string, GeneratorType> types = []() {
             std::map<std::string, GeneratorType> types;
+            types["fade"] = SSequenceGenerator<FadeOperation>::build();
             types["bell"] = SSequenceGenerator<BellOperation>::build();
             types["gameoflife"] = SSequenceGenerator<GameOfLifeOperation>::build();
             types["hsvudpinput"] = SSequenceGenerator<HSVUDPInputOperation>::build();
