@@ -24,48 +24,50 @@
 
 #include "outputs/spi/SPIOutput.h"
 
-template<typename IteratorType1, typename IteratorType2>
+template<typename Iter1, typename Iter2> 
+struct SequenceGenerator {
+        virtual std::unique_ptr<Operation> operator()(VariableStore&, Iter1, Iter2) = 0;
+};
+
+template<typename T, typename Iter1, typename Iter2>
+struct SSequenceGenerator : SequenceGenerator<Iter1, Iter2> {
+        virtual std::unique_ptr<Operation> operator()(VariableStore &store, Iter1 begin, Iter2 end) {
+                return std::make_unique<T>(store, begin, end);
+        }
+};
+template<typename T, typename Iter1, typename Iter2, typename GeneratorType=SequenceGenerator<Iter1, Iter2> >
+inline std::unique_ptr<GeneratorType> make_generator() {
+        return std::make_unique<SSequenceGenerator<T, Iter1, Iter2>>();
+}
+
+template<typename Iter1, typename Iter2>
 std::unique_ptr<Operation>
-generateSequenceStep(VariableStore &store, const std::string &step_type, IteratorType1 begin, IteratorType2 end) {
-    using namespace std::string_literals;
+generateSequenceStep(VariableStore &store, const std::string &step_type, Iter1 begin, Iter2 end) {
+    using GeneratorType = std::unique_ptr<SequenceGenerator<Iter1, Iter2> >;
 
-    static const std::set<std::string> known_sequence_types = {
-            "initrainbow"s, "rotate"s, "initsolidcolor"s, "shade"s, "fade"s, "raindrop"s,
-            "bell"s, "splashdrop"s, "udpinput"s, "hsvudpinput"s, "lua"s, "gameoflife"s
-    };
-
+    static std::map<std::string, GeneratorType> types;
+    if (types.size() == 0) {
+            types["bell"] = make_generator<BellOperation, Iter1, Iter2>();
+            types["gameoflife"] = make_generator<GameOfLifeOperation, Iter1, Iter2>();
+            types["hsvudpinput"] = make_generator<HSVUDPInputOperation, Iter1, Iter2>();
+            types["initrainbow"] = make_generator<RainbowOperation, Iter1, Iter2>();
+            types["initsolidcolor"] = make_generator<SolidColorOperation, Iter1, Iter2>();
+            types["lua"] = make_generator<LuaOperation, Iter1, Iter2>();
+            types["raindrop"] = make_generator<RaindropOperation, Iter1, Iter2>();
+            types["rotate"] = make_generator<RotateOperation, Iter1, Iter2>();
+            types["shade"] = make_generator<ShadeOperation, Iter1, Iter2>();
+            types["splashdrop"] = make_generator<SplashdropOperation, Iter1, Iter2>();
+            types["udpinput"] = make_generator<HSVUDPInputOperation, Iter1, Iter2>();
+    }
 
     const auto lower_case_name = boost::algorithm::to_lower_copy(step_type);
-    const auto it = known_sequence_types.find(lower_case_name);
+    const auto it = types.find(lower_case_name);
 
-    if (it == known_sequence_types.end()) {
+    if (it == types.end()) {
         throw ConfigParsingException("The selected step_type wasn't found.");
     } else {
-        if (lower_case_name == "initrainbow") {
-            return std::make_unique<RainbowOperation>(store, begin, end);
-        } else if (lower_case_name == "rotate") {
-            return std::make_unique<RotateOperation>(store, begin, end);
-        } else if (lower_case_name == "initsolidcolor") {
-            return std::make_unique<SolidColorOperation>(store, begin, end);
-        } else if (lower_case_name == "shade") {
-            return std::make_unique<ShadeOperation>(store, begin, end);
-        } else if (lower_case_name == "fade") {
-            return std::make_unique<FadeOperation>(store, begin, end);
-        } else if (lower_case_name == "raindrop") {
-            return std::make_unique<RaindropOperation>(store, begin, end);
-        } else if (lower_case_name == "bell") {
-            return std::make_unique<BellOperation>(store, begin, end);
-        } else if (lower_case_name == "splashdrop") {
-            return std::make_unique<SplashdropOperation>(store, begin, end);
-        } else if (lower_case_name == "hsvudpinput" || lower_case_name == "udpinput") {
-            return std::make_unique<HSVUDPInputOperation>(store, begin, end);
-        } else if (lower_case_name == "lua") {
-            return std::make_unique<LuaOperation>(store, begin, end);
-        } else if (lower_case_name == "gameoflife") {
-            return std::make_unique<GameOfLifeOperation>(store, begin, end);
-        } else {
-            return nullptr;
-        }
+        auto& func = *(it->second);
+        return func(store, begin, end);
     }
 };
 
