@@ -4,11 +4,13 @@
 
 #include "MqttConnection.h"
 #include "../VariableStore/InvalidVariableTypeException.h"
+#include "../VariableStore/ValueType.h"
 
 #include <iostream>
 #include <fstream>
 #include <string>
 
+#include <boost/algorithm/string.hpp>
 
 namespace boost {
     template<>
