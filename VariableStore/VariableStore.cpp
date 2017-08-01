@@ -5,7 +5,7 @@
 
 VariableStore::VariableStore() : lock() {}
 
-void VariableStore::registerVar(const std::string name, const std::string type_name, std::shared_ptr<ValueType> var) {
+void VariableStore::registerVar(const std::string& name, const std::string& type_name, std::shared_ptr<ValueType> var) {
     std::unique_lock<std::shared_mutex> locker(lock);
     auto weak_ptr = std::weak_ptr<ValueType>(var);
 
@@ -19,7 +19,7 @@ void VariableStore::registerVar(const std::string name, const std::string type_n
 }
 
 
-void VariableStore::unregisterVar(const std::string name) {
+void VariableStore::unregisterVar(const std::string& name) {
     std::unique_lock<std::shared_mutex> locker(lock);
     {
         auto it = vars.find(name);
@@ -70,7 +70,7 @@ std::set<std::string> VariableStore::keys() const {
     return list;
 }
 
-std::shared_ptr<ValueType> VariableStore::getVar(const std::string name) const {
+std::shared_ptr<ValueType> VariableStore::getVar(const std::string& name) const {
     std::shared_lock<std::shared_mutex> locker(lock);
     auto it = vars.find(name);
     if (it != vars.end()) {
@@ -82,7 +82,7 @@ std::shared_ptr<ValueType> VariableStore::getVar(const std::string name) const {
     return nullptr;
 }
 
-std::string VariableStore::getTypeName(const std::string name) const {
+std::string VariableStore::getTypeName(const std::string& name) const {
     std::shared_lock<std::shared_mutex> locker(lock);
     auto it = types.find(name);
     if (it != types.end()) {

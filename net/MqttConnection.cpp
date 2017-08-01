@@ -46,7 +46,7 @@ namespace {
     }
 }
 
-MqttConnection::MqttConnection(std::shared_ptr<VariableStore> store, const std::string broker, const std::string realm)
+MqttConnection::MqttConnection(std::shared_ptr<VariableStore>& store, const std::string& broker, const std::string& realm)
         :
         realm(realm),
         store(store),

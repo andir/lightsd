@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include <numeric>
 
-DevMemBuffer::DevMemBuffer(const std::string filename, std::vector<size_t> sizes, size_t configuration_offset,
+DevMemBuffer::DevMemBuffer(const std::string& filename, const std::vector<size_t>& sizes, size_t configuration_offset,
                            size_t data_offset) :
         sizes(sizes),
         count_offset(configuration_offset),
@@ -35,7 +35,7 @@ DevMemBuffer::~DevMemBuffer() {
     close();
 }
 
-void DevMemBuffer::_resize(const std::vector<size_t> sizes) {
+void DevMemBuffer::_resize(const std::vector<size_t>& sizes) {
     // update data buffer
     buffer.release();
     memmapData.close();

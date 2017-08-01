@@ -1,5 +1,5 @@
 ---
-width: 1000
+width: 2000
 fps: 20
 
 mqtt:
@@ -29,9 +29,9 @@ sequence:
   - gameoflife:
       enabled: true
 
-#  - udpinput:
-#      enabled: 0
-#      port: 1337
+  - udpinput:
+      enabled: true
+      port: 1337
 
 
 #  - initSolidColor:
@@ -88,7 +88,7 @@ outputs:
 #  UDPOutput:
 #    type: udp
 #    params:
-#      host: 172.23.97.109
+#      host: "fd42:ccc:da:1::2"
 #      port: 6453
 
 #output: Websocket1

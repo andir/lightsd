@@ -19,17 +19,4 @@ public:
         algorithm::MaskBuffer(value, *buffer);
         return buffer;
     }
-
-private:
-    float parse_value(YAML::const_iterator start, YAML::const_iterator end) {
-        for (; start != end; start++) {
-            const auto &v = *start;
-            if (v.first.as<std::string>() == "value") {
-                return v.second.as<float>();
-            }
-        }
-        return 1.0f;
-    }
 };
-
-

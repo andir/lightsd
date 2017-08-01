@@ -5,7 +5,7 @@
 #include "UDPOutput.h"
 
 
-UDPOutput::UDPOutput(const std::string destination, const std::string port) :
+UDPOutput::UDPOutput(const std::string& destination, const std::string& port) :
         socket(io_service, udp::endpoint(udp::v4(), 0)),
         resolver(io_service) {
     endpoint = *resolver.resolve({udp::v4(), destination, port});

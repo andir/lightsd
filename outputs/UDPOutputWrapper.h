@@ -10,7 +10,7 @@
 class UDPOutputWrapper : public Output {
     UDPOutput output;
 public:
-    UDPOutputWrapper(const YAML::Node &params);
+    explicit UDPOutputWrapper(const YAML::Node &params);
 
     virtual void draw(const AbstractBaseBuffer<HSV> &buffer);
 

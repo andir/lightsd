@@ -21,17 +21,17 @@ public:
 
     VariableStore();
 
-    void registerVar(const std::string name, const std::string type_name, std::shared_ptr<ValueType> var);
+    void registerVar(const std::string& name, const std::string& type_name, std::shared_ptr<ValueType> var);
 
-    void unregisterVar(const std::string name);
+    void unregisterVar(const std::string& name);
 
     void cleanUp();
 
     std::set<std::string> keys() const;
 
-    std::shared_ptr<ValueType> getVar(const std::string name) const;
+    std::shared_ptr<ValueType> getVar(const std::string& name) const;
 
-    std::string getTypeName(const std::string name) const;
+    std::string getTypeName(const std::string& name) const;
 
 };
 

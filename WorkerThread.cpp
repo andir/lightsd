@@ -41,7 +41,7 @@ class Measure {
     struct Measurment &measurment;
     MeasureTime<std::chrono::nanoseconds> measureTime;
 public:
-    Measure(std::string name, Timeing &t) : timeing(t), measurment(t.measurments[name]) {
+    Measure(const std::string& name, Timeing &t) : timeing(t), measurment(t.measurments[name]) {
     }
 
     ~Measure() {
@@ -103,7 +103,7 @@ void WorkerThread::run() {
 #endif
         while (true) {
 #ifdef MEASURE_TIME
-            Measure("frame_time", t);
+            Measure frame_time("frame_time", t);
 #endif
             if (new_config_ptr.get() != nullptr) {
                 break;
@@ -115,13 +115,13 @@ void WorkerThread::run() {
                 step->update(config.get());
                 if (step->isEnabled()) {
 #ifdef MEASURE_TIME
-                    Measure(step->getName(), t);
+                    Measure step_time(step->getName(), t);
 #endif
                     buffer = (*step)(buffer);
                 }
             }
             for (const auto &output : config->outputs) {
-                Measure(output.first, t);
+                Measure output_time(output.first, t);
                 (*output.second).draw(*buffer);
             }
 #ifdef MEASURE_TIME

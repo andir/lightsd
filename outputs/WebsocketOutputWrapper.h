@@ -14,7 +14,7 @@ class WebsocketOutputWrapper : public Output {
     std::unique_ptr<Output> output;
     int port;
 public:
-    WebsocketOutputWrapper(const YAML::Node &params);
+    explicit WebsocketOutputWrapper(const YAML::Node &params);
 
     ~WebsocketOutputWrapper();
 

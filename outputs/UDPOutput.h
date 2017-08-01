@@ -20,7 +20,7 @@ class UDPOutput : public Output {
 
 public:
 
-    UDPOutput(const std::string destination, const std::string port);
+    UDPOutput(const std::string& destination, const std::string& port);
 
     void draw(const std::vector<HSV> &buffer);
 
