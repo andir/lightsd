@@ -7,11 +7,9 @@
 
 #include <mqtt_client_cpp.hpp>
 #include <boost/asio.hpp>
-#include <boost/algorithm/string.hpp>
 #include <iostream>
-#include <experimental/string_view>
 #include <thread>
-#include "../VariableStore/ValueType.h"
+
 #include "../VariableStore/VariableStore.h"
 
 class MqttConnection {
