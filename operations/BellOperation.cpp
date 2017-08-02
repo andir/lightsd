@@ -4,7 +4,8 @@
 
 BellOperation::BellOperation(VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end) :
         Operation("bell", store, begin, end),
-        state(0),
+        state(State::IDLE),
+        time_passed(0),
         hue("bell/hue", Operation::HSV_HUE, store, getValueByKey<float>("hue", begin, end, 0.0f)),
         saturation("bell/saturation", Operation::HSV_SATURATION, store,
                    getValueByKey<float>("saturation", begin, end, 1.0f)),
@@ -18,29 +19,26 @@ BellOperation::BellOperation(VariableStore &store, YAML::const_iterator begin, Y
     enabled = false;
 }
 
+float BellOperation::getShade() const {
+   float shade = 0.8f;
+   switch (state) {
+        case State::IDLE:
+                return shade;
+        case State::FADE_IN: 
+                return shade * (float(time_passed) / fade_milliseconds);
+        case State::FADE_OUT:
+                return shade * (float(duration_milliseconds - time_passed) / fade_milliseconds);
+        case State::RUNNING:
+        default:
+                return shade;
+   }
+}
+
 Operation::BufferType BellOperation::operator()(Operation::BufferType &buffer) {
+    if (state == State::IDLE) return buffer;
+        
     const float perc = 0.10f;
-    int time_passed = 0;
-
-    if (state == 0) {
-        time_measurment.reset();
-    } else {
-        time_passed = time_measurment.measure();
-    }
-
-    if (time_passed > duration_milliseconds) {
-        enabled = false;
-        unlock_enable = false;
-        state = 0;
-        return buffer;
-    }
-
-    float shade = 0.8f;
-
-    if (time_passed < fade_milliseconds) {
-        shade *= float(time_passed) / fade_milliseconds;
-    }
-
+    const float shade = getShade();
 
     const auto pixel = HSV{hue.getValue(), saturation, value * shade};
     const auto other_pixel = [this]() -> HSV {
@@ -58,10 +56,38 @@ Operation::BufferType BellOperation::operator()(Operation::BufferType &buffer) {
         (*buffer).at(i) = (p % 2 == z) ? pixel : other_pixel;
     }
 
-    state++;
     return buffer;
 }
 
 void BellOperation::update() {
-    if (!isEnabled()) state = 0;
+    if (!isEnabled()) { state = State::IDLE; return; }
+
+    time_passed = time_measurment.measure();
+
+    switch (state) {
+        case State::IDLE:
+                time_measurment.reset();
+                time_passed = 0;
+                // fallthrough
+        case State::RUNNING:
+                state = State::RUNNING; // handle fall through case
+                if (time_passed < fade_milliseconds) {
+                        state = State::FADE_IN;
+                } else if (time_passed > duration_milliseconds - fade_milliseconds) {
+                        state = State::FADE_OUT;
+                }
+                break;
+        case State::FADE_IN:
+                if (time_passed > fade_milliseconds) state = State::RUNNING;
+                break;
+        case State::FADE_OUT:
+                if (time_passed >= duration_milliseconds) {
+                        // stop animation
+                        state = State::IDLE;
+                        enabled = false;
+                        unlock_enable = false;
+                        return;
+                }
+                break;
+    }
 }

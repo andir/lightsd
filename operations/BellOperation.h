@@ -8,7 +8,13 @@
 #include "Operation.h"
 
 class BellOperation : public Operation {
-    int state;
+    enum State {
+        IDLE,
+        RUNNING,
+        FADE_IN,
+        FADE_OUT,
+    } state;
+    int64_t time_passed;
 
     MeasureTime<> time_measurment;
 
@@ -20,6 +26,8 @@ class BellOperation : public Operation {
 
     BoundConcreteValue<int> duration_milliseconds;
     BoundConcreteValue<int> fade_milliseconds;
+
+    float getShade() const;
 
 public:
     BellOperation(VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end);
