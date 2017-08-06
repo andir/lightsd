@@ -6,7 +6,7 @@
 
 #define MEASURE_TIME
 #ifdef MEASURE_TIME
-struct Measurment {
+struct Measurement {
     uint64_t average;
     uint64_t max;
     uint64_t min;
@@ -22,12 +22,12 @@ struct Measurment {
 
 
 struct Timeing {
-    std::map<std::string, struct Measurment> measurments;
+    std::map<std::string, struct Measurement> measurements;
 
     void report() {
-        for (auto &e : measurments) {
+        for (auto &e : measurements) {
             std::string const &name = e.first;
-            Measurment &m = e.second;
+            Measurement &m = e.second;
 
             std::cerr << name << " average: " << m.average << " max: " << m.max << " min: " << m.min << " count: "
                       << m.count << std::endl;
@@ -38,25 +38,25 @@ struct Timeing {
 
 class Measure {
     Timeing &timeing;
-    struct Measurment &measurment;
+    struct Measurement &measurement;
     MeasureTime<std::chrono::nanoseconds> measureTime;
 public:
-    Measure(const std::string& name, Timeing &t) : timeing(t), measurment(t.measurments[name]) {
+    Measure(const std::string& name, Timeing &t) : timeing(t), measurement(t.measurements[name]) {
     }
 
     ~Measure() {
         auto delay = measureTime.measure();
-        measurment.average += delay;
-        measurment.count++;
-        if (measurment.count == 1) {
-            measurment.max = delay;
-            measurment.min = delay;
+        measurement.average += delay;
+        measurement.count++;
+        if (measurement.count == 1) {
+            measurement.max = delay;
+            measurement.min = delay;
         } else {
-            measurment.average /= 2;
-            if (uint64_t(delay) > measurment.max) {
-                measurment.max = delay;
-            } else if (uint64_t(delay) < measurment.min) {
-                measurment.min = delay;
+            measurement.average /= 2;
+            if (uint64_t(delay) > measurement.max) {
+                measurement.max = delay;
+            } else if (uint64_t(delay) < measurement.min) {
+                measurement.min = delay;
             }
         }
     }

@@ -10,7 +10,7 @@
 class BellOperation : public Operation {
     int state;
 
-    MeasureTime<> time_measurment;
+    MeasureTime<> time_measurement;
 
     BoundConcreteValue<float> hue;
     BoundConcreteValue<float> saturation;
