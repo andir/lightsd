@@ -6,7 +6,7 @@ stages:
 
 before_script:
   - apt update
-  - apt-get install --no-install-recommends -y gcc-7 g++-7 libwebsocketpp-dev cmake libboost-system-dev libyaml-cpp-dev libssl-dev git-core libluajit-5.1-dev make
+  - apt-get install --no-install-recommends -y gcc-7 g++-7 libwebsocketpp-dev cmake libboost-system-dev libyaml-cpp-dev libssl-dev git-core libluajit-5.1-dev make ca-certificates
   - git submodule init
   - git submodule update
 

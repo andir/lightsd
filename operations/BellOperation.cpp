@@ -23,9 +23,9 @@ Operation::BufferType BellOperation::operator()(Operation::BufferType &buffer) {
     int time_passed = 0;
 
     if (state == 0) {
-        time_measurment.reset();
+        time_measurement.reset();
     } else {
-        time_passed = time_measurment.measure();
+        time_passed = time_measurement.measure();
     }
 
     if (time_passed > duration_milliseconds) {

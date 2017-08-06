@@ -22,8 +22,8 @@ RotateOperation::~RotateOperation() {}
 
 Operation::BufferType RotateOperation::operator()(Operation::BufferType &buffer) {
     // time since last rotation in milliseconds
-    uint64_t time_elapsed = timeMeasurment.measure();
-    timeMeasurment.reset();
+    uint64_t time_elapsed = timeMeasurement.measure();
+    timeMeasurement.reset();
 
     const double steps_per_ms = step_width / 1000.0;
 
