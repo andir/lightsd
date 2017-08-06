@@ -108,7 +108,7 @@ namespace algorithm {
         auto mask_begin = mask.begin();
         auto mask_end = mask.end();
 
-        // mask is bigger then the remaining part of the
+        // mask is bigger than the remaining part of the
         // data buffer it should be applied to
         if (mask.size() >= (data.size() - offset)) {
             auto new_mask_end = mask_begin + (data.count() - offset);
