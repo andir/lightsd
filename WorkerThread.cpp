@@ -21,7 +21,7 @@ struct Measurement {
 };
 
 
-struct Timeing {
+struct Timing {
     std::map<std::string, struct Measurement> measurements;
 
     void report() {
@@ -37,11 +37,11 @@ struct Timeing {
 };
 
 class Measure {
-    Timeing &timeing;
+    Timing &timing;
     struct Measurement &measurement;
     MeasureTime<std::chrono::nanoseconds> measureTime;
 public:
-    Measure(const std::string& name, Timeing &t) : timeing(t), measurement(t.measurements[name]) {
+    Measure(const std::string& name, Timing &t) : timing(t), measurement(t.measurements[name]) {
     }
 
     ~Measure() {
@@ -86,7 +86,7 @@ ConfigPtr WorkerThread::getConfig() {
 void WorkerThread::run() {
     while (doRun) {
 #ifdef MEASURE_TIME
-        Timeing t;
+        Timing t;
 #endif
         ConfigPtr config = getConfig();
 
