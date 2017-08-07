@@ -2,6 +2,7 @@
 #define VARIABLESTORE_VALUETYPE_H
 
 #include <ostream>
+#include <functional>
 
 class ValueType {
 public:
