@@ -21,9 +21,9 @@ GameOfLifeOperation::GameOfLifeOperation(VariableStore &store, YAML::const_itera
         v5("gameoflife/v5", Operation::BOOLEAN, store, getValueByKey<bool>("v5", start, end, true)),
         v6("gameoflife/v6", Operation::BOOLEAN, store, getValueByKey<bool>("v6", start, end, true)),
         v7("gameoflife/v7", Operation::BOOLEAN, store, getValueByKey<bool>("v7", start, end, false)),
+        speed("gameoflife/speed", Operation::BOOLEAN, store, getValueByKey<float>("speed", start, end, 1.0f)),
         randomizeColor("gameoflife/randomizeColor", Operation::BOOLEAN, store,
-                       getValueByKey<bool>("randomizeColor", start, end, true)),
-        speed("gameoflife/speed", Operation::BOOLEAN, store, getValueByKey<float>("speed", start, end, 1.0f)) {
+                       getValueByKey<bool>("randomizeColor", start, end, true)) {
 }
 
 
