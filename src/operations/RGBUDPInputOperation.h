@@ -1,9 +1,4 @@
-//
-// Created by andi on 12/11/16.
-//
-
-#ifndef LIGHTSD_UDPINPUTOPERATION_H
-#define LIGHTSD_UDPINPUTOPERATION_H
+#pragma once
 
 #include "Operation.h"
 
@@ -14,19 +9,16 @@
 #include "VariableStore/BoundConcreteValueType.h"
 
 
-#include "HSVUDPSink.h"
+#include "net/RGBUDPSink.h"
 
-class HSVUDPInputOperation : public Operation {
+class RGBUDPInputOperation : public Operation {
 
-    HSVUDPSink sink;
+    RGBUDPSink sink;
 public:
-    HSVUDPInputOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end);
+    RGBUDPInputOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end);
 
-    ~HSVUDPInputOperation();
+    ~RGBUDPInputOperation();
 
-    void operator()(const AbstractBaseBuffer<HSV> &buffer);
+    Operation::BufferType operator()(Operation::BufferType &buffer);
 
 };
-
-
-#endif //LIGHTSD_UDPINPUTOPERATION_H
