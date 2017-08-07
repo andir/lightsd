@@ -1,7 +1,3 @@
-//
-// Created by andi on 10/2/16.
-//
-
 #include <tgmath.h>
 #include "hsv.h"
 #include "rgb.h"
@@ -107,7 +103,7 @@ HSV HSV::operator+(const HSV &rhs) const {
     };
 }
 
-HSV HSV::operator=(const RGB &rhs) const {
-   assert(0 && "RGB to HSV is not yet implemented.");
-   return *this;
+HSV HSV::operator=(const RGB &rhs) {
+    *this = rhs.toHSV();
+    return *this;
 }

@@ -30,7 +30,7 @@ struct HSV {
     }
 
     HSV operator+(const HSV &rhs) const;
-    HSV operator=(const RGB &rhs) const;
+    HSV operator=(const RGB &rhs);
 
     void print() const;
 

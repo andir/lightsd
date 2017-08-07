@@ -43,5 +43,5 @@ struct RGB {
         return RGB{R, G, B};
     }
 
-    HSV toHSV();
+    HSV toHSV() const;
 };

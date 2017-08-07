@@ -3,7 +3,7 @@
 
 #include <algorithm>
 
-HSV RGB::toHSV() {
+HSV RGB::toHSV() const {
     auto maxRGB = std::max(std::max(
             this->red,
             this->green
