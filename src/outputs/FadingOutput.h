@@ -1,5 +1,4 @@
-#ifndef LIGHTSD_FADINGOUTPUT_H
-#define LIGHTSD_FADINGOUTPUT_H
+#pragma once
 
 #include "../utils/util.h"
 #include "../FrameScheduler.h"
@@ -112,6 +111,3 @@ private:
         }
     }
 };
-
-
-#endif //LIGHTSD_FADINGOUTPUT_H

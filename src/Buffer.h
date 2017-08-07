@@ -1,6 +1,4 @@
-#ifndef LIGHTSD_BUFFER_H
-#define LIGHTSD_BUFFER_H
-
+#pragma once
 
 #include <cassert>
 #include <cstdlib>
@@ -229,6 +227,3 @@ public:
     }
 
 };
-
-
-#endif //LIGHTSD_BUFFER_H

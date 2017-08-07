@@ -1,9 +1,4 @@
-//
-// Created by andi on 10/3/16.
-//
-
-#ifndef LIGHTSD_MEMFD_H
-#define LIGHTSD_MEMFD_H
+#pragma once
 
 #include <string>
 #include <linux/memfd.h>
@@ -31,6 +26,3 @@ public:
 
     ~MemFD();
 };
-
-
-#endif //LIGHTSD_MEMFD_H

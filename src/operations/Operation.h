@@ -1,9 +1,4 @@
-//
-// Created by andi on 10/12/16.
-//
-
-#ifndef LIGHTSD_OPERATION_H
-#define LIGHTSD_OPERATION_H
+#pragma once
 
 #include "../Buffer.h"
 #include "../VariableStore/BoundConcreteValueType.h"
@@ -60,5 +55,3 @@ public:
 
     virtual float getAlpha() const { return alpha; }
 };
-
-#endif //LIGHTSD_OPERATION_H

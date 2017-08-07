@@ -1,5 +1,4 @@
-#ifndef LIGHTSD_RAINDROP_H
-#define LIGHTSD_RAINDROP_H
+#pragma once
 
 #include <yaml-cpp/yaml.h>
 
@@ -47,5 +46,3 @@ public:
 
     Operation::BufferType operator()(Operation::BufferType &buffer);
 };
-
-#endif //LIGHTSD_RAINDROP_H

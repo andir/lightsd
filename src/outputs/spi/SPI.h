@@ -1,9 +1,4 @@
-//
-// Created by andi on 3/15/17.
-//
-
-#ifndef LIGHTSD_I2C_H
-#define LIGHTSD_I2C_H
+#pragma once
 
 extern "C" {
 #include <linux/spi/spidev.h>
@@ -114,6 +109,3 @@ public:
         }
     }
 };
-
-
-#endif //LIGHTSD_I2C_H

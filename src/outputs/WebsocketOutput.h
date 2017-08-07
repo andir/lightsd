@@ -1,9 +1,4 @@
-//
-// Created by andi on 10/4/16.
-//
-
-#ifndef LIGHTSD_WEBSOCKETOUTPUT_H_H
-#define LIGHTSD_WEBSOCKETOUTPUT_H_H
+#pragma once
 
 #include <websocketpp/config/asio_no_tls.hpp>
 
@@ -263,6 +258,3 @@ private:
 
 
 };
-
-
-#endif //LIGHTSD_WEBSOCKETOUTPUT_H_H

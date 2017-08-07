@@ -1,10 +1,4 @@
-//
-// Created by andi on 10/3/16.
-//
-
-#ifndef LIGHTSD_MEMMAP_H
-#define LIGHTSD_MEMMAP_H
-
+#pragma once
 
 class MemMap {
     size_t size;
@@ -27,6 +21,3 @@ public:
         return size;
     }
 };
-
-
-#endif //LIGHTSD_MEMMAP_H

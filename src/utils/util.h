@@ -1,9 +1,4 @@
-//
-// Created by andi on 10/6/16.
-//
-
-#ifndef LIGHTSD_UTIL_H
-#define LIGHTSD_UTIL_H
+#pragma once
 
 #include <chrono>
 #include <yaml-cpp/yaml.h>
@@ -49,6 +44,3 @@ struct MeasureTime {
 
     ~MeasureTime() {}
 };
-
-
-#endif //LIGHTSD_UTIL_H

@@ -1,10 +1,11 @@
+#pragma once
+
 #include <yaml-cpp/yaml.h>
 #include "../VariableStore/ConcreteValueType.h"
 #include "../VariableStore/VariableStore.h"
 #include "../VariableStore/BoundConcreteValueType.h"
 #include "../algorithm.h"
 #include "../hsv.h"
-
 
 class FadeOperation : public Operation {
     BoundConcreteValue<float> min;
@@ -59,5 +60,3 @@ public:
         return buffer;
     }
 };
-
-

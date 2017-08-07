@@ -1,9 +1,4 @@
-//
-// Created by andi on 3/14/17.
-//
-
-#ifndef LIGHTSD_RANDOM_H
-#define LIGHTSD_RANDOM_H
+#pragma once
 
 #include <random>
 
@@ -21,5 +16,3 @@ inline int random_int_in_range(const int lower, const int upper) {
 
     return val;
 };
-
-#endif //LIGHTSD_RANDOM_H

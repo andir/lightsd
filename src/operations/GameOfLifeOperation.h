@@ -6,7 +6,6 @@
 #include "../VariableStore/VariableStore.h"
 #include "../VariableStore/BoundConcreteValueType.h"
 
-
 class GameOfLifeOperation : public Operation {
     bool initialized;
     size_t frame_counter;
@@ -41,5 +40,3 @@ public:
 
     virtual BufferType operator()(BufferType &buffer);
 };
-
-

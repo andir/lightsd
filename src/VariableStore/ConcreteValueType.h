@@ -1,9 +1,4 @@
-//
-// Created by andi on 10/11/16.
-//
-
-#ifndef VARIABLESTORE_CONCRETEVALUETYPE_H
-#define VARIABLESTORE_CONCRETEVALUETYPE_H
+#pragma once
 
 #include "ValueType.h"
 #include "InvalidVariableTypeException.h"
@@ -142,6 +137,3 @@ private:
 
 
 };
-
-
-#endif //VARIABLESTORE_CONCRETEVALUETYPE_H

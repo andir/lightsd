@@ -1,5 +1,4 @@
-#ifndef LIGHTSD_UDPOUTPUTWRAPPER_H
-#define LIGHTSD_UDPOUTPUTWRAPPER_H
+#pragma once
 
 #include <yaml-cpp/yaml.h>
 #include "UDPOutput.h"
@@ -16,5 +15,3 @@ public:
 
     virtual void draw(const std::vector<HSV> &buffer);
 };
-
-#endif //LIGHTSD_UDPOUTPUTWRAPPER_H

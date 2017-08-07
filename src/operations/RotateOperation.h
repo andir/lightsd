@@ -1,9 +1,4 @@
-//
-// Created by andi on 10/12/16.
-//
-
-#ifndef LIGHTSD_ROTATEOPERATION_H
-#define LIGHTSD_ROTATEOPERATION_H
+#pragma once
 
 #include <yaml-cpp/yaml.h>
 
@@ -25,6 +20,3 @@ public:
 
     virtual Operation::BufferType operator()(Operation::BufferType &buffer);
 };
-
-
-#endif //LIGHTSD_ROTATEOPERATION_H

@@ -1,9 +1,4 @@
-//
-// Created by andi on 10/3/16.
-//
-
-#ifndef LIGHTSD_UDPOUTPUT_H
-#define LIGHTSD_UDPOUTPUT_H
+#pragma once
 
 #include <boost/asio.hpp>
 #include "Output.h"
@@ -42,6 +37,3 @@ private:
     }
 
 };
-
-
-#endif //LIGHTSD_UDPOUTPUT_H

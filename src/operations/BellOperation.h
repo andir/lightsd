@@ -1,9 +1,4 @@
-//
-// Created by andi on 11/20/16.
-//
-
-#ifndef LIGHTSD_BELLOPERATION_H
-#define LIGHTSD_BELLOPERATION_H
+#pragma once
 
 #include "Operation.h"
 
@@ -30,6 +25,3 @@ public:
 
     virtual void update();
 };
-
-
-#endif //LIGHTSD_BELLOPERATION_H

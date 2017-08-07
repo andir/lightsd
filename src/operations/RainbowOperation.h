@@ -1,9 +1,4 @@
-//
-// Created by andi on 10/12/16.
-//
-
-#ifndef LIGHTSD_RAINBOWOPERATION_H
-#define LIGHTSD_RAINBOWOPERATION_H
+#pragma once
 
 #include <yaml-cpp/yaml.h>
 #include "Operation.h"
@@ -17,6 +12,3 @@ public:
 
     virtual Operation::BufferType operator()(BufferType &buffer);
 };
-
-
-#endif //LIGHTSD_RAINBOWOPERATION_H

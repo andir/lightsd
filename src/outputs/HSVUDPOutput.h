@@ -1,9 +1,4 @@
-//
-// Created by andi on 10/3/16.
-//
-
-#ifndef LIGHTSD_HSVUDPOUTPUT_H
-#define LIGHTSD_HSVUDPOUTPUT_H
+#pragma once
 
 #include <boost/asio.hpp>
 #include <yaml-cpp/yaml.h>
@@ -38,6 +33,3 @@ private:
     }
 
 };
-
-
-#endif //LIGHTSD_HSVUDPOUTPUT_H

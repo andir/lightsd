@@ -1,9 +1,4 @@
-//
-// Created by andi on 10/11/16.
-//
-
-#ifndef LIGHTSD_MQTTVARSTORE_H
-#define LIGHTSD_MQTTVARSTORE_H
+#pragma once
 
 #include <mqtt_client_cpp.hpp>
 #include <boost/asio.hpp>
@@ -53,8 +48,4 @@ private:
                          std::string contents);
 
     void close_handler();
-
 };
-
-
-#endif //LIGHTSD_MQTTVARSTORE_H

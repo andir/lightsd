@@ -1,10 +1,4 @@
-//
-// Created by andi on 3/15/17.
-//
-
-#ifndef LIGHTSD_SPIOUTPUT_H
-#define LIGHTSD_SPIOUTPUT_H
-
+#pragma once
 
 #include <yaml-cpp/yaml.h>
 #include "../Output.h"
@@ -38,7 +32,3 @@ private:
     }
 
 };
-
-
-#endif //LIGHTSD_SPIOUTPUT_H
-

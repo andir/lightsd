@@ -1,16 +1,10 @@
-//
-// Created by andi on 10/2/16.
-//
-
-#ifndef LIGHTSD_HSV_H
-#define LIGHTSD_HSV_H
+#pragma once
 
 #include <vector>
 #include <array>
 #include <iostream>
 
 struct RGB;
-
 
 struct HSV {
 
@@ -43,5 +37,3 @@ struct HSV {
     std::string string() const;
 
 };
-
-#endif //LIGHTSD_HSV_H

@@ -1,9 +1,4 @@
-//
-// Created by andi on 12/10/16.
-//
-
-#ifndef LIGHTSD_UDPSINK_H
-#define LIGHTSD_UDPSINK_H
+#pragma once
 
 #include <boost/array.hpp>
 #include <boost/bind.hpp>
@@ -51,8 +46,4 @@ private:
     void run();
 
     void handle_receive(const boost::system::error_code &error, std::size_t bytes);
-
 };
-
-
-#endif //LIGHTSD_UDPSINK_H

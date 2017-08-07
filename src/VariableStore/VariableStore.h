@@ -1,9 +1,4 @@
-//
-// Created by andi on 10/11/16.
-//
-
-#ifndef VARIABLESTORE_VARIABLESTORE_H
-#define VARIABLESTORE_VARIABLESTORE_H
+#pragma once
 
 #include <string>
 #include <memory>
@@ -34,6 +29,3 @@ public:
     std::string getTypeName(const std::string& name) const;
 
 };
-
-
-#endif //VARIABLESTORE_VARIABLESTORE_H

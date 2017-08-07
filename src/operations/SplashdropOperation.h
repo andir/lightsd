@@ -1,9 +1,4 @@
-//
-// Created by andi on 12/4/16.
-//
-
-#ifndef LIGHTSD_SPLASHDROPOPERATION_H
-#define LIGHTSD_SPLASHDROPOPERATION_H
+#pragma once
 
 #include <yaml-cpp/yaml.h>
 
@@ -48,6 +43,3 @@ public:
     Operation::BufferType operator()(Operation::BufferType &buffer);
 
 };
-
-
-#endif //LIGHTSD_SPLASHDROPOPERATION_H

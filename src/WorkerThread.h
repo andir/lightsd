@@ -1,9 +1,4 @@
-//
-// Created by andi on 10/12/16.
-//
-
-#ifndef LIGHTSD_WORKERTHREAD_H
-#define LIGHTSD_WORKERTHREAD_H
+#pragma once
 
 #include <mutex>
 #include "config.h"
@@ -24,6 +19,3 @@ public:
 
     void run();
 };
-
-
-#endif //LIGHTSD_WORKERTHREAD_H

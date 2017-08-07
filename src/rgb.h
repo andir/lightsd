@@ -1,9 +1,4 @@
-//
-// Created by andi on 10/2/16.
-//
-
-#ifndef LIGHTSD_RGB_H
-#define LIGHTSD_RGB_H
+#pragma once
 
 #include <sstream>
 #include <iomanip>
@@ -50,6 +45,3 @@ struct RGB {
 
     HSV toHSV();
 };
-
-
-#endif //LIGHTSD_RGB_H

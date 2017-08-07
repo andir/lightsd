@@ -1,10 +1,4 @@
-//
-// Created by andi on 10/3/16.
-//
-
-#ifndef LIGHTSD_SHAREDMEMORYBUFFER_H
-#define LIGHTSD_SHAREDMEMORYBUFFER_H
-
+#pragma once
 
 #include "rgb.h"
 #include "Buffer.h"
@@ -61,6 +55,3 @@ public:
     }
 
 };
-
-
-#endif //LIGHTSD_SHAREDMEMORYBUFFER_H

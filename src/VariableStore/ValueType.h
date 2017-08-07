@@ -1,5 +1,4 @@
-#ifndef VARIABLESTORE_VALUETYPE_H
-#define VARIABLESTORE_VALUETYPE_H
+#pragma once
 
 #include <ostream>
 #include <functional>
@@ -36,6 +35,3 @@ public:
 std::ostream &operator<<(std::ostream &os, const ValueType &obj);
 
 std::ostream &operator<<(std::ostream &os, const ValueType::Type t);
-
-
-#endif //VARIABLESTORE_VALUETYPE_H

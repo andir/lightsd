@@ -1,18 +1,11 @@
-//
-// Created by andi on 12/11/16.
-//
-
-#ifndef LIGHTSD_UDPINPUTOPERATION_H
-#define LIGHTSD_UDPINPUTOPERATION_H
+#pragma once
 
 #include "Operation.h"
-
 
 #include <yaml-cpp/yaml.h>
 
 #include "../VariableStore/VariableStore.h"
 #include "../VariableStore/BoundConcreteValueType.h"
-
 
 #include "../net/HSVUDPSink.h"
 
@@ -27,6 +20,3 @@ public:
     Operation::BufferType operator()(Operation::BufferType &buffer);
 
 };
-
-
-#endif //LIGHTSD_UDPINPUTOPERATION_H

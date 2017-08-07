@@ -1,9 +1,4 @@
-//
-// Created by andi on 3/14/17.
-//
-
-#ifndef LIGHTSD_LUAOPERATION_H
-#define LIGHTSD_LUAOPERATION_H
+#pragma once
 
 #include "../Operation.h"
 
@@ -27,6 +22,3 @@ public:
         return buffer; // FIXME: 
     }
 };
-
-
-#endif //LIGHTSD_LUAOPERATION_H

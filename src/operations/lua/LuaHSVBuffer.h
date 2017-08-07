@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "../../utils/luna.h"
 #include "../../hsv.h"
 #include "../../Buffer.h"

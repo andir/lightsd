@@ -1,9 +1,4 @@
-//
-// Created by andi on 3/14/17.
-//
-
-#ifndef LIGHTSD_LUNA_H_H
-#define LIGHTSD_LUNA_H_H
+#pragma once
 
 #include <luajit-2.0/lua.hpp>
 
@@ -62,5 +57,3 @@ public:
         int (T::*mfunc)(lua_State *);
     };
 };
-
-#endif //LIGHTSD_LUNA_H_H

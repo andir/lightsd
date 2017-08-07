@@ -1,16 +1,10 @@
-//
-// Created by andi on 10/3/16.
-//
-
-#ifndef LIGHTSD_ALGORITHM_H
-#define LIGHTSD_ALGORITHM_H
+#pragma once
 
 #include <cassert>
 #include <algorithm>
 #include <cmath>
 #include "hsv.h"
 #include "rgb.h"
-
 
 namespace {
     template<typename T>
@@ -194,8 +188,4 @@ namespace algorithm {
     void initSolidColor(Iterator start, Iterator stop, ColorType color) {
         std::fill(start, stop, color);
     };
-
 };
-
-
-#endif //LIGHTSD_ALGORITHM_H

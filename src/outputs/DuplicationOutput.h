@@ -1,9 +1,4 @@
-//
-// Created by andi on 10/4/16.
-//
-
-#ifndef LIGHTSD_DUPLICATIONOUTPUT_H
-#define LIGHTSD_DUPLICATIONOUTPUT_H
+#pragma once
 
 template<typename Output1, typename Output2>
 class DuplicationOutput : public Output {
@@ -29,6 +24,3 @@ private:
     }
 
 };
-
-
-#endif //LIGHTSD_DUPLICATIONOUTPUT_H

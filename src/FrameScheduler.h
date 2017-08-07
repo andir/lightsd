@@ -1,9 +1,4 @@
-//
-// Created by andi on 10/6/16.
-//
-
-#ifndef LIGHTSD_FRAMESCHEDULER_H
-#define LIGHTSD_FRAMESCHEDULER_H
+#pragma once
 
 #include "utils/util.h"
 
@@ -35,6 +30,3 @@ public:
     }
 
 };
-
-
-#endif //LIGHTSD_FRAMESCHEDULER_H
