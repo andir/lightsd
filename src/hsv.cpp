@@ -106,3 +106,8 @@ HSV HSV::operator+(const HSV &rhs) const {
             ensure_bounds<value_type, 0, 1>(value + rhs.value),
     };
 }
+
+HSV HSV::operator=(const RGB &rhs) const {
+   assert(0 && "RGB to HSV is not yet implemented.");
+   return *this;
+}
