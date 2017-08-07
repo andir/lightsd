@@ -48,4 +48,5 @@ private:
                          std::string contents);
 
     void close_handler();
+    void schedule_reconnect();
 };
