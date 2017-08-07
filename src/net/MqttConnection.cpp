@@ -27,6 +27,8 @@ namespace {
         std::stringstream publish_ss, value_ss;
         publish_ss << realm << key;
         value_ss << val;
+        client->publish(publish_ss.str() + "/value", value_ss.str(), mqtt::qos::at_most_once, true);
+        // DEPRECATED: we just keep this for some time to migrate Homeassitant to the new format
         client->publish(publish_ss.str(), value_ss.str(), mqtt::qos::at_most_once, true);
     }
 
