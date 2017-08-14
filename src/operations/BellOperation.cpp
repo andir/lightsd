@@ -16,7 +16,7 @@ BellOperation::BellOperation(VariableStore &store, YAML::const_iterator begin, Y
                               getValueByKey<int>("duration", begin, end, 5000)),
         fade_milliseconds("bell/fade_duration", Operation::INT, store,
                           getValueByKey<int>("fade_duration", begin, end, 750)) {
-    enabled = false;
+    //enabled = false;
 }
 
 float BellOperation::getShade() const {
@@ -59,10 +59,12 @@ Operation::BufferType BellOperation::operator()(Operation::BufferType &buffer) {
     return buffer;
 }
 
-void BellOperation::update() {
+void BellOperation::update(const Config *const) {
     if (!isEnabled()) { state = State::IDLE; return; }
 
     time_passed = time_measurement.measure();
+
+    std::cerr << "State: " << toString(state) << " " << time_passed << std::endl; 
 
     switch (state) {
         case State::IDLE:
@@ -70,11 +72,12 @@ void BellOperation::update() {
                 time_passed = 0;
                 // fallthrough
         case State::RUNNING:
-                state = State::RUNNING; // handle fall through case
                 if (time_passed < fade_milliseconds) {
                         state = State::FADE_IN;
                 } else if (time_passed > duration_milliseconds - fade_milliseconds) {
                         state = State::FADE_OUT;
+                } else {
+                        state = State::RUNNING;
                 }
                 break;
         case State::FADE_IN:
@@ -86,7 +89,6 @@ void BellOperation::update() {
                         state = State::IDLE;
                         enabled = false;
                         unlock_enable = false;
-                        return;
                 }
                 break;
     }

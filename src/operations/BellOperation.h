@@ -9,6 +9,17 @@ class BellOperation : public Operation {
         FADE_IN,
         FADE_OUT,
     } state;
+
+    inline const char* toString(State s) {
+        switch (s) {
+                case State::IDLE: return "IDLE";
+                case State::RUNNING: return "RUNNING";
+                case State::FADE_IN: return "FADE_IN";
+                case State::FADE_OUT: return "FADE_OUT";
+                default: return "UNKNOWN";
+        }
+    }
+
     int64_t time_passed;
 
     MeasureTime<> time_measurement;
@@ -31,5 +42,5 @@ public:
 
     virtual Operation::BufferType operator()(Operation::BufferType &buffer);
 
-    virtual void update();
+    virtual void update(const Config *const);
 };
