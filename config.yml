@@ -4,12 +4,18 @@ fps: 20
 
 mqtt:
   broker: whisky.w17.io
-  realm: /lights-foo/
+  realm: /lightsbla/
 
 
-sequence:
-  - initRainbow
-  - raindrop:
+operations:
+  rainbow:
+    type: initRainbow
+    params:
+      enabled: true
+  raindrop:
+    type: raindrop
+    params:
+      enabled: false
       saturation_min: 0.1
       saturation_max: 0.8
       hue_min: 10
@@ -22,47 +28,56 @@ sequence:
       decay_low: 0.9
       decay_high: 0.99
       decay_resolution: 100000
-
-  - splashdrop:
+  splashdrop:
+    type: splashdrop
+    params:
       enabled: false
-
-  - gameoflife:
-      enabled: true
-
-  - udpinput:
-      enabled: true
+  gameoflife:
+    type: gameoflife
+    params:
+      enabled: false
+  udp-hsv-1337:
+    type: hsvudpinput
+    params:
+      enabled: false
       port: 1337
-
-
-#  - initSolidColor:
-#      hue: 0.0
-#      saturation: 0.0
-#      value: 0.1
-
-  - shade:
+  shade:
+    type: shade
+    params:
       value: 1
-
-  - bell
-
-  - rotate:
-      step_width: 0
-   
-  - lua:
+  bell:
+    type: bell
+    params:
       enabled: false
-      name: example
+      duration: 5000
+  rotate:
+    type: rotate
+    params:
+      step_width: 0
+  example-lua:
+    type: lua
+    params:
       filename: example.lua
-#  - fade:
-#      min: 0.0
-#      max: 1
-#      from: 0
-#      to: 1200
+  fade-100-left:
+    type: fade
+    params:
+      min: 0.0
+      max: 1.0
+      from: 0
+      to: 100
 
-#  - fade:
-#      min: 1
-#      max: 1
-#      from: 35
-#      to: 80
-
+sequence:
+  - rainbow
+  - raindrop
+  - splashdrop
+  - gameoflife
+  - udp-hsv-1337
+  - example-lua
+  - fade-100-left
+  - example-lua
+  - rotate
+  - shade
+  - bell
 
 outputs:
   Websocket1:

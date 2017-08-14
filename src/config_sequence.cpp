@@ -49,6 +49,15 @@ generateSequenceStep(VariableStore &store, const std::string &step_type, YAML::c
     }
 }
 
+std::unique_ptr<Operation>
+generateOperation(VariableStore &store, const YAML::Node &config_node) {
+    assert(config_node.Type() == YAML::NodeType::Map);
+    const auto& operation_type = config_node["type"].as<std::string>();
+    const auto& operation_params = config_node["params"];
+    return generateSequenceStep(store, operation_type, operation_params.begin(), operation_params.end());
+}
+
+
 void
 parseSequence(VariableStore &store, std::vector<std::unique_ptr<Operation>> &steps, const YAML::Node &sequence_node) {
     assert(sequence_node.Type() == YAML::NodeType::Sequence);
