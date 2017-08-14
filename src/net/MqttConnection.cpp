@@ -6,6 +6,7 @@
 #include <fstream>
 #include <string>
 #include <thread>
+#include <future>
 
 #include <boost/algorithm/string.hpp>
 
@@ -90,7 +91,7 @@ MqttConnection::MqttConnection(std::shared_ptr<VariableStore>& store, const std:
 
 bool MqttConnection::connack_handler(bool sp, std::uint8_t connack_return_code) {
     std::cerr << "connack return code: " << int(connack_return_code) << std::endl;
-    if (connack_return_code == mqtt::connect_return_code::accepted) {
+    if (connack_return_code != mqtt::connect_return_code::accepted) {
         // schedule reconnect
         this->schedule_reconnect();
         return false;
@@ -175,7 +176,7 @@ void MqttConnection::close_handler() {
 }
 
 void MqttConnection::schedule_reconnect() {
-    std::thread([this](){
+    std::async(std::launch::async, [this](){
        std::cerr << "attempting reconnect to mqtt browker" << std::endl;
        std::this_thread::sleep_for(std::chrono::seconds(3));
        this->mqtt_client->connect();

@@ -15,7 +15,6 @@ class MqttConnection {
     std::shared_ptr<mqtt::client<boost::asio::ip::tcp::socket, mqtt::null_strand>> mqtt_client;
     std::thread worker_thread;
 
-
 public:
     MqttConnection(std::shared_ptr<VariableStore>& store, const std::string& broker, const std::string& realm);
 
