@@ -2,3 +2,5 @@
 /cotire
 /CMakeFiles
 /CMakeCache.txt
+/*.cmake
+/Makefile
