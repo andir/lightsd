@@ -29,6 +29,7 @@ class BellOperation : public Operation {
     BoundConcreteValue<float> value;
 
     BoundConcreteValue<bool> unlock_enable;
+    BoundConcreteValue<bool> transparent;
 
     BoundConcreteValue<int> duration_milliseconds;
     BoundConcreteValue<int> fade_milliseconds;
