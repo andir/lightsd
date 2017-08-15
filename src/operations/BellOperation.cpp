@@ -12,6 +12,9 @@ BellOperation::BellOperation(const std::string& name, VariableStore &store, YAML
         value(name + "/value", Operation::HSV_VALUE, store, getValueByKey<float>("value", begin, end, 1.0f)),
         unlock_enable(name + "/unlock_enable", Operation::BOOLEAN, store,
                       getValueByKey<bool>("unlock_enable", begin, end, false)),
+        transparent(name + "/transparent", Operation::BOOLEAN, store,
+                      getValueByKey<bool>("transparent", begin, end, false)),
+
         duration_milliseconds(name + "/duration", Operation::INT, store,
                               getValueByKey<int>("duration", begin, end, 5000)),
         fade_milliseconds(name + "/fade_duration", Operation::INT, store,
@@ -53,7 +56,14 @@ Operation::BufferType BellOperation::operator()(Operation::BufferType &buffer) {
         const int p = i * perc;
         const int z = (time_passed / 1000) % 2;
 
-        (*buffer).at(i) = (p % 2 == z) ? pixel : other_pixel;
+        if (p % 2 == z) {
+        
+            (*buffer).at(i) = pixel;
+    
+        } else {
+            if (!transparent)
+                (*buffer).at(i) = other_pixel;
+        }
     }
 
     return buffer;
