@@ -1,21 +1,21 @@
 ---
-width: 2000
-fps: 20
+width: 1200
+fps: 30
 
 mqtt:
   broker: whisky.w17.io
-  realm: /lightsbla/
+  realm: w17/lounge/light/ 
 
 
 operations:
   rainbow:
-    type: initRainbow
+    type: rainbow
     params:
       enabled: true
   raindrop:
     type: raindrop
     params:
-      enabled: false
+      enabled: true
       saturation_min: 0.1
       saturation_max: 0.8
       hue_min: 10
@@ -31,7 +31,7 @@ operations:
   splashdrop:
     type: splashdrop
     params:
-      enabled: false
+      enabled: true
   gameoflife:
     type: gameoflife
     params:
@@ -53,7 +53,7 @@ operations:
   rotate:
     type: rotate
     params:
-      step_width: 0
+      step_width: 50
   example-lua:
     type: lua
     params:
@@ -65,16 +65,71 @@ operations:
       max: 1.0
       from: 0
       to: 100
+  sub-sequence1:
+    type: sequence
+    params:
+      enabled: true
+      from: 10
+      to: 200
+      operations:
+        - name: raindrop
+          type: raindrop
+          params:
+            enabled: true
+        - name: rotate
+          type: rotate
+          params:
+            enabled: true
+            step_width: 10
+  sub-sequence2:
+    type: sequence
+    params:
+      enabled: true
+      from: 200
+      to: 400
+      operations:
+        - name: rainbow
+          type: rainbow
+          params:
+            enabled: true
+        - name: rotate
+          type: rotate
+          params:
+            enabled: true
+            step_width: -20
+  sub-sequence3:
+    type: sequence
+    params:
+      enabled: true
+      from: 400
+      to: 600
+      operations:
+        - name: bell
+          type: bell
+          params:
+            enabled: true
+            duration: 500000000
+        - name: rotate
+          type: rotate
+          params:
+            enabled: true
+            step_width: 40
+
+
+
 
 sequence:
   - rainbow
-  - raindrop
-  - splashdrop
+#  - raindrop
+#  - splashdrop
   - gameoflife
-  - udp-hsv-1337
-  - example-lua
-  - fade-100-left
-  - example-lua
+#  - udp-hsv-1337
+#  - example-lua
+#  - fade-100-left
+#  - example-lua
+  - sub-sequence1
+  - sub-sequence2
+  - sub-sequence3
   - rotate
   - shade
   - bell
@@ -84,26 +139,8 @@ outputs:
     type: websocket
     params:
       port: 9000
-#  CrashMe:
-#    type: devmem
-#    params:
-#      filename: /dev/mem
-#      lengths:
-#        - 1202
-#        - 1000
-#  SPI1:
-#    type: spi
-#    params:
-#      device: /dev/spidev.0
-#  SHM:
-#    type: shm
-#    params:
-#      filename: leds
-
-#  UDPOutput:
-#    type: udp
-#    params:
-#      host: "fd42:ccc:da:1::2"
-#      port: 6453
-
-#output: Websocket1
+  Ranzput:
+    type: hsvudp
+    params:
+      host: 172.23.97.135
+      port: 1337

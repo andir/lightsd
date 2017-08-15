@@ -227,3 +227,46 @@ public:
     }
 
 };
+
+template<typename ValueType>
+class BufferView : public AbstractBaseBuffer<typename ValueType::value_type> {
+public:
+    using parent = AbstractBaseBuffer<typename ValueType::value_type>;
+    using value_type = typename parent::value_type;
+    using IteratorType = Iterator<BufferView>;
+    using UpperT = std::shared_ptr<AbstractBaseBuffer<typename ValueType::value_type> >;
+private:
+    UpperT upper;
+    size_t offset;
+    size_t len;
+
+public:
+    size_t _count;
+
+    BufferView(UpperT& upper, size_t offset, size_t len) : upper(upper), offset(offset), _count(len) {
+        
+    }
+
+    inline typename parent::value_type &at(size_t pos) const {
+       return upper->at(offset + pos); 
+    }
+
+    size_t size() const {
+        return _count;
+    }
+
+    size_t count() const {
+        return _count;
+    }
+
+    inline IteratorType begin() const {
+        return IteratorType(this, offset);
+    }
+
+    inline IteratorType end() const {
+        return IteratorType(this, offset + _count, true);
+    }
+   
+};
+
+

@@ -21,8 +21,8 @@ protected:
     }
 
 public:
-
-    using BufferType = std::shared_ptr<AbstractBaseBuffer<HSV> >;
+    using ContainerType = AbstractBaseBuffer<HSV>;
+    using BufferType = std::shared_ptr<ContainerType >;
 
     Operation(const std::string& name, VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end) :
             name(name),
