@@ -36,7 +36,7 @@ public:
 
     virtual ~GameOfLifeOperation() {}
 
-    void update(const Config *const);
+    void update(const size_t width, const size_t fps);
 
     virtual BufferType operator()(BufferType &buffer);
 };

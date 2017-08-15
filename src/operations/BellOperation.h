@@ -43,5 +43,5 @@ public:
 
     virtual Operation::BufferType operator()(Operation::BufferType &buffer);
 
-    virtual void update(const Config *const);
+    virtual void update(const size_t width, const size_t fps);
 };
