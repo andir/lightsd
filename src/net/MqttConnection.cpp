@@ -84,7 +84,9 @@ MqttConnection::MqttConnection(std::shared_ptr<VariableStore>& store, const std:
     for (const auto &e : this->store->keys()) {
         auto val = this->store->getVar(e);
         val->addOnChangeCallback([this,e](ValueType* t){
-            publish_value(this->mqtt_client, this->realm, e, *t);
+            if (this->mqtt_client->connected()) {
+                publish_value(this->mqtt_client, this->realm, e, *t);
+            }
         });
     }
 }
