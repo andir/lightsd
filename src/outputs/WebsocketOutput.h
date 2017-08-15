@@ -37,7 +37,7 @@ enum action_type {
     QUIT
 };
 
-typedef std::string message_type;
+typedef std::vector<uint8_t> message_type;
 
 struct action {
     action(action_type t, connection_hdl h) : type(t), hdl(h) {}
@@ -64,6 +64,7 @@ public:
         // Register handler callbacks
         m_server.set_open_handler(bind(&broadcast_server::on_open, this, ::_1));
         m_server.set_close_handler(bind(&broadcast_server::on_close, this, ::_1));
+        m_server.set_http_handler(bind(&broadcast_server::on_http, this, ::_1));
     }
 
     ~broadcast_server() {
@@ -106,6 +107,62 @@ public:
         }
     }
 
+    void on_http(connection_hdl hdl) {
+            server::connection_ptr con = m_server.get_con_from_hdl(hdl);
+            const std::string filename = con->get_resource();
+            m_server.get_alog().write(websocketpp::log::alevel::app, "http request1:" + filename);
+            if (filename == "/") {
+               std::string s = R"raw(<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<canvas id="canvas" width="256" height="256"></canvas>
+</table>
+<script>
+  (function () {
+    var ele = document.getElementById('canvas');
+    var ctx = ele.getContext('2d');
+
+    var ws = new WebSocket("ws://" + location.host + "/stream");
+    ws.binaryType = 'arraybuffer';
+    
+    ws.onopen = function () {
+      console.log('Opened');
+    }
+
+    ws.onmessage = function (event) {
+      // Interpret data as RGB-pixel array
+      var data = new Uint8Array(event.data);
+      var pixels = event.data.byteLength / 3;
+      if (ele.width != pixels) {
+        ele.width = pixels;
+      }
+      // Shifting down
+      ctx.putImageData(ctx.getImageData(0, 0, pixels, pixels -1), 0, 1);
+      // Drawing next line
+      img = ctx.createImageData(pixels, 1);
+      for (i = 0; i <= pixels; i++) {
+        img.data[i * 4 + 0] = data[i * 3 + 0];
+        img.data[i * 4 + 1] = data[i * 3 + 1];
+        img.data[i * 4 + 2] = data[i * 3 + 2];
+        img.data[i * 4 + 3] = 255;
+      }
+
+      ctx.putImageData(img, 0, 0);
+    }
+  })();
+</script>
+</body>
+</html>)raw";
+               con->set_body(s);
+               con->set_status(websocketpp::http::status_code::ok);
+            } else {
+               const std::string s = "<h1>Error 404</h1>";
+               con->set_body(s);
+               con->set_status(websocketpp::http::status_code::not_found);
+            }
+    }
 
     void on_open(connection_hdl hdl) {
         {
@@ -135,7 +192,7 @@ public:
 //        m_action_cond.notify_one();
     }
 
-    void push_message(std::string msg) {
+    void push_message(std::vector<uint8_t>& msg) {
         {
             lock_guard<mutex> guard(m_action_lock);
             const connection_hdl hdl = std::shared_ptr<void>(nullptr);
@@ -174,10 +231,7 @@ public:
                 websocketpp::lib::error_code ec;
 
                 for (it = m_connections.begin(); it != m_connections.end(); ++it) {
-                    m_server.send(*it, a.msg, websocketpp::frame::opcode::text, ec);
-                    if (ec) {
-                        // yeah yeah.. lets move on...
-                    }
+                    m_server.send(*it, static_cast<void*>(a.msg.data()), a.msg.size(), websocketpp::frame::opcode::binary, ec);
                 }
             } else {
                 // undefined.
@@ -231,29 +285,20 @@ public:
 private:
     template<typename Container>
     void _draw(Container &buffer) {
-
-
         if (!server.has_clients())
             return;
 
-        std::stringstream ss;
-
-
-        ss << "{\"values\":[";
-
-
-        size_t count = 0;
+        std::vector<uint8_t> packet(buffer.size() * 3);
+        size_t i = 0;
         for (const auto &e: buffer) {
             RGB v = e.toRGB();
-            ss << "[" << int(v.red) << "," << int(v.green) << "," << int(v.blue) << "]";
-
-            if (++count < buffer.size())
-                ss << ",";
+            packet[i*3+0] = v.red;
+            packet[i*3+1] = v.green;
+            packet[i*3+2] = v.blue;
+            ++i;
         }
 
-        ss << "]}\n";
-
-        server.push_message(ss.str());
+        server.push_message(packet);
     }
 
 
