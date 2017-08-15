@@ -14,7 +14,7 @@ class RotateOperation : public Operation {
     BoundConcreteValue<float> step_width;
     MeasureTime<> timeMeasurement;
 public:
-    RotateOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end);
+    RotateOperation(const std::string& name, VariableStore &store, YAML::const_iterator start, YAML::const_iterator end);
 
     virtual ~RotateOperation();
 

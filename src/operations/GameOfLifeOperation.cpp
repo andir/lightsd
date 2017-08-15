@@ -3,26 +3,26 @@
 #include "../utils/random.h"
 
 
-GameOfLifeOperation::GameOfLifeOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end) :
-        Operation("gameoflife", store, start, end),
+GameOfLifeOperation::GameOfLifeOperation(const std::string& name, VariableStore &store, YAML::const_iterator start, YAML::const_iterator end) :
+        Operation(name, store, start, end),
         initialized(false),
         frame_counter(0),
-        default_hue("gameoflife/default_hue", Operation::HSV_HUE, store,
+        default_hue(name + "/default_hue", Operation::HSV_HUE, store,
                     getValueByKey<float>("default_hue", start, end, 180.0f)),
-        default_saturation("gameoflife/default_saturation", Operation::HSV_SATURATION, store,
+        default_saturation(name + "/default_saturation", Operation::HSV_SATURATION, store,
                            getValueByKey<float>("default_saturation", start, end, 0.5f)),
-        default_value("gameoflife/default_value", Operation::HSV_VALUE, store,
+        default_value(name + "/default_value", Operation::HSV_VALUE, store,
                       getValueByKey<float>("default_value", start, end, 1.0f)),
-        v0("gameoflife/v0", Operation::BOOLEAN, store, getValueByKey<bool>("v0", start, end, false)),
-        v1("gameoflife/v1", Operation::BOOLEAN, store, getValueByKey<bool>("v1", start, end, true)),
-        v2("gameoflife/v2", Operation::BOOLEAN, store, getValueByKey<bool>("v2", start, end, true)),
-        v3("gameoflife/v3", Operation::BOOLEAN, store, getValueByKey<bool>("v3", start, end, false)),
-        v4("gameoflife/v4", Operation::BOOLEAN, store, getValueByKey<bool>("v4", start, end, true)),
-        v5("gameoflife/v5", Operation::BOOLEAN, store, getValueByKey<bool>("v5", start, end, true)),
-        v6("gameoflife/v6", Operation::BOOLEAN, store, getValueByKey<bool>("v6", start, end, true)),
-        v7("gameoflife/v7", Operation::BOOLEAN, store, getValueByKey<bool>("v7", start, end, false)),
-        speed("gameoflife/speed", Operation::BOOLEAN, store, getValueByKey<float>("speed", start, end, 1.0f)),
-        randomizeColor("gameoflife/randomizeColor", Operation::BOOLEAN, store,
+        v0(name + "/v0", Operation::BOOLEAN, store, getValueByKey<bool>("v0", start, end, false)),
+        v1(name + "/v1", Operation::BOOLEAN, store, getValueByKey<bool>("v1", start, end, true)),
+        v2(name + "/v2", Operation::BOOLEAN, store, getValueByKey<bool>("v2", start, end, true)),
+        v3(name + "/v3", Operation::BOOLEAN, store, getValueByKey<bool>("v3", start, end, false)),
+        v4(name + "/v4", Operation::BOOLEAN, store, getValueByKey<bool>("v4", start, end, true)),
+        v5(name + "/v5", Operation::BOOLEAN, store, getValueByKey<bool>("v5", start, end, true)),
+        v6(name + "/v6", Operation::BOOLEAN, store, getValueByKey<bool>("v6", start, end, true)),
+        v7(name + "/v7", Operation::BOOLEAN, store, getValueByKey<bool>("v7", start, end, false)),
+        speed(name + "/speed", Operation::BOOLEAN, store, getValueByKey<float>("speed", start, end, 1.0f)),
+        randomizeColor(name + "/randomizeColor", Operation::BOOLEAN, store,
                        getValueByKey<bool>("randomizeColor", start, end, true)) {
 }
 

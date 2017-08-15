@@ -7,8 +7,8 @@
 #include "LuaHSVBuffer.h"
 
 
-LuaOperation::LuaOperation(VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end) :
-        Operation("lua_" + getValueByKey<std::string>("name", begin, end, "unknown_script"), store, begin, end),
+LuaOperation::LuaOperation(const std::string& name, VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end) :
+        Operation(name, store, begin, end),
         luaState(openLua()) {
 
     const auto fn = getValueByKey<std::string>("filename", begin, end, "");

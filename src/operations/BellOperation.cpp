@@ -2,19 +2,19 @@
 
 #include <chrono>
 
-BellOperation::BellOperation(VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end) :
-        Operation("bell", store, begin, end),
+BellOperation::BellOperation(const std::string& name, VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end) :
+        Operation(name, store, begin, end),
         state(State::IDLE),
         time_passed(0),
-        hue("bell/hue", Operation::HSV_HUE, store, getValueByKey<float>("hue", begin, end, 0.0f)),
-        saturation("bell/saturation", Operation::HSV_SATURATION, store,
+        hue(name + "/hue", Operation::HSV_HUE, store, getValueByKey<float>("hue", begin, end, 0.0f)),
+        saturation(name + "/saturation", Operation::HSV_SATURATION, store,
                    getValueByKey<float>("saturation", begin, end, 1.0f)),
-        value("bell/value", Operation::HSV_VALUE, store, getValueByKey<float>("value", begin, end, 1.0f)),
-        unlock_enable("bell/unlock_enable", Operation::BOOLEAN, store,
+        value(name + "/value", Operation::HSV_VALUE, store, getValueByKey<float>("value", begin, end, 1.0f)),
+        unlock_enable(name + "/unlock_enable", Operation::BOOLEAN, store,
                       getValueByKey<bool>("unlock_enable", begin, end, false)),
-        duration_milliseconds("bell/duration", Operation::INT, store,
+        duration_milliseconds(name + "/duration", Operation::INT, store,
                               getValueByKey<int>("duration", begin, end, 5000)),
-        fade_milliseconds("bell/fade_duration", Operation::INT, store,
+        fade_milliseconds(name + "/fade_duration", Operation::INT, store,
                           getValueByKey<int>("fade_duration", begin, end, 750)) {
     //enabled = false;
 }

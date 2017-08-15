@@ -4,33 +4,34 @@
 #include "../utils/random.h"
 
 
-RaindropOperation::RaindropOperation(VariableStore
+RaindropOperation::RaindropOperation(const std::string& name,
+                                     VariableStore
                                      &store,
                                      YAML::const_iterator start, YAML::const_iterator
                                      end) :
-        Operation("raindrop", store, start, end),
+        Operation(name, store, start, end),
 
-        hue_min("raindrop/hue_min", Operation::HSV_HUE, store, getValueByKey<float>("hue_min", start, end, 0.0f)),
-        hue_max("raindrop/hue_max", Operation::HSV_HUE, store, getValueByKey<float>("hue_max", start, end, 360.0f)),
+        hue_min(name + "/hue_min", Operation::HSV_HUE, store, getValueByKey<float>("hue_min", start, end, 0.0f)),
+        hue_max(name + "/hue_max", Operation::HSV_HUE, store, getValueByKey<float>("hue_max", start, end, 360.0f)),
 
-        saturation_min("raindrop/saturation_min", Operation::HSV_SATURATION, store,
+        saturation_min(name + "/saturation_min", Operation::HSV_SATURATION, store,
                        getValueByKey<float>("saturation_min", start, end, 0.0f)),
-        saturation_max("raindrop/saturation_max", Operation::HSV_SATURATION, store,
+        saturation_max(name + "/saturation_max", Operation::HSV_SATURATION, store,
                        getValueByKey<float>("saturation_max", start, end, 1.0f)),
 
-        value_min("raindrop/value_min", Operation::HSV_VALUE, store,
+        value_min(name + "/value_min", Operation::HSV_VALUE, store,
                   getValueByKey<float>("value_min", start, end, 0.8f)),
-        value_max("raindrop/value_max", Operation::HSV_VALUE, store,
+        value_max(name + "/value_max", Operation::HSV_VALUE, store,
                   getValueByKey<float>("value_max", start, end, 1.0f)),
 
 
-        chance("raindrop/chance", Operation::FLOAT_0_1, store, getValueByKey<float>("chance", start, end, 0.95f)),
+        chance(name + "/chance", Operation::FLOAT_0_1, store, getValueByKey<float>("chance", start, end, 0.95f)),
 
-        decay_low("raindrop/decay_low", Operation::FLOAT_0_1, store,
+        decay_low(name + "/decay_low", Operation::FLOAT_0_1, store,
                   getValueByKey<float>("decay_low", start, end, 0.8f)),
-        decay_high("raindrop/decay_high", Operation::FLOAT_0_1, store,
+        decay_high(name + "/decay_high", Operation::FLOAT_0_1, store,
                    getValueByKey<float>("decay_high", start, end, 0.5f)),
-        decay_resolution("raindrop/decay_resolution", Operation::FLOAT_0_1, store,
+        decay_resolution(name + "/decay_resolution", Operation::FLOAT_0_1, store,
                          getValueByKey<float>("decay_resolution", start, end, 1.0f)) {
 
 }

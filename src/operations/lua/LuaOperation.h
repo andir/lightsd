@@ -13,7 +13,7 @@ class LuaOperation : public Operation {
     void run(const AbstractBaseBuffer<HSV> &buffer);
 
 public:
-    LuaOperation(VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end);
+    LuaOperation(const std::string& name, VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end);
 
     virtual ~LuaOperation();
 

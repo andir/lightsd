@@ -34,7 +34,8 @@ public:
 
     std::unique_ptr<MqttConnection> mqtt{nullptr};
 
-    std::vector<std::unique_ptr<Operation> > sequence;
+    std::map<std::string, std::shared_ptr<Operation> > operations;
+    std::vector<std::shared_ptr<Operation> > sequence;
     std::map<std::string, std::shared_ptr<Output> > outputs;
     std::shared_ptr<VariableStore> store;
 };

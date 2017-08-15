@@ -25,12 +25,42 @@ ConfigPtr parseConfig(const std::string &filename) {
         config->fps = 25;
     }
 
+
+
+    if (!yaml_config["operations"]) {
+        throw ConfigParsingException("No operations configured.");
+    } else {
+        const YAML::Node operations_node = yaml_config["operations"];
+        auto s = config->store.get();
+        for (const auto& operation_node : operations_node) {
+                const std::string operation_name = operation_node.first.as<std::string>();
+                if (config->operations[operation_name]) {
+                        throw ConfigParsingException("Duplicate operation.");
+                } else {
+                        const auto& n = operation_node.second;
+                        config->operations[operation_name] = generateOperation(operation_name, *s, n); 
+                }
+        }
+    }
+
     if (!yaml_config["sequence"]) {
         throw ConfigParsingException("No sequence configured.");
     } else {
-        const YAML::Node sequence_node = yaml_config["sequence"];
-        auto s = config->store.get();
-        parseSequence(*s, config->sequence, sequence_node);
+        const YAML::Node sequences_node = yaml_config["sequence"];
+        if (sequences_node.Type() != YAML::NodeType::Sequence) {
+                throw ConfigParsingException("sequences must be a sequence of strings");
+        }
+
+        for (const auto& sequence_node : sequences_node) {
+                const auto& sequence_step_name = sequence_node.as<std::string>();
+                auto& operation_it = config->operations[sequence_step_name];
+                if (!operation_it) {
+                        std::cerr << sequence_step_name << std::endl;
+                        throw ConfigParsingException("Missing sequence step.");
+                } else {
+                        config->sequence.push_back(operation_it);
+                }
+        }
     }
 
     if (!yaml_config["outputs"]) {
