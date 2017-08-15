@@ -38,7 +38,7 @@ ConfigPtr parseConfig(const std::string &filename) {
                         throw ConfigParsingException("Duplicate operation.");
                 } else {
                         const auto& n = operation_node.second;
-                        config->operations[operation_name] = generateOperation(*s, n); 
+                        config->operations[operation_name] = generateOperation(operation_name, *s, n); 
                 }
         }
     }

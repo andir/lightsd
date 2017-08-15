@@ -36,7 +36,7 @@ class BellOperation : public Operation {
     float getShade() const;
 
 public:
-    BellOperation(VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end);
+    BellOperation(const std::string& name, VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end);
 
     virtual ~BellOperation() {}
 

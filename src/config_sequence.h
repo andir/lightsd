@@ -6,4 +6,4 @@
 #include "operations/Operation.h"
 
 std::unique_ptr<Operation>
-generateOperation(VariableStore &store, const YAML::Node &config_node);
+generateOperation(const std::string& name, VariableStore &store, const YAML::Node &config_node);

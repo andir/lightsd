@@ -16,13 +16,13 @@
 // We can solve this entirely using the typesystem and a custom make_unique
 // implementation but it is not worth the effort...
 template<typename T>
-inline std::unique_ptr<Operation> generator(VariableStore& s, YAML::const_iterator begin, YAML::const_iterator end){
-        return std::make_unique<T>(s, begin, end);
+inline std::unique_ptr<Operation> generator(const std::string& name, VariableStore& s, YAML::const_iterator begin, YAML::const_iterator end){
+        return std::make_unique<T>(name, s, begin, end);
 }
 
 std::unique_ptr<Operation>
-generateSequenceStep(VariableStore &store, const std::string &step_type, YAML::const_iterator begin, YAML::const_iterator end) {
-    using FuncT = std::unique_ptr<Operation> (*)(VariableStore&, YAML::const_iterator begin, YAML::const_iterator end);
+generateSequenceStep(const std::string& name, VariableStore &store, const std::string &step_type, YAML::const_iterator begin, YAML::const_iterator end) {
+    using FuncT = std::unique_ptr<Operation> (*)(const std::string& name, VariableStore&, YAML::const_iterator begin, YAML::const_iterator end);
 
     const static std::map<std::string, FuncT> types {
             {"fade", &generator<FadeOperation>},
@@ -45,14 +45,14 @@ generateSequenceStep(VariableStore &store, const std::string &step_type, YAML::c
         throw ConfigParsingException("The selected step_type wasn't found.");
     } else {
         auto& func = *(it->second);
-        return func(store, begin, end);
+        return func(name, store, begin, end);
     }
 }
 
 std::unique_ptr<Operation>
-generateOperation(VariableStore &store, const YAML::Node &config_node) {
+generateOperation(const std::string& name, VariableStore &store, const YAML::Node &config_node) {
     assert(config_node.Type() == YAML::NodeType::Map);
     const auto& operation_type = config_node["type"].as<std::string>();
     const auto& operation_params = config_node["params"];
-    return generateSequenceStep(store, operation_type, operation_params.begin(), operation_params.end());
+    return generateSequenceStep(name, store, operation_type, operation_params.begin(), operation_params.end());
 }

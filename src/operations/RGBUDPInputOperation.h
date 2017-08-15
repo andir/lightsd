@@ -15,7 +15,7 @@ class RGBUDPInputOperation : public Operation {
 
     RGBUDPSink sink;
 public:
-    RGBUDPInputOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end);
+    RGBUDPInputOperation(const std::string& name, VariableStore &store, YAML::const_iterator start, YAML::const_iterator end);
 
     ~RGBUDPInputOperation();
 

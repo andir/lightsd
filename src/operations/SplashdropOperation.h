@@ -36,7 +36,7 @@ class SplashdropOperation : public Operation {
     void drawDrop(Drop &, const size_t index, const AbstractBaseBuffer<HSV> &buffer);
 
 public:
-    SplashdropOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end);
+    SplashdropOperation(const std::string& name, VariableStore &store, YAML::const_iterator start, YAML::const_iterator end);
 
     void draw(const AbstractBaseBuffer<HSV> &buffer);
 

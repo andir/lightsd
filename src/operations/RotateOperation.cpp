@@ -1,15 +1,11 @@
-//
-// Created by andi on 10/12/16.
-//
-
 #include "RotateOperation.h"
 #include <yaml-cpp/yaml.h>
 
-RotateOperation::RotateOperation(VariableStore &store, YAML::const_iterator start, YAML::const_iterator end) :
-        Operation("rotate", store, start, end),
+RotateOperation::RotateOperation(const std::string& name, VariableStore &store, YAML::const_iterator start, YAML::const_iterator end) :
+        Operation(name, store, start, end),
         step(0.0),
         step_width(
-                "rotate/step_width",
+                name + "/step_width",
                 Operation::FLOAT_0_1,
                 store,
                 getValueByKey<float>(
