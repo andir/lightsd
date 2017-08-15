@@ -112,7 +112,7 @@ void WorkerThread::run() {
             Frame frame(scheduler);
 
             for (const auto &step : config->sequence) {
-                step->update(config.get());
+                step->update(config->width, config->fps);
                 if (step->isEnabled()) {
 #ifdef MEASURE_TIME
                     Measure step_time(step->getName(), t);

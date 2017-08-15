@@ -17,5 +17,6 @@ class SequenceOperation : public Operation {
 public:
         SequenceOperation(const std::string& name, VariableStore& s, YAML::const_iterator& start, YAML::const_iterator& end);
 
+        void update(const size_t width, const size_t fps);
         Operation::BufferType operator()(Operation::BufferType& buffer);
 };

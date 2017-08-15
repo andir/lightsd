@@ -51,7 +51,7 @@ public:
         return enabled;
     }
 
-    virtual void update(const Config *const) {};
+    virtual void update(const size_t width, const size_t fps) {};
 
     virtual float getAlpha() const { return alpha; }
 };

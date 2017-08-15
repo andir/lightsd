@@ -248,7 +248,9 @@ public:
     }
 
     inline typename parent::value_type &at(size_t pos) const {
-       return upper->at(offset + pos); 
+       assert(pos < _count);
+       const size_t i = offset + pos;
+       return upper->at(i); 
     }
 
     size_t size() const {
@@ -260,11 +262,11 @@ public:
     }
 
     inline IteratorType begin() const {
-        return IteratorType(this, offset);
+        return IteratorType(this, 0);
     }
 
     inline IteratorType end() const {
-        return IteratorType(this, offset + _count, true);
+        return IteratorType(this, _count, true);
     }
    
 };

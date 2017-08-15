@@ -69,7 +69,7 @@ Operation::BufferType BellOperation::operator()(Operation::BufferType &buffer) {
     return buffer;
 }
 
-void BellOperation::update(const Config *const) {
+void BellOperation::update(const size_t, const size_t) {
     if (!isEnabled()) { state = State::IDLE; return; }
 
     time_passed = time_measurement.measure();

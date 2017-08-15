@@ -27,14 +27,14 @@ GameOfLifeOperation::GameOfLifeOperation(const std::string& name, VariableStore 
 }
 
 
-void GameOfLifeOperation::update(const Config *const cfg) {
+void GameOfLifeOperation::update(const size_t width, const size_t fps) {
     if (!isEnabled()) {
         initialized = false;
         frame_counter = 0;
         return;
     }
 
-    const auto led_count = cfg->width;
+    const auto led_count = width;
     if (this->delta.capacity() != led_count) {
         this->delta.clear();
         this->output.clear();
@@ -64,7 +64,7 @@ void GameOfLifeOperation::update(const Config *const cfg) {
     }
 
     // main update loop
-    if (frame_counter % int(cfg->fps * speed) == 0) {
+    if (frame_counter % int(fps * speed) == 0) {
         std::vector<HSV> state(output.size());
         // once a second recalculate a new state
         auto default_color = HSV{default_hue, default_saturation, 0.0};
@@ -123,11 +123,11 @@ void GameOfLifeOperation::update(const Config *const cfg) {
 
         // recalc the delta after each new frame
         std::transform(state.begin(), state.end(), output.begin(), delta.begin(),
-                       [cfg](const HSV &a, const HSV &b) -> HSV {
+                       [fps](const HSV &a, const HSV &b) -> HSV {
                            return HSV{
-                                   (a.hue - b.hue) / cfg->fps,
-                                   (a.saturation - b.saturation) / cfg->fps,
-                                   (a.value - b.value) / cfg->fps
+                                   (a.hue - b.hue) / fps,
+                                   (a.saturation - b.saturation) / fps,
+                                   (a.value - b.value) / fps
                            };
                        });
     }
@@ -142,7 +142,7 @@ void GameOfLifeOperation::update(const Config *const cfg) {
     });
 
     frame_counter += 1;
-    frame_counter %= cfg->fps;
+    frame_counter %= fps;
 }
 
 Operation::BufferType GameOfLifeOperation::operator()(Operation::BufferType &buffer) {
