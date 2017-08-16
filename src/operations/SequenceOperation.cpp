@@ -35,9 +35,16 @@ void SequenceOperation::loadSequence(const std::string& name, VariableStore& s, 
 }
 
 void SequenceOperation::update(const size_t width, const size_t fps) {
+        using job_t = std::function<void ()>;
+        std::vector<job_t> jobs;
+        const size_t size = to - from;
         for (auto& op : sequence) {
-                op->update(to - from, fps);
+                jobs.push_back([&op, size, fps]{
+                        op->update(size, fps);
+                });
         }
+        worker_pool.submit(jobs);
+        worker_pool.wait();
 }
 
 Operation::BufferType SequenceOperation::operator()(Operation::BufferType& buffer) {

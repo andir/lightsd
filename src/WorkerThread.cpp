@@ -111,8 +111,25 @@ void WorkerThread::run() {
 
             Frame frame(scheduler);
 
+            {
+                    Measure update_time("update_time", t);
+                    // Schedule async tasks for each of the plugins update() function
+                    std::vector<std::function<void ()> > jobs;
+                    jobs.reserve(config->sequence.size());
+                    for (const auto &step : config->sequence) {
+                            auto job = [&step,&config]() -> void { 
+                               step->update(config->width, config->fps);
+                               return;
+                            };
+                            jobs.push_back(std::move(job));
+                    }
+                    worker_pool.submit(jobs);
+                    worker_pool.wait();
+            }
+
+
             for (const auto &step : config->sequence) {
-                step->update(config->width, config->fps);
+                //step->update(config->width, config->fps);
                 if (step->isEnabled()) {
 #ifdef MEASURE_TIME
                     Measure step_time(step->getName(), t);
