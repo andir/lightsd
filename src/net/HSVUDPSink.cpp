@@ -62,7 +62,8 @@ void HSVUDPSink::start() {
 void HSVUDPSink::stop() {
     if (!io_service.stopped())
         io_service.stop();
-    worker_thread.join();
+    if (worker_thread.joinable())
+        worker_thread.join();
 }
 
 
