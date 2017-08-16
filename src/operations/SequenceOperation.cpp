@@ -43,7 +43,8 @@ void SequenceOperation::update(const size_t width, const size_t fps) {
 Operation::BufferType SequenceOperation::operator()(Operation::BufferType& buffer) {
         Operation::BufferType b = std::make_shared<BufferView<typename Operation::ContainerType>>(buffer, from.getInteger(), to.getValue() - from.getValue());
         for (auto& op : sequence) {
-                b = (*op)(b);
+                if (op->isEnabled())
+                        b = (*op)(b);
         }
         return buffer;
 } 
