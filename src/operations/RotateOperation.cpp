@@ -25,13 +25,13 @@ Operation::BufferType RotateOperation::operator()(Operation::BufferType &buffer)
 
     step += steps_per_ms * time_elapsed;
     const int64_t integer_part = uint64_t(step);
-    step = (integer_part % (*buffer).count()) + (step - integer_part);
+    step = (integer_part % buffer->size()) + (step - integer_part);
 
     const size_t offset = step;
-    auto end = &(*buffer).at((*buffer).count() - 1);
+    auto end = &(*buffer).at(buffer->size() - 1);
 
     //std::cerr << "steps_per_ms:" << steps_per_ms << " step: " << step << " offset: " << offset << " end: " << end << std::endl;
-    std::rotate(&(*buffer).at(0), &(*buffer).at(0) + offset, end);
+    std::rotate(&(*buffer).at(0), &(*buffer).at(0) + offset, end + 1);
 
     step = std::fmod(step, float(buffer->size()));
     return buffer;
