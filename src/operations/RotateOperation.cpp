@@ -24,7 +24,7 @@ Operation::BufferType RotateOperation::operator()(Operation::BufferType &buffer)
     const double steps_per_ms = step_width / 1000.0;
 
     step += steps_per_ms * time_elapsed;
-    while (step > buffer->size()) {
+    while (step >= buffer->size()) {
         step -= buffer->size();
     }
     while (step < 0) {
