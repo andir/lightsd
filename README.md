@@ -17,7 +17,7 @@ Building / Development / Dependencies
 The main dependencies are
 
 - g++ (recent versions, tested with >=6)
-- libwebsocketcpp-dev (for preview via websockets, see [lightsd-viz](https://github.com/flokli/lightsd-vis/))
+- libwebsocketcpp-dev (for preview via websockets, see [lightsd-vis](https://github.com/flokli/lightsd-vis/))
 - libyaml-cpp-dev (for configuration parsing)
 - libssl-dev (for the websocket stuff etc..)
 - libluajit-5.1-dev (for the lua plugin api)
