@@ -4,9 +4,8 @@
 #include "../utils/random.h"
 
 
-RaindropOperation::RaindropOperation(const std::string& name,
-                                     VariableStore
-                                     &store,
+RaindropOperation::RaindropOperation(const std::string &name,
+                                     std::shared_ptr<VariableStore> store,
                                      YAML::const_iterator start, YAML::const_iterator
                                      end) :
         Operation(name, store, start, end),

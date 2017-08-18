@@ -2,7 +2,7 @@
 #include "../config_sequence.h"
 #include "../config.h"
 
-SequenceOperation::SequenceOperation(const std::string& name, VariableStore& s, YAML::const_iterator& start, YAML::const_iterator& end) : 
+SequenceOperation::SequenceOperation(const std::string& name, std::shared_ptr<VariableStore>& s, YAML::const_iterator& start, YAML::const_iterator& end) :
         Operation(name, s, start, end),
         from(name + "/from", Operation::INT, s, getValueByKey<int>("from", start, end, 0)),
         to(name + "/to", Operation::INT, s, getValueByKey<int>("to", start, end, 5))
@@ -20,7 +20,7 @@ SequenceOperation::SequenceOperation(const std::string& name, VariableStore& s, 
     }
 }
 
-void SequenceOperation::loadSequence(const std::string& name, VariableStore& s, YAML::const_iterator start, YAML::const_iterator end) {
+void SequenceOperation::loadSequence(const std::string& name, std::shared_ptr<VariableStore>& s, YAML::const_iterator start, YAML::const_iterator end) {
         for (auto it = start; it != end; it++) {
                 auto val = *it;
                 if (!val.IsMap()) {

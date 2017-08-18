@@ -31,14 +31,13 @@ ConfigPtr parseConfig(const std::string &filename) {
         throw ConfigParsingException("No operations configured.");
     } else {
         const YAML::Node operations_node = yaml_config["operations"];
-        auto s = config->store.get();
         for (const auto& operation_node : operations_node) {
                 const std::string operation_name = operation_node.first.as<std::string>();
                 if (config->operations[operation_name]) {
                         throw ConfigParsingException("Duplicate operation.");
                 } else {
                         const auto& n = operation_node.second;
-                        config->operations[operation_name] = generateOperation(operation_name, *s, n); 
+                        config->operations[operation_name] = generateOperation(operation_name, config->store, n);
                 }
         }
     }
