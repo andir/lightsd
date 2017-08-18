@@ -23,5 +23,5 @@ compile:
   stage: build
   script:
     - CC=/usr/bin/gcc-7 CXX=/usr/bin/g++-7 cmake  .
-    - make
+    - make VERBOSE=1 
     - cpack -G DEB && dpkg -i lightsd-*.deb && whereis lightsd
