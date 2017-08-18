@@ -1,29 +1,59 @@
 #pragma once
+
+#ifdef PARALLEL_UPDATE
 #include <boost/thread/executors/basic_thread_pool.hpp>
 #include <boost/thread.hpp>
 #include <boost/thread/latch.hpp>
 #include <boost/thread/future.hpp>
 #include <deque>
+#endif
 #include <functional>
-
 class JobQueue {
+#ifdef PARALLEL_UPDATE
         std::mutex mutex;
         boost::latch latch;
         boost::basic_thread_pool pool;
-        bool run;
+#endif
 public:
-        JobQueue() : latch(0), run(true) {}
-        inline void execute(const std::vector<std::function<void ()> > new_jobs) {
+        JobQueue()
+#ifdef PARALLEL_UPDATE
+                : latch(0)
+#endif
+        {}
+        template<typename OpT>
+        inline void submit(const std::vector<OpT>& ops, const size_t width, const size_t fps) {
+#ifdef PARALLEL_UPDATE
                std::unique_lock<std::mutex> l(mutex);
-               latch.reset(new_jobs.size());
-               for (auto& job : new_jobs) {
-                        pool.submit(boost::bind(&JobQueue::_execute, this, job));
+               latch.reset(ops.size());
+#endif
+               for (const auto& op : ops) {
+                        Operation* const o = op.get();
+#ifdef PARALLEL_UPDATE
+                        pool.submit(std::bind(&JobQueue::_execute, this, o, width, fps));
+#else
+                        o->update(width, fps);
+#endif
                }
-               latch.wait();
         }
 
-        inline void _execute(std::function<void ()> func) {
-                func();
+        template<typename OpT>
+        inline void execute(const std::vector<OpT>& ops, const size_t width, const size_t fps) {
+               submit(ops, width, fps);
+#ifdef PARALLEL_UPDATE
+               wait();
+#endif
+        }
+
+        inline void wait() {
+#ifdef PARALLEL_UPDATE
+               latch.wait();
+#endif
+        }
+
+#ifdef PARALLEL_UPDATE
+        inline void _execute(Operation* const op, const size_t width, const size_t fps) {
+                op->update(width, fps);
                 latch.count_down();
         }
+#endif
 };

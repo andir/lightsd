@@ -99,14 +99,6 @@ void WorkerThread::run() {
         Operation::BufferType buffer(std::make_unique<AllocatedBuffer<HSV> >(config->width));
         
         std::vector<std::function<void ()> > update_jobs;
-        update_jobs.reserve(config->sequence.size());
-        for (const auto &step : config->sequence) {
-                auto job = [&step,&config]() -> void { 
-                   step->update(config->width, config->fps);
-                   return;
-                };
-                update_jobs.push_back(std::move(job));
-        }
 
 #ifdef MEASURE_TIME
         unsigned int counter = 0;
@@ -124,7 +116,7 @@ void WorkerThread::run() {
             {
                     Measure update_time("update_time", t);
                     // Schedule async tasks for each of the plugins update() function
-                    job_queue.execute(update_jobs);
+                    job_queue.execute(config->sequence, config->width, config->fps);
             }
 
 

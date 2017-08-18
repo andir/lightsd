@@ -13,7 +13,6 @@ class SequenceOperation : public Operation {
         BoundConcreteValue<int> to;
 
         std::vector<std::unique_ptr<Operation> > sequence;
-
         void loadSequence(const std::string& name, VariableStore& s, YAML::const_iterator start, YAML::const_iterator end);
 public:
         SequenceOperation(const std::string& name, VariableStore& s, YAML::const_iterator& start, YAML::const_iterator& end);
