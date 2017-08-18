@@ -3,14 +3,14 @@
 #include <mutex>
 #include "config.h"
 #include "FrameScheduler.h"
-#include "utils/WorkerPool.h"
+#include "utils/JobQueue.h"
 
 class WorkerThread {
     bool doRun;
     ConfigPtr config_ptr;
     ConfigPtr new_config_ptr;
     std::mutex config_mutex;
-    WorkerPool worker_pool;
+    JobQueue job_queue;
 public:
     WorkerThread();
 
