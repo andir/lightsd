@@ -99,7 +99,11 @@ Config::Config() :
 }
 
 Config::~Config() {
+    mqtt.reset();
     mqtt = nullptr;
+    // FIXME: we should ensure that everyone that has a reference to the VariableStore is destroyed before we go out of scope here
+    // FIXME: the best approach is probably to pass a weak_ptr to the VariableStore into each Operation, the performance penalty has to be taken care of tho..
+    operations.clear();
     sequence.clear();
     outputs.clear();
 }
