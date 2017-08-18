@@ -15,7 +15,7 @@ before_script:
 before_script:
   - export APT_CACHE_DIR=`pwd`/apt-cache && mkdir -pv $APT_CACHE_DIR
   - apt update
-  - apt-get -o dir::cache::archives="$APT_CACHE_DIR" install --no-install-recommends -y gcc-7 g++-7 libwebsocketpp-dev cmake libboost-system-dev libyaml-cpp-dev libssl-dev git-core libluajit-5.1-dev make ca-certificates
+  - apt-get -o dir::cache::archives="$APT_CACHE_DIR" install --no-install-recommends -y gcc-7 g++-7 libwebsocketpp-dev cmake libboost-thread-dev libboost-system-dev libyaml-cpp-dev libssl-dev git-core libluajit-5.1-dev make ca-certificates
   - git submodule init
   - git submodule update
 
