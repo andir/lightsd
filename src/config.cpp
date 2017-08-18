@@ -66,7 +66,7 @@ ConfigPtr parseConfig(const std::string &filename) {
         throw ConfigParsingException("No outputs defined.");
     } else {
         const YAML::Node outputs_node = yaml_config["outputs"];
-        parseOutputs(config->outputs, outputs_node);
+        parseOutputs(config->outputs, outputs_node, config->store);
 
     }
 
