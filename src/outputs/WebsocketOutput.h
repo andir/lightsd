@@ -7,6 +7,8 @@
 #include <iostream>
 #include <set>
 #include <sstream>
+#include <variant>
+#include <utility>
 
 #include <websocketpp/common/thread.hpp>
 
@@ -34,15 +36,16 @@ enum action_type {
     SUBSCRIBE,
     UNSUBSCRIBE,
     MESSAGE,
+    MQTT_MESSAGE,
     QUIT
 };
 
-typedef std::vector<uint8_t> message_type;
+typedef typename std::variant<std::vector<uint8_t>, std::pair<std::string, std::string> > message_type;
 
 struct action {
     action(action_type t, connection_hdl h) : type(t), hdl(h) {}
 
-    action(action_type t, connection_hdl h, message_type& m)
+    action(action_type t, connection_hdl h, message_type m)
             : type(t), hdl(h), msg(m) {}
 
     action_type type;
@@ -224,14 +227,26 @@ public:
             } else if (a.type == UNSUBSCRIBE) {
                 lock_guard<mutex> guard(m_connection_lock);
                 m_connections.erase(a.hdl);
+            } else if (a.type == MQTT_MESSAGE) {
+                lock_guard<mutex> guard(m_connection_lock);
+
+                auto [key, value] = std::get<std::pair<std::string, std::string> >(a.msg);
+
+                auto message = "{\"key\":\""+ key + "\",\"value\":\"" + value + "\"}";
+
+                for (con_list::iterator it = m_connections.begin(); it != m_connections.end(); ++it) {
+                    m_server.send(*it, message, websocketpp::frame::opcode::text);
+                }
+
             } else if (a.type == MESSAGE) {
                 lock_guard<mutex> guard(m_connection_lock);
 
                 con_list::iterator it;
                 websocketpp::lib::error_code ec;
 
+                auto bytes = std::get<std::vector<uint8_t> >(a.msg);
                 for (it = m_connections.begin(); it != m_connections.end(); ++it) {
-                    m_server.send(*it, static_cast<void*>(a.msg.data()), a.msg.size(), websocketpp::frame::opcode::binary, ec);
+                    m_server.send(*it, static_cast<void*>(bytes.data()), bytes.size(), websocketpp::frame::opcode::binary, ec);
                 }
             } else {
                 // undefined.
