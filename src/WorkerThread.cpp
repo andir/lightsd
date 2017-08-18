@@ -98,8 +98,6 @@ void WorkerThread::run() {
         FrameScheduler scheduler(config->fps);
         Operation::BufferType buffer(std::make_unique<AllocatedBuffer<HSV> >(config->width));
         
-        std::vector<std::function<void ()> > update_jobs;
-
 #ifdef MEASURE_TIME
         unsigned int counter = 0;
 #endif
