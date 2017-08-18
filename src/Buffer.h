@@ -148,6 +148,12 @@ public:
         return ReverseIteratorType(this, 0);
     }
 
+    virtual inline void clear() {
+        for (auto& e : *this) {
+            e = ValueType{};
+        }
+    }
+
 };
 
 template<typename ValueType>
