@@ -74,8 +74,6 @@ void BellOperation::update(const size_t, const size_t) {
 
     time_passed = time_measurement.measure();
 
-    std::cerr << "State: " << toString(state) << " " << time_passed << std::endl; 
-
     switch (state) {
         case State::IDLE:
                 time_measurement.reset();

@@ -7,9 +7,12 @@ using boost::asio::ip::udp;
 
 HSVUDPSink::HSVUDPSink(const int port) :
         io_service(),
-        socket_(io_service, udp::endpoint(udp::v4(), port)) {
-
-    recv();
+        socket_(io_service),
+        port(port) {
+        socket_.open(udp::v6());
+        using reuse_port = boost::asio::detail::socket_option::boolean<SOL_SOCKET, SO_REUSEPORT>;
+        socket_.set_option(reuse_port(true));
+        socket_.bind(udp::endpoint(udp::v6(), port));
 }
 
 
@@ -56,6 +59,7 @@ void HSVUDPSink::start() {
             io_service.stop();
         worker_thread.join();
     }
+    recv();
     worker_thread = std::thread(std::bind(&HSVUDPSink::run, this));
 }
 

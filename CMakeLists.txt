@@ -14,7 +14,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -O3 -march=native -Wall")
 #SET(BUILD_SHARED_LIBRARIES OFF)
 #SET(CMAKE_EXE_LINKER_FLAGS "-static")
 
-find_package(Boost COMPONENTS system)
+find_package(Boost COMPONENTS system thread)
 #find_package(yaml-Cpp)
 include_directories(${Boost_INCLUDE_DIRS})
 include_directories(mqtt_client_cpp/include)

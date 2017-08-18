@@ -20,7 +20,6 @@ SequenceOperation::SequenceOperation(const std::string& name, VariableStore& s, 
     }
 }
 
-
 void SequenceOperation::loadSequence(const std::string& name, VariableStore& s, YAML::const_iterator start, YAML::const_iterator end) {
         for (auto it = start; it != end; it++) {
                 auto val = *it;
@@ -35,16 +34,8 @@ void SequenceOperation::loadSequence(const std::string& name, VariableStore& s, 
 }
 
 void SequenceOperation::update(const size_t width, const size_t fps) {
-        using job_t = std::function<void ()>;
-        std::vector<job_t> jobs;
         const size_t size = to - from;
-        for (auto& op : sequence) {
-                jobs.push_back([&op, size, fps]{
-                        op->update(size, fps);
-                });
-        }
-        worker_pool.submit(jobs);
-        worker_pool.wait();
+        job_queue.execute(sequence, size, fps);
 }
 
 Operation::BufferType SequenceOperation::operator()(Operation::BufferType& buffer) {

@@ -25,7 +25,7 @@ class HSVUDPSink {
 
     std::thread worker_thread;
     std::shared_mutex frame_guard;
-
+    const int port;
 public:
 
     explicit HSVUDPSink(const int port);
