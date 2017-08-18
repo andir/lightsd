@@ -31,14 +31,13 @@ ConfigPtr parseConfig(const std::string &filename) {
         throw ConfigParsingException("No operations configured.");
     } else {
         const YAML::Node operations_node = yaml_config["operations"];
-        auto s = config->store.get();
         for (const auto& operation_node : operations_node) {
                 const std::string operation_name = operation_node.first.as<std::string>();
                 if (config->operations[operation_name]) {
                         throw ConfigParsingException("Duplicate operation.");
                 } else {
                         const auto& n = operation_node.second;
-                        config->operations[operation_name] = generateOperation(operation_name, *s, n); 
+                        config->operations[operation_name] = generateOperation(operation_name, config->store, n);
                 }
         }
     }
@@ -67,7 +66,7 @@ ConfigPtr parseConfig(const std::string &filename) {
         throw ConfigParsingException("No outputs defined.");
     } else {
         const YAML::Node outputs_node = yaml_config["outputs"];
-        parseOutputs(config->outputs, outputs_node);
+        parseOutputs(config->outputs, outputs_node, config->store);
 
     }
 
@@ -100,10 +99,4 @@ Config::Config() :
 
 Config::~Config() {
     mqtt.reset();
-    mqtt = nullptr;
-    // FIXME: we should ensure that everyone that has a reference to the VariableStore is destroyed before we go out of scope here
-    // FIXME: the best approach is probably to pass a weak_ptr to the VariableStore into each Operation, the performance penalty has to be taken care of tho..
-    operations.clear();
-    sequence.clear();
-    outputs.clear();
 }

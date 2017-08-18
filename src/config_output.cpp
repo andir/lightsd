@@ -10,12 +10,19 @@
 // We can solve this entirely using the typesystem and a custom make_unique
 // implementation but it is not worth the effort...
 template<typename T>
-inline std::unique_ptr<Output> generate(const YAML::Node& params) {
-        return std::make_unique<T>(params);
+inline std::unique_ptr<Output> generate(const YAML::Node &params, std::shared_ptr<VariableStore> &store) {
+    if constexpr (std::is_constructible<T, const YAML::Node &, std::shared_ptr<VariableStore> &>::value) {
+            return std::make_unique<T>(params, store);
+    } else if constexpr (std::is_constructible<T, const YAML::Node &>::value) {
+            return std::make_unique<T>(params);
+    } else {
+        static_assert("No valid constructor found.");
+    }
 }
 
 
-void parseOutputs(std::map<std::string, std::shared_ptr<Output>> &outputs, const YAML::Node &outputs_node) {
+void parseOutputs(std::map<std::string, std::shared_ptr<Output>> &outputs, const YAML::Node &outputs_node,
+                  std::shared_ptr<VariableStore> &store) {
     assert(outputs_node.Type() == YAML::NodeType::Map);
 
     for (const auto node : outputs_node) {
@@ -35,23 +42,24 @@ void parseOutputs(std::map<std::string, std::shared_ptr<Output>> &outputs, const
             throw ConfigParsingException("Params must be formatted as dict.");
         }
 
-        using FuncT = std::unique_ptr<Output> (*)(const YAML::Node& params);
-        static const std::map<std::string, FuncT> types {
+        using FuncT = std::unique_ptr<Output> (*)(const YAML::Node &params, std::shared_ptr<VariableStore> &);
+        static const std::map<std::string, FuncT> types{
                 {"websocket", &generate<WebsocketOutputWrapper>},
-                {"udp", &generate<UDPOutputWrapper>},
-                {"shm", &generate<SharedMemoryOutput>},
-                {"hsvudp", &generate<HSVUDPOutput>},
-                {"spi", &generate<SPIOutput>},
-                {"devmem", &generate<DevMemOutput>}
+                {"udp",       &generate<UDPOutputWrapper>},
+                {"shm",       &generate<SharedMemoryOutput>},
+                {"hsvudp",    &generate<HSVUDPOutput>},
+                {"spi",       &generate<SPIOutput>},
+                {"devmem",    &generate<DevMemOutput>}
         };
 
         const std::string type = node.second["type"].as<std::string>();
 
-        if (const auto it = types.find(type); it == types.end()) {
+        if (const auto it = types.find(type);
+        it == types.end()) {
             throw ConfigParsingException("Unknown output type");
         } else {
-                auto& func = *(it->second);
-                outputs[output_name] = func(params);
+            auto &func = *(it->second);
+            outputs[output_name] = func(params, store);
         }
     }
 }

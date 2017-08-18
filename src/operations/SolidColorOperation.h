@@ -14,7 +14,7 @@ class SolidColorOperation : public Operation {
     BoundConcreteValue<float> value;
 
 public:
-    SolidColorOperation(const std::string& name, VariableStore &store, YAML::const_iterator start, YAML::const_iterator end) :
+    SolidColorOperation(const std::string& name, std::shared_ptr<VariableStore> store, YAML::const_iterator start, YAML::const_iterator end) :
             Operation(name, store, start, end),
             hue(name + "/hue", Operation::HSV_HUE, store, getValueByKey<float>("hue", start, end)),
             saturation(name + "/saturation", Operation::HSV_SATURATION, store,

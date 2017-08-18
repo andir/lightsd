@@ -17,13 +17,13 @@
 // We can solve this entirely using the typesystem and a custom make_unique
 // implementation but it is not worth the effort...
 template<typename T>
-inline std::unique_ptr<Operation> generator(const std::string& name, VariableStore& s, YAML::const_iterator begin, YAML::const_iterator end){
+inline std::unique_ptr<Operation> generator(const std::string& name, std::shared_ptr<VariableStore>& s, YAML::const_iterator begin, YAML::const_iterator end){
         return std::make_unique<T>(name, s, begin, end);
 }
 
 std::unique_ptr<Operation>
-generateSequenceStep(const std::string& name, VariableStore &store, const std::string &step_type, YAML::const_iterator begin, YAML::const_iterator end) {
-    using FuncT = std::unique_ptr<Operation> (*)(const std::string& name, VariableStore&, YAML::const_iterator begin, YAML::const_iterator end);
+generateSequenceStep(const std::string& name, std::shared_ptr<VariableStore>& store, const std::string &step_type, YAML::const_iterator begin, YAML::const_iterator end) {
+    using FuncT = std::unique_ptr<Operation> (*)(const std::string& name, std::shared_ptr<VariableStore>& store, YAML::const_iterator begin, YAML::const_iterator end);
 
     const static std::map<std::string, FuncT> types {
             {"fade", &generator<FadeOperation>},
@@ -52,7 +52,7 @@ generateSequenceStep(const std::string& name, VariableStore &store, const std::s
 }
 
 std::unique_ptr<Operation>
-generateOperation(const std::string& name, VariableStore &store, const YAML::Node &config_node) {
+generateOperation(const std::string& name, std::shared_ptr<VariableStore>& store, const YAML::Node &config_node) {
     assert(config_node.Type() == YAML::NodeType::Map);
     const auto& operation_type = config_node["type"].as<std::string>();
     const auto& operation_params = config_node["params"];

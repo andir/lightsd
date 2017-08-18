@@ -1,7 +1,7 @@
 #include "RotateOperation.h"
 #include <yaml-cpp/yaml.h>
 
-RotateOperation::RotateOperation(const std::string& name, VariableStore &store, YAML::const_iterator start, YAML::const_iterator end) :
+RotateOperation::RotateOperation(const std::string& name, std::shared_ptr<VariableStore> store, YAML::const_iterator start, YAML::const_iterator end) :
         Operation(name, store, start, end),
         step(0.0),
         step_width(

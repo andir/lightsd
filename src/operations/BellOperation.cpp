@@ -2,7 +2,7 @@
 
 #include <chrono>
 
-BellOperation::BellOperation(const std::string& name, VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end) :
+BellOperation::BellOperation(const std::string& name, std::shared_ptr<VariableStore> store, YAML::const_iterator begin, YAML::const_iterator end) :
         Operation(name, store, begin, end),
         state(State::IDLE),
         time_passed(0),

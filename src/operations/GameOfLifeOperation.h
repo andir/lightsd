@@ -32,7 +32,7 @@ class GameOfLifeOperation : public Operation {
 
 public:
 
-    GameOfLifeOperation(const std::string& name, VariableStore &store, YAML::const_iterator start, YAML::const_iterator end);
+    GameOfLifeOperation(const std::string& name, std::shared_ptr<VariableStore> store, YAML::const_iterator start, YAML::const_iterator end);
 
     virtual ~GameOfLifeOperation() {}
 

@@ -24,7 +24,7 @@ public:
     using ContainerType = AbstractBaseBuffer<HSV>;
     using BufferType = std::shared_ptr<ContainerType >;
 
-    Operation(const std::string& name, VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end) :
+    Operation(const std::string& name, std::shared_ptr<VariableStore> store, YAML::const_iterator begin, YAML::const_iterator end) :
             name(name),
             enabled(concat(name, "/enabled"), Operation::BOOLEAN, store, getValueByKey<bool>("enabled", begin, end, 1)),
             alpha(concat(name, "/alpha"), Operation::FLOAT, store, getValueByKey<float>("alpha", begin, end, 1)) {}

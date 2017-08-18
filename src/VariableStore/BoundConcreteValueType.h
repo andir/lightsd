@@ -8,20 +8,23 @@ template<typename EnclosedValue>
 class BoundConcreteValue : public ValueType {
     using CallbackType = typename ConcreteValueType<EnclosedValue>::CallbackType;
     std::string name;
-    VariableStore &store;
+    std::weak_ptr<VariableStore> store;
     std::shared_ptr<ConcreteValueType<EnclosedValue >> value;
 
 public:
-    BoundConcreteValue(const std::string& name, const std::string& description, VariableStore &store,
+    BoundConcreteValue(const std::string& name, const std::string& description, std::shared_ptr<VariableStore> &store,
                        EnclosedValue initial_value, CallbackType cb = nullptr) :
             name(name),
             store(store),
             value(std::make_shared<ConcreteValueType<EnclosedValue >>(initial_value, cb)) {
-        store.registerVar(name, description, value);
+        store->registerVar(name, description, value);
     }
 
     ~BoundConcreteValue() {
-        store.unregisterVar(name);
+        std::shared_ptr<VariableStore> storep = store.lock();
+        if (storep != nullptr) {
+            storep->unregisterVar(name);
+        }
     }
 
     virtual Type getType() const {

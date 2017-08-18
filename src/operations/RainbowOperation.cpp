@@ -7,7 +7,7 @@
 #include <yaml-cpp/yaml.h>
 
 
-RainbowOperation::RainbowOperation(const std::string& name, VariableStore &store, YAML::const_iterator begin, YAML::const_iterator end) :
+RainbowOperation::RainbowOperation(const std::string& name, std::shared_ptr<VariableStore> store, YAML::const_iterator begin, YAML::const_iterator end) :
         Operation(name, store, begin, end) {
 }
 

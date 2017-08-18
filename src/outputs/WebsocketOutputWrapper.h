@@ -1,6 +1,7 @@
 #pragma once
 
 #include <yaml-cpp/yaml.h>
+#include <VariableStore/VariableStore.h>
 #include "Output.h"
 
 class WebsocketOutputWrapper : public Output {
@@ -8,7 +9,7 @@ class WebsocketOutputWrapper : public Output {
     std::unique_ptr<Output> output;
     int port;
 public:
-    explicit WebsocketOutputWrapper(const YAML::Node &params);
+    explicit WebsocketOutputWrapper(const YAML::Node &params, std::shared_ptr<VariableStore>& store);
 
     ~WebsocketOutputWrapper();
 
