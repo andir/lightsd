@@ -3,14 +3,20 @@
 
 HSVUDPInputOperation::HSVUDPInputOperation(const std::string& name, VariableStore &store, YAML::const_iterator start, YAML::const_iterator end) :
         Operation(name, store, start, end),
-        sink(getValueByKey<int>("port", start, end)) {
-    sink.start();
-}
+        sink(getValueByKey<int>("port", start, end)),
+        started(false)
+{}
 
 HSVUDPInputOperation::~HSVUDPInputOperation() {
     sink.stop();
 }
 
+
+void HSVUDPInputOperation::update(const size_t, const size_t) {
+  if (started) return;
+  sink.start();
+  started = true;
+}
 
 Operation::BufferType HSVUDPInputOperation::operator()(Operation::BufferType &buffer) {
     auto buf = sink.get();
