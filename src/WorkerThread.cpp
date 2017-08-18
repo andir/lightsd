@@ -102,6 +102,7 @@ void WorkerThread::run() {
         unsigned int counter = 0;
 #endif
         while (true) {
+            buffer->clear();
 #ifdef MEASURE_TIME
             Measure frame_time("frame_time", t);
 #endif
