@@ -1,22 +1,24 @@
 #pragma once
+#include <boost/thread/latch.hpp>
 #include <deque>
 #include <thread>
 #include <functional>
 
 class JobQueue {
-        std::condition_variable done_cv;
         std::condition_variable work_cv;
         std::deque<std::function<void ()>> jobs;
         std::mutex mutex;
-        size_t counter;
+        std::atomic<size_t> counter;
+        boost::latch latch;
         bool run;
 public:
-        JobQueue() : counter(0), run(true) {}
+        JobQueue() : counter(0), latch(0), run(true) {}
         inline void submit(const std::vector<std::function<void ()> > new_jobs) {
                std::unique_lock<std::mutex> l(mutex);
                jobs.insert(jobs.end(), new_jobs.begin(), new_jobs.end());
-               counter = jobs.size();
-               if (counter > 1)
+               const auto count = jobs.size();
+               latch.reset(count);
+               if (count > 1)
                        work_cv.notify_all();
                else {
                        work_cv.notify_one();
@@ -32,21 +34,15 @@ public:
                }
                auto job = jobs.front();
                jobs.pop_front();
-               return job;
+               return std::move(job);
         }
 
         void done() {
-                std::unique_lock<std::mutex> l(mutex);
-                counter--;
-                if (counter == 0) {
-                        done_cv.notify_all();
-                }
+                latch.count_down();       
         }
 
         inline void wait() {
-                std::unique_lock<std::mutex> l(mutex);
-                //std::cerr << "queue size: " << jobs.size() << std::endl;
-                done_cv.wait(l, [this] {return counter == 0;});
+                latch.wait();
         }
 
         void stop() {
