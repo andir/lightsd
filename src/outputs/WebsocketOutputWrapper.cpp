@@ -11,7 +11,7 @@ int parse_port(const YAML::Node &params) {
     return 9000;
 }
 
-WebsocketOutputWrapper::WebsocketOutputWrapper(const YAML::Node &params) : port(parse_port(params)) {
+WebsocketOutputWrapper::WebsocketOutputWrapper(const YAML::Node &params, std::shared_ptr<VariableStore>& store) : port(parse_port(params)) {
 
 }
 
