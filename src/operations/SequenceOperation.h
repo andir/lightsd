@@ -3,9 +3,12 @@
 #include <memory>
 
 #include "Operation.h"
+#include "../utils/WorkerPool.h"
 
 class SequenceOperation : public Operation {
 
+
+        WorkerPool worker_pool;
         BoundConcreteValue<int> from;
         BoundConcreteValue<int> to;
 
