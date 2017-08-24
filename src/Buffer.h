@@ -4,12 +4,18 @@
 #include <cstdlib>
 #include <memory>
 #include <iostream>
+#include <type_traits>
 
 template<typename BufferType>
 class Iterator {
 public:
     using value_type = typename BufferType::value_type;
     using this_type = Iterator<BufferType>;
+
+    using iterator_category = std::forward_iterator_tag;
+    using reference = typename std::add_lvalue_reference<value_type>::type;
+    using pointer = value_type*;
+    using difference_type = Iterator<BufferType>;
 
 protected:
     const BufferType *const buffer;

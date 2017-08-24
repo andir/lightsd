@@ -1,5 +1,7 @@
 #pragma once
 
+#include <atomic>
+
 #include "ValueType.h"
 #include "InvalidVariableTypeException.h"
 
