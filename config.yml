@@ -5,7 +5,8 @@ fps: 30
 mqtt:
   broker: whisky.w17.io
   realm: w17/lounge/light/ 
-
+  # username: the_user
+  # password: my_s3cret_p4ssw0rd
 
 operations:
   rainbow:

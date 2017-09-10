@@ -43,17 +43,22 @@ namespace {
             std::getline(f, line);
             return line;
         } else {
-            return "foo";
+            return "this_is_lightsd";
         }
     }
 }
 
-MqttConnection::MqttConnection(std::shared_ptr<VariableStore>& store, const std::string& broker, const std::string& realm)
+MqttConnection::MqttConnection(std::shared_ptr<VariableStore>& store, const std::string& broker, const std::string& realm,
+        const std::string& username, const std::string& password)
         :
         realm(realm),
         store(store),
         mqtt_client(mqtt::make_client_no_strand(io_service, broker, 1883)) {
 
+    if (username != "") {
+        mqtt_client->set_user_name(username);
+        mqtt_client->set_password(password);
+    }
 
     mqtt_client->set_client_id(getClientId());
     mqtt_client->set_clean_session(true);
@@ -92,7 +97,7 @@ MqttConnection::MqttConnection(std::shared_ptr<VariableStore>& store, const std:
 }
 
 bool MqttConnection::connack_handler(bool sp, std::uint8_t connack_return_code) {
-    std::cerr << "connack return code: " << int(connack_return_code) << std::endl;
+    std::cerr << "connack return code: " << mqtt::connect_return_code_to_str(connack_return_code) << " (" << int(connack_return_code) << ")" << std::endl;
     if (connack_return_code != mqtt::connect_return_code::accepted) {
         // schedule reconnect
         this->schedule_reconnect();

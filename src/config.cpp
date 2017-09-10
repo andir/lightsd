@@ -83,7 +83,13 @@ ConfigPtr parseConfig(const std::string &filename) {
                     return "/lights/";
                 }
             }();
-            config->mqtt = std::make_unique<MqttConnection>(config->store, broker, realm);
+            std::string username;
+            std::string password;
+            if (mqtt["username"]) {
+                username = mqtt["username"].as<std::string>();
+                password = mqtt["password"].as<std::string>();
+            }
+            config->mqtt = std::make_unique<MqttConnection>(config->store, broker, realm, username, password);
         }
     }
 
