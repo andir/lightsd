@@ -115,24 +115,14 @@ bool MqttConnection::connack_handler(bool sp, std::uint8_t connack_return_code) 
 
         value_ss << *val;
         mqtt_client->publish(key_ss.str(), value_ss.str());
-        auto dataType = this->store->getTypeName(e);
-        if (dataType == Operation::FLOAT_0_1) {
-            dataType = "float";
+        auto type = this->store->getMqttType(e);
+        mqtt_client->publish(key_ss.str() + "/$datatype", type.dataType, mqtt::qos::at_most_once, true);
+        if (type.format != "") {
             mqtt_client->publish(key_ss.str() + "/$format", "0:1", mqtt::qos::at_most_once, true);
         }
-        if (dataType == Operation::HSV_VALUE) {
-            dataType = "float";
-            mqtt_client->publish(key_ss.str() + "/$format", "0:1", mqtt::qos::at_most_once, true);
+        if (type.unit != "") {
+            mqtt_client->publish(key_ss.str() + "/$unit", type.unit, mqtt::qos::at_most_once, true);
         }
-        if (dataType == Operation::HSV_SATURATION) {
-            dataType = "float";
-            mqtt_client->publish(key_ss.str() + "/$format", "0:1", mqtt::qos::at_most_once, true);
-        }
-        if (dataType == Operation::HSV_HUE) {
-            dataType = "float";
-            mqtt_client->publish(key_ss.str() + "/$format", "0:360", mqtt::qos::at_most_once, true);
-        }
-        mqtt_client->publish(key_ss.str() + "/$datatype", dataType, mqtt::qos::at_most_once, true);
         mqtt_client->publish(key_ss.str() + "/$settable", "true", mqtt::qos::at_most_once, true);
         key_ss << "/set";
         mqtt_client->subscribe(key_ss.str(), mqtt::qos::at_least_once);

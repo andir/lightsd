@@ -5,7 +5,7 @@
 
 VariableStore::VariableStore() : lock() {}
 
-void VariableStore::registerVar(const std::string& name, const std::string& type_name, std::shared_ptr<ValueType> var) {
+void VariableStore::registerVar(const std::string& name, const MqttVarType& mqtt_type, std::shared_ptr<ValueType> var) {
     std::unique_lock<std::shared_mutex> locker(lock);
     auto weak_ptr = std::weak_ptr<ValueType>(var);
 
@@ -14,7 +14,7 @@ void VariableStore::registerVar(const std::string& name, const std::string& type
     }
 
     if (types.find(name) == types.end()) {
-        types.emplace(name, type_name);
+        types.emplace(name, mqtt_type);
     }
 }
 
@@ -82,11 +82,11 @@ std::shared_ptr<ValueType> VariableStore::getVar(const std::string& name) const 
     return nullptr;
 }
 
-std::string VariableStore::getTypeName(const std::string& name) const {
+MqttVarType VariableStore::getMqttType(const std::string& name) const {
     std::shared_lock<std::shared_mutex> locker(lock);
     auto it = types.find(name);
     if (it != types.end()) {
         return (*it).second;
     }
-    return "";
+    return {"unknown","",""};
 }

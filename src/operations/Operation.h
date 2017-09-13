@@ -35,17 +35,17 @@ public:
 
     inline std::string getName() const { return name; }
 
-    static const std::string HSV_HUE;
-    static const std::string HSV_SATURATION;
-    static const std::string HSV_VALUE;
+    static const MqttVarType HSV_HUE;
+    static const MqttVarType HSV_SATURATION;
+    static const MqttVarType HSV_VALUE;
 
-    static const std::string BOOLEAN;
+    static const MqttVarType BOOLEAN;
 
-    static const std::string FLOAT_0_1;
+    static const MqttVarType FLOAT_0_1;
 
-    static const std::string INT;
+    static const MqttVarType INT;
 
-    static const std::string FLOAT;
+    static const MqttVarType FLOAT;
 
     inline bool isEnabled() const {
         return enabled;

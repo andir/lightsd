@@ -12,7 +12,7 @@ class BoundConcreteValue : public ValueType {
     std::shared_ptr<ConcreteValueType<EnclosedValue >> value;
 
 public:
-    BoundConcreteValue(const std::string& name, const std::string& description, std::shared_ptr<VariableStore> &store,
+    BoundConcreteValue(const std::string& name, const MqttVarType& description, std::shared_ptr<VariableStore> &store,
                        EnclosedValue initial_value, CallbackType cb = nullptr) :
             name(name),
             store(store),

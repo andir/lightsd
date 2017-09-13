@@ -1,14 +1,15 @@
 #include "Operation.h"
 
 
-const std::string Operation::HSV_HUE = "hsv_hue";
-const std::string Operation::HSV_SATURATION = "hsv_saturation";
-const std::string Operation::HSV_VALUE = "hsv_value";
+const MqttVarType Operation::HSV_HUE = { "float", "0:360", "hsv_hue" };
+const MqttVarType Operation::HSV_SATURATION = { "float", "0:1", "hsv_saturation" };
+const MqttVarType Operation::HSV_VALUE = { "float", "0:1", "hsv_value" };
 
-const std::string Operation::BOOLEAN = "boolean";
+const MqttVarType Operation::BOOLEAN = { "boolean", "", "" };
 
-const std::string Operation::FLOAT_0_1 = "float(0, 1)";
+const MqttVarType Operation::FLOAT_0_1 = { "float", "0:1", "" };
 
-const std::string Operation::INT = "int";
+const MqttVarType Operation::INT = { "int", "", "" };
 
-const std::string Operation::FLOAT = "float";
+const MqttVarType Operation::FLOAT = { "float", "", "" };
+
