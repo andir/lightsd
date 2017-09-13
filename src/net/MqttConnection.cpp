@@ -1,6 +1,7 @@
 #include "MqttConnection.h"
 #include "../VariableStore/InvalidVariableTypeException.h"
 #include "../VariableStore/ValueType.h"
+#include "../operations/Operation.h"
 
 #include <iostream>
 #include <fstream>
@@ -115,19 +116,19 @@ bool MqttConnection::connack_handler(bool sp, std::uint8_t connack_return_code) 
         value_ss << *val;
         mqtt_client->publish(key_ss.str(), value_ss.str());
         auto dataType = this->store->getTypeName(e);
-        if (dataType == "float(0, 1)") {
+        if (dataType == Operation::FLOAT_0_1) {
             dataType = "float";
             mqtt_client->publish(key_ss.str() + "/$format", "0:1", mqtt::qos::at_most_once, true);
         }
-        if (dataType == "hsv_value") {
+        if (dataType == Operation::HSV_VALUE) {
             dataType = "float";
             mqtt_client->publish(key_ss.str() + "/$format", "0:1", mqtt::qos::at_most_once, true);
         }
-        if (dataType == "hsv_saturation") {
+        if (dataType == Operation::HSV_SATURATION) {
             dataType = "float";
             mqtt_client->publish(key_ss.str() + "/$format", "0:1", mqtt::qos::at_most_once, true);
         }
-        if (dataType == "hsv_hue") {
+        if (dataType == Operation::HSV_HUE) {
             dataType = "float";
             mqtt_client->publish(key_ss.str() + "/$format", "0:360", mqtt::qos::at_most_once, true);
         }
