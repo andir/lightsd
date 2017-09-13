@@ -62,6 +62,7 @@ MqttConnection::MqttConnection(std::shared_ptr<VariableStore>& store, const std:
 
     mqtt_client->set_client_id(getClientId());
     mqtt_client->set_clean_session(true);
+    mqtt_client->set_will(mqtt::will(realm + "$online", "false", true));
 
     mqtt_client->set_error_handler([](boost::system::error_code const &ec) {
         std::cout << "MQTT error: " << ec.message() << std::endl;
@@ -103,6 +104,7 @@ bool MqttConnection::connack_handler(bool sp, std::uint8_t connack_return_code) 
         this->schedule_reconnect();
         return false;
     }
+    mqtt_client->publish(realm + "$online", "true", mqtt::qos::at_most_once, true);
     for (const auto &e : this->store->keys()) {
         std::stringstream key_ss, value_ss;
         key_ss << this->realm << e;
@@ -112,7 +114,25 @@ bool MqttConnection::connack_handler(bool sp, std::uint8_t connack_return_code) 
 
         value_ss << *val;
         mqtt_client->publish(key_ss.str(), value_ss.str());
-        mqtt_client->publish(key_ss.str() + "/type", this->store->getTypeName(e));
+        auto dataType = this->store->getTypeName(e);
+        if (dataType == "float(0, 1)") {
+            dataType = "float";
+            mqtt_client->publish(key_ss.str() + "/$format", "0:1", mqtt::qos::at_most_once, true);
+        }
+        if (dataType == "hsv_value") {
+            dataType = "float";
+            mqtt_client->publish(key_ss.str() + "/$format", "0:1", mqtt::qos::at_most_once, true);
+        }
+        if (dataType == "hsv_saturation") {
+            dataType = "float";
+            mqtt_client->publish(key_ss.str() + "/$format", "0:1", mqtt::qos::at_most_once, true);
+        }
+        if (dataType == "hsv_hue") {
+            dataType = "float";
+            mqtt_client->publish(key_ss.str() + "/$format", "0:360", mqtt::qos::at_most_once, true);
+        }
+        mqtt_client->publish(key_ss.str() + "/$datatype", dataType, mqtt::qos::at_most_once, true);
+        mqtt_client->publish(key_ss.str() + "/$settable", "true", mqtt::qos::at_most_once, true);
         key_ss << "/set";
         mqtt_client->subscribe(key_ss.str(), mqtt::qos::at_least_once);
         std::cerr << "subscribed to " << key_ss.str() << std::endl;

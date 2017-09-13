@@ -31,7 +31,7 @@ std::ostream &operator<<(std::ostream &os, const ValueType &obj) {
             os << obj.getInteger();
             break;
         case ValueType::Type::BOOLEAN:
-            os << obj.getBool();
+            os << std::boolalpha << obj.getBool();
             break;
         default:
             os << "(unknown type)";
