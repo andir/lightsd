@@ -19,17 +19,17 @@ class FadeOperation : public Operation {
     void recalcMask() {
         std::lock_guard<std::mutex> l(mutex);
 
-        if (to.getValue() <= from.getValue() || min.getValue() >= max.getValue())
+        if (to <= from || min >= max)
             return;
 
-        const size_t length = (to.getValue() - from.getValue());
+        const size_t length = (to - from);
 
         mask.resize(length);
 
-        const float diff = max.getValue() - min.getValue();
+        const float diff = max - min;
         const float step = diff / length;
         for (size_t i = 0; i < length; i++) {
-            mask.push_back(step * i);
+            mask[i] = min + step * i;
         }
     }
 

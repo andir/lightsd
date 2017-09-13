@@ -16,7 +16,8 @@ class MqttConnection {
     std::thread worker_thread;
 
 public:
-    MqttConnection(std::shared_ptr<VariableStore>& store, const std::string& broker, const std::string& realm);
+    MqttConnection(std::shared_ptr<VariableStore>& store, const std::string& broker, const std::string& realm,
+        const std::string& username, const std::string& password);
 
     void stop() {
         if (!io_service.stopped())

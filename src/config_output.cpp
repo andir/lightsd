@@ -56,7 +56,7 @@ void parseOutputs(std::map<std::string, std::shared_ptr<Output>> &outputs, const
 
         if (const auto it = types.find(type);
         it == types.end()) {
-            throw ConfigParsingException("Unknown output type");
+            throw ConfigParsingException("Unknown output type " + type);
         } else {
             auto &func = *(it->second);
             outputs[output_name] = func(params, store);
