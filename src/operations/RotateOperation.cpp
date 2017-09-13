@@ -6,7 +6,7 @@ RotateOperation::RotateOperation(const std::string& name, std::shared_ptr<Variab
         step(0.0),
         step_width(
                 name + "/step_width",
-                Operation::FLOAT_0_1,
+                Operation::FLOAT,
                 store,
                 getValueByKey<float>(
                         "step_width",
