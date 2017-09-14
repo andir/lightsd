@@ -105,26 +105,21 @@ bool MqttConnection::connack_handler(bool sp, std::uint8_t connack_return_code) 
     }
     mqtt_client->publish(realm + "$online", "true", mqtt::qos::at_most_once, true);
     for (const auto &e : this->store->keys()) {
-        std::stringstream key_ss, value_ss;
-        key_ss << this->realm << e;
+        std::stringstream value_ss;
+        const auto key = this->realm + e;
         const auto &val = this->store->getVar(e);
 
-        std::cerr << "subscribing to " << key_ss.str() << " type: " << val->getType() << std::endl;
+        std::cerr << "subscribing to " << key << " type: " << val->getType() << std::endl;
 
         value_ss << *val;
-        mqtt_client->publish(key_ss.str(), value_ss.str());
-        auto type = this->store->getMqttType(e);
-        mqtt_client->publish(key_ss.str() + "/$datatype", type.dataType, mqtt::qos::at_most_once, true);
-        if (type.format != "") {
-            mqtt_client->publish(key_ss.str() + "/$format", "0:1", mqtt::qos::at_most_once, true);
-        }
-        if (type.unit != "") {
-            mqtt_client->publish(key_ss.str() + "/$unit", type.unit, mqtt::qos::at_most_once, true);
-        }
-        mqtt_client->publish(key_ss.str() + "/$settable", "true", mqtt::qos::at_most_once, true);
-        key_ss << "/set";
-        mqtt_client->subscribe(key_ss.str(), mqtt::qos::at_least_once);
-        std::cerr << "subscribed to " << key_ss.str() << std::endl;
+        mqtt_client->publish(key, value_ss.str());
+        const auto type = this->store->getMqttType(e);
+        mqtt_client->publish(key + "/$datatype", type.dataType, mqtt::qos::at_most_once, true);
+        mqtt_client->publish(key + "/$format", type.format, mqtt::qos::at_most_once, true);
+        mqtt_client->publish(key + "/$unit", type.unit, mqtt::qos::at_most_once, true);
+        mqtt_client->publish(key + "/$settable", "true", mqtt::qos::at_most_once, true);
+        mqtt_client->subscribe(key + "/set", mqtt::qos::at_least_once);
+        std::cerr << "subscribed to " << key << "/set" << std::endl;
     }
 
     return true;
