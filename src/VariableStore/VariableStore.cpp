@@ -88,5 +88,5 @@ MqttVarType VariableStore::getMqttType(const std::string& name) const {
     if (it != types.end()) {
         return (*it).second;
     }
-    return {"unknown","",""};
+    assert(false && "Invalid variable name");
 }
