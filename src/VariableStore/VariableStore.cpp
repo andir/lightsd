@@ -1,6 +1,7 @@
 
-#include <vector>
+#include <cassert>
 #include <set>
+#include <vector>
 #include "VariableStore.h"
 
 VariableStore::VariableStore() : lock() {}
