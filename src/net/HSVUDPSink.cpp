@@ -76,3 +76,8 @@ std::shared_ptr<AbstractBaseBuffer<HSV>> HSVUDPSink::get() {
 
     return last_frame;
 }
+
+void HSVUDPSink::clear() {
+    std::shared_lock<std::shared_mutex> guard(frame_guard);
+    last_frame = nullptr;
+}

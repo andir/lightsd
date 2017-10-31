@@ -18,6 +18,7 @@ inline std::unique_ptr<Output> generate(const YAML::Node &params, std::shared_pt
     } else {
         static_assert("No valid constructor found.");
     }
+    return nullptr;
 }
 
 

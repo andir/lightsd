@@ -9,6 +9,7 @@
 #include <sstream>
 #include <variant>
 #include <utility>
+#include <memory>
 
 #include <websocketpp/common/thread.hpp>
 

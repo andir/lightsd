@@ -1,7 +1,8 @@
 #pragma once
 
-#include <ostream>
 #include <functional>
+#include <ostream>
+#include <vector>
 
 class ValueType {
 public:

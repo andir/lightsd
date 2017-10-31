@@ -37,7 +37,7 @@ public:
     void start();
 
     void stop();
-
+    void clear();
 
 private:
 
