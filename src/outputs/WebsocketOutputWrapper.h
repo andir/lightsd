@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <yaml-cpp/yaml.h>
 #include <VariableStore/VariableStore.h>
 #include "Output.h"

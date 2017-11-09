@@ -59,6 +59,10 @@ operations:
     type: lua
     params:
       filename: example.lua
+  mqtt-lua:
+    type: lua
+    params:
+       mqtt: true
   fade-100-left:
     type: fade
     params:

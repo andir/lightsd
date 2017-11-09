@@ -13,3 +13,4 @@ const MqttVarType Operation::INT = { "int", "", "" };
 
 const MqttVarType Operation::FLOAT = { "float", "", "" };
 
+const MqttVarType Operation::STRING = { "string", "", "" };

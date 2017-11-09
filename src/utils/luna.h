@@ -1,6 +1,6 @@
 #pragma once
 
-#include <luajit-2.0/lua.hpp>
+#include <luajit-2.1/lua.hpp>
 
 template<class T>
 class Luna {

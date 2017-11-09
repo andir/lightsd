@@ -47,6 +47,8 @@ public:
 
     static const MqttVarType FLOAT;
 
+    static const MqttVarType STRING;
+
     inline bool isEnabled() const {
         return enabled;
     }

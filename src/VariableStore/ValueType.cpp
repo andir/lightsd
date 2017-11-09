@@ -15,6 +15,9 @@ std::ostream &operator<<(std::ostream &os, const ValueType::Type t) {
         case ValueType::Type::BOOLEAN:
             os << "BOOL";
             break;
+        case ValueType::Type::STRING:
+            os << "STRING";
+            break;
         default:
             os << "UNKNOWN";
     }
@@ -33,6 +36,8 @@ std::ostream &operator<<(std::ostream &os, const ValueType &obj) {
         case ValueType::Type::BOOLEAN:
             os << std::boolalpha << obj.getBool();
             break;
+        case ValueType::Type::STRING:
+            os << obj.getString();
         default:
             os << "(unknown type)";
     }

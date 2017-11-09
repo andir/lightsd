@@ -1,6 +1,7 @@
 #pragma once
 
 #include <atomic>
+#include <string>
 
 #include "ValueType.h"
 #include "InvalidVariableTypeException.h"
@@ -26,12 +27,27 @@ namespace {
     constexpr ValueType::Type determineType<bool>() {
         return ValueType::Type::BOOLEAN;
     }
+
+    template<>
+    constexpr ValueType::Type determineType<std::string>() {
+        return ValueType::Type::STRING;
+    }
+};
+template<typename T>
+struct atomic_type {
+   typedef std::atomic<T> type;
+};
+
+template<>
+struct atomic_type<std::string> {
+   typedef std::string type;
 };
 
 template<typename InternalValueType>
 class ConcreteValueType : public ValueType {
 private:
-    std::atomic<InternalValueType> value;
+    using atomic_t = typename atomic_type<InternalValueType>::type;
+    atomic_t value;
     Type type;
 
     inline void notify() {
@@ -74,7 +90,7 @@ public:
 
     virtual void setInteger(const int v) {
         if (std::is_same<int, InternalValueType>::value) {
-            setValue<InternalValueType>(v);
+            setValue<int>(v);
             notify();
         } else {
             assert(false && "Invalid setter used");
@@ -83,7 +99,7 @@ public:
 
     virtual void setFloat(const float v) {
         if (std::is_same<float, InternalValueType>::value) {
-            setValue<InternalValueType>(v);
+            setValue<float>(v);
             notify();
         } else {
             assert(false && "Invalid setter used");
@@ -92,11 +108,28 @@ public:
 
     virtual void setBool(const bool v) {
         if (std::is_same<bool, InternalValueType>::value) {
-            setValue<InternalValueType>(v);
+            setValue<bool>(v);
             notify();
         } else {
             assert(false && "Invalid setter used");
         }
+    }
+
+    virtual std::string getString() const {
+    	if (std::is_same<std::string, InternalValueType>::value) {
+		return getValue<std::string>();
+	} else {
+		assert(false && "INvalid setter used");
+	}
+    }
+
+    virtual void setString(const std::string v) {
+	if (std::is_same<std::string, InternalValueType>::value) {
+		setValue<std::string>(v);
+	} else {
+		assert(false && "Invalid setter used");
+	}
+
     }
 
     virtual inline InternalValueType getValue() const {
@@ -106,7 +139,6 @@ public:
     virtual inline void setValue(InternalValueType v) {
         value = v;
     }
-
 
 private:
     template<typename TargetType>

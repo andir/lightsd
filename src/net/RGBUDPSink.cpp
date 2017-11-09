@@ -26,7 +26,7 @@ void RGBUDPSink::handle_receive(const boost::system::error_code &error, std::siz
         for (size_t i = 0; i < buf->size(); i++) {
             buf->at(i) = recv_buffer[i];
         }
-        std::lock_guard<std::shared_mutex> guard(frame_guard);
+        std::scoped_lock guard(frame_guard);
         last_frame = std::move(buf);
     } else {
         throw error;
