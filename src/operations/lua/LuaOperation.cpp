@@ -2,30 +2,51 @@
 // Created by andi on 3/14/17.
 //
 
+#include "LuaHSVBuffer.h"
 #include "LuaOperation.h"
 #include "../../utils/luna.h"
-#include "LuaHSVBuffer.h"
-
+#include "../../VariableStore/ValueType.h"
 
 LuaOperation::LuaOperation(const std::string& name, std::shared_ptr<VariableStore>& store, YAML::const_iterator begin, YAML::const_iterator end) :
         Operation(name, store, begin, end),
         luaState(openLua()) {
 
-    const auto fn = getValueByKey<std::string>("filename", begin, end, "");
+    const auto mqtt = getValueByKey<bool>("mqtt", begin, end, false);
 
-    if (fn == "") {
-        std::cerr << "No lua file configure for plugin" << this->getName() << std::endl;
+    if (!mqtt) {
+	    const auto fn = getValueByKey<std::string>("filename", begin, end, "");
+
+	    if (fn == "") {
+	        std::cerr << "No lua file configure for plugin" << this->getName() << std::endl;
+	    } else {
+	        luaL_dofile(luaState, fn.c_str());
+	    }
     } else {
-        luaL_dofile(luaState, fn.c_str());
+	mqtt_code = std::make_unique<BoundConcreteValue<std::string> >(name + "/code",
+		Operation::STRING, store, getValueByKey<std::string>("code", begin, end, ""),
+		[this](ValueType* vt){
+			this->reloadCode(vt->getString());
+		}
+	);
+        luaL_dostring(luaState, mqtt_code->getValue().c_str());
     }
-
 }
 
 LuaOperation::~LuaOperation() {
-    if (this->luaState != nullptr) {
-        lua_close(this->luaState);
-        this->luaState = nullptr;
-    }
+    std::scoped_lock lock(code_mutex);
+    destroy();
+}
+
+void LuaOperation::destroy() {
+   if (luaState != nullptr)
+       lua_close(luaState);
+}
+
+void LuaOperation::reloadCode(const std::string code) {
+   std::scoped_lock lock(code_mutex);
+   destroy();
+   luaState = openLua();
+   luaL_dostring(luaState, code.c_str());
 }
 
 lua_State *LuaOperation::openLua() {
@@ -51,6 +72,9 @@ lua_State *LuaOperation::openLua() {
 }
 
 void LuaOperation::run(const AbstractBaseBuffer<HSV> &buffer) {
+    if (!luaState) return;
+
+    std::scoped_lock lock(code_mutex);
     lua_pushnumber(luaState, buffer.size());
     lua_setglobal(luaState, "size");
 
