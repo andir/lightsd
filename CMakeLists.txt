@@ -20,10 +20,6 @@ pkg_search_module(luajit REQUIRED luajit)
 pkg_search_module(yaml-cpp REQUIRED yaml-cpp)
 find_package(Boost COMPONENTS system thread)
 find_package(websocketpp)
-#find_package(yaml-Cpp)
-#find_package(luajit)
-#include_directories()
-#include_directories(src)
 
 file(GLOB_RECURSE SOURCE_FILES src/**.cpp src/**.h src/**.hpp)
 
