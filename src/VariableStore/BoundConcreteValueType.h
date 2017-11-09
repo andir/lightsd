@@ -1,8 +1,13 @@
 #pragma once
 
 #include <memory>
+#include <string>
 #include "ConcreteValueType.h"
 #include "VariableStore.h"
+
+namespace {
+	    template<typename T> struct always_false { static const bool value = false; };
+};
 
 template<typename EnclosedValue>
 class BoundConcreteValue : public ValueType {
@@ -55,6 +60,14 @@ public:
         }
     }
 
+    virtual std::string getString() const {
+        if (std::is_same<std::string, EnclosedValue>::value) {
+            return value->getString();
+        } else {
+            assert(false && "Invalid getter used");
+        }
+    }
+
     virtual void setFloat(const float v) {
         if (std::is_same<float, EnclosedValue>::value) {
             value->setFloat(v);
@@ -82,6 +95,14 @@ public:
         }
     }
 
+    virtual void setString(const std::string v) {
+        if (std::is_same<std::string, EnclosedValue>::value) {
+            value->setString(v);
+        } else {
+            assert(false && "Invalid setter used");
+        }
+    }
+
     EnclosedValue getValue() const {
         return value->getValue();
     }
@@ -91,12 +112,16 @@ public:
     }
 
     BoundConcreteValue& operator=(const EnclosedValue v) {
-        if (std::is_same<bool, EnclosedValue>::value) {
+        if constexpr (std::is_same<bool, EnclosedValue>::value) {
             value->setBool(v);
-        } else if (std::is_same<int, EnclosedValue>::value) {
+        } else if constexpr (std::is_same<int, EnclosedValue>::value) {
             value->setInteger(v);
-        } else if (std::is_same<float, EnclosedValue>::value) {
+        } else if constexpr (std::is_same<float, EnclosedValue>::value) {
             value->setFloat(v);
+        } else if constexpr (std::is_same<std::string, EnclosedValue>::value) {
+	    value->setString(v);
+	} else {
+            static_assert(always_false<EnclosedValue>::value && "invalid value type");
         }
 
         return *this;
