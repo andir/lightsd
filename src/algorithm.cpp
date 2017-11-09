@@ -5,4 +5,3 @@
 #include "algorithm.h"
 
 using namespace algorithm;
-

@@ -1,23 +1,26 @@
 #pragma once
 
+#include <cstddef>
+
+using std::size_t;
+
 class MemMap {
-    size_t size;
-    void *ptr;
-public:
-    MemMap();
+  size_t size;
+  void* ptr;
 
-    bool open(const int fd, const size_t size, const size_t offset = 0);
+ public:
+  MemMap();
 
-    void close();
+  bool open(const int fd, const size_t size, const size_t offset = 0);
 
-    ~MemMap();
+  void close();
 
-    template<typename T>
-    T *get() const {
-        return reinterpret_cast<T *>(ptr);
-    }
+  ~MemMap();
 
-    size_t getSize() const {
-        return size;
-    }
+  template <typename T>
+  T* get() const {
+    return reinterpret_cast<T*>(ptr);
+  }
+
+  size_t getSize() const { return size; }
 };

@@ -1,22 +1,23 @@
 #pragma once
 
-#include <mutex>
-#include "config.h"
 #include "FrameScheduler.h"
+#include "config.h"
 #include "utils/JobQueue.h"
+#include <mutex>
 
 class WorkerThread {
-    bool doRun;
-    ConfigPtr config_ptr;
-    ConfigPtr new_config_ptr;
-    std::mutex config_mutex;
-    JobQueue job_queue;
-public:
-    WorkerThread();
+  bool doRun;
+  ConfigPtr config_ptr;
+  ConfigPtr new_config_ptr;
+  std::mutex config_mutex;
+  JobQueue job_queue;
 
-    void setConfig(ConfigPtr cfg);
+ public:
+  WorkerThread();
 
-    ConfigPtr getConfig();
+  void setConfig(ConfigPtr cfg);
 
-    void run();
+  ConfigPtr getConfig();
+
+  void run();
 };

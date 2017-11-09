@@ -2,44 +2,43 @@
 
 #include <yaml-cpp/yaml.h>
 
-#include "Operation.h"
 #include "../hsv.h"
+#include "Operation.h"
 
-#include "../VariableStore/VariableStore.h"
 #include "../VariableStore/BoundConcreteValueType.h"
+#include "../VariableStore/VariableStore.h"
 
 class SplashdropOperation : public Operation {
+  enum STATE { IDLE = 0, DROPPING, RISING_SPLASH, DEACYING_SPLASH };
 
-    enum STATE {
-        IDLE = 0,
-        DROPPING,
-        RISING_SPLASH,
-        DEACYING_SPLASH
-    };
+  struct Drop {
+    HSV color;
+    float rate;
+    STATE state;
+  };
 
-    struct Drop {
-        HSV color;
-        float rate;
-        STATE state;
-    };
+  std::vector<Drop> drops;
 
+  void hitDrop(Drop& drop);
 
-    std::vector<Drop> drops;
+  void decayDrop(Drop& drop);
 
+  void drawSplash(const Drop& drop,
+                  const size_t index,
+                  const AbstractBaseBuffer<HSV>& buffer,
+                  const size_t width);
 
-    void hitDrop(Drop &drop);
+  void drawDrop(Drop&,
+                const size_t index,
+                const AbstractBaseBuffer<HSV>& buffer);
 
-    void decayDrop(Drop &drop);
+ public:
+  SplashdropOperation(const std::string& name,
+                      std::shared_ptr<VariableStore> store,
+                      YAML::const_iterator start,
+                      YAML::const_iterator end);
 
-    void drawSplash(const Drop &drop, const size_t index, const AbstractBaseBuffer<HSV> &buffer, const size_t width);
+  void draw(const AbstractBaseBuffer<HSV>& buffer);
 
-    void drawDrop(Drop &, const size_t index, const AbstractBaseBuffer<HSV> &buffer);
-
-public:
-    SplashdropOperation(const std::string& name, std::shared_ptr<VariableStore> store, YAML::const_iterator start, YAML::const_iterator end);
-
-    void draw(const AbstractBaseBuffer<HSV> &buffer);
-
-    Operation::BufferType operator()(Operation::BufferType &buffer);
-
+  Operation::BufferType operator()(Operation::BufferType& buffer);
 };

@@ -1,32 +1,35 @@
 #pragma once
 
+#include "../../VariableStore/BoundConcreteValueType.h"
+#include "../Operation.h"
 #include <luajit-2.1/lua.hpp>
 #include <memory>
 #include <mutex>
-#include "../Operation.h"
-#include "../../VariableStore/BoundConcreteValueType.h"
 
 class LuaOperation : public Operation {
-    std::mutex code_mutex;
+  std::mutex code_mutex;
 
-    std::unique_ptr<BoundConcreteValue<std::string> > mqtt_code;
+  std::unique_ptr<BoundConcreteValue<std::string>> mqtt_code;
 
-    lua_State *luaState;
+  lua_State* luaState;
 
-    lua_State *openLua();
+  lua_State* openLua();
 
-    void destroy();
-    void reloadCode(const std::string code);
+  void destroy();
+  void reloadCode(const std::string code);
 
-    void run(const AbstractBaseBuffer<HSV> &buffer);
+  void run(const AbstractBaseBuffer<HSV>& buffer);
 
-public:
-    LuaOperation(const std::string& name, std::shared_ptr<VariableStore>& store, YAML::const_iterator begin, YAML::const_iterator end);
+ public:
+  LuaOperation(const std::string& name,
+               std::shared_ptr<VariableStore>& store,
+               YAML::const_iterator begin,
+               YAML::const_iterator end);
 
-    virtual ~LuaOperation();
+  virtual ~LuaOperation();
 
-    BufferType operator()(BufferType &buffer) {
-        run(*buffer);
-        return buffer; // FIXME: 
-    }
+  BufferType operator()(BufferType& buffer) {
+    run(*buffer);
+    return buffer;  // FIXME:
+  }
 };

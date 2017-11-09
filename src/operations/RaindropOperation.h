@@ -4,45 +4,45 @@
 
 #include "Operation.h"
 
-#include "../VariableStore/VariableStore.h"
 #include "../VariableStore/BoundConcreteValueType.h"
+#include "../VariableStore/VariableStore.h"
 
 class RaindropOperation : public Operation {
+  BoundConcreteValue<float> hue_min;
+  BoundConcreteValue<float> hue_max;
 
-    BoundConcreteValue<float> hue_min;
-    BoundConcreteValue<float> hue_max;
+  BoundConcreteValue<float> saturation_min;
+  BoundConcreteValue<float> saturation_max;
 
-    BoundConcreteValue<float> saturation_min;
-    BoundConcreteValue<float> saturation_max;
+  BoundConcreteValue<float> value_min;
+  BoundConcreteValue<float> value_max;
 
+  BoundConcreteValue<float> chance;
 
-    BoundConcreteValue<float> value_min;
-    BoundConcreteValue<float> value_max;
+  BoundConcreteValue<float> decay_low;
+  BoundConcreteValue<float> decay_high;
+  BoundConcreteValue<int> decay_resolution;
 
-    BoundConcreteValue<float> chance;
+  struct Raindrop {
+    HSV color;
+    float decay_rate;
 
-    BoundConcreteValue<float> decay_low;
-    BoundConcreteValue<float> decay_high;
-    BoundConcreteValue<int> decay_resolution;
+    void hit(const float decay_high, const float decay_low);
 
-    struct Raindrop {
-        HSV color;
-        float decay_rate;
+    void decay();
+  };
 
-        void hit(const float decay_high, const float decay_low);
+  std::vector<Raindrop> leds;
 
-        void decay();
-    };
+  void hitRaindrop(Raindrop& drop);
 
+ public:
+  RaindropOperation(const std::string& name,
+                    std::shared_ptr<VariableStore> store,
+                    YAML::const_iterator start,
+                    YAML::const_iterator end);
 
-    std::vector<Raindrop> leds;
+  void draw(const AbstractBaseBuffer<HSV>& buffer);
 
-    void hitRaindrop(Raindrop &drop);
-
-public:
-    RaindropOperation(const std::string& name, std::shared_ptr<VariableStore> store, YAML::const_iterator start, YAML::const_iterator end);
-
-    void draw(const AbstractBaseBuffer<HSV> &buffer);
-
-    Operation::BufferType operator()(Operation::BufferType &buffer);
+  Operation::BufferType operator()(Operation::BufferType& buffer);
 };
