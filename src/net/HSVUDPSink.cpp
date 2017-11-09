@@ -23,7 +23,7 @@ HSVUDPSink::~HSVUDPSink() {
 void HSVUDPSink::handle_receive(const boost::system::error_code &error, std::size_t bytes) {
 
     if (bytes > 0 && !error) {
-        std::lock_guard<std::shared_mutex> guard(frame_guard);
+        std::scoped_lock guard(frame_guard);
         auto buf = last_frame;
         const size_t led_count = bytes / sizeof(HSV);
         if (buf == nullptr || led_count != buf->size())

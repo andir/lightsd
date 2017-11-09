@@ -10,6 +10,7 @@
 #include <variant>
 #include <utility>
 #include <memory>
+#include <mutex>
 
 #include <websocketpp/common/thread.hpp>
 
@@ -17,16 +18,15 @@
 
 typedef websocketpp::server<websocketpp::config::asio> server;
 
+using std::scoped_lock;
 using websocketpp::connection_hdl;
+using websocketpp::lib::bind;
+using websocketpp::lib::condition_variable;
+using websocketpp::lib::mutex;
 using websocketpp::lib::placeholders::_1;
 using websocketpp::lib::placeholders::_2;
-using websocketpp::lib::bind;
-
 using websocketpp::lib::thread;
-using websocketpp::lib::mutex;
-using websocketpp::lib::lock_guard;
 using websocketpp::lib::unique_lock;
-using websocketpp::lib::condition_variable;
 
 /* on_open insert connection_hdl into channel
  * on_close remove connection_hdl from channel
@@ -100,7 +100,7 @@ public:
     }
 
     void stop() {
-        lock_guard<mutex> guard(m_action_lock);
+        scoped_lock guard(m_action_lock);
         const connection_hdl hdl = std::shared_ptr<void>(nullptr);
 
         m_actions.push(action(QUIT, hdl));
@@ -170,7 +170,7 @@ public:
 
     void on_open(connection_hdl hdl) {
         {
-            lock_guard<mutex> guard(m_action_lock);
+            scoped_lock guard(m_action_lock);
             //std::cout << "on_open" << std::endl;
             m_actions.push(action(SUBSCRIBE, hdl));
         }
@@ -179,7 +179,7 @@ public:
 
     void on_close(connection_hdl hdl) {
         {
-            lock_guard<mutex> guard(m_action_lock);
+            scoped_lock guard(m_action_lock);
             //std::cout << "on_close" << std::endl;
             m_actions.push(action(UNSUBSCRIBE, hdl));
         }
@@ -189,7 +189,7 @@ public:
     void on_message(connection_hdl hdl, server::message_ptr msg) {
 //        // queue message up for sending by processing thread
 //        {
-//            lock_guard<mutex> guard(m_action_lock);
+//            scoped_lock guard(m_action_lock);
 //            //std::cout << "on_message" << std::endl;
 //            m_actions.push(action(MESSAGE, hdl, msg));
 //        }
@@ -198,7 +198,7 @@ public:
 
     void push_message(std::vector<uint8_t>& msg) {
         {
-            lock_guard<mutex> guard(m_action_lock);
+            scoped_lock guard(m_action_lock);
             const connection_hdl hdl = std::shared_ptr<void>(nullptr);
             m_actions.push(action(MESSAGE, hdl, msg));
         }
@@ -223,13 +223,13 @@ public:
             lock.unlock();
 
             if (a.type == SUBSCRIBE) {
-                lock_guard<mutex> guard(m_connection_lock);
+                scoped_lock guard(m_connection_lock);
                 m_connections.insert(a.hdl);
             } else if (a.type == UNSUBSCRIBE) {
-                lock_guard<mutex> guard(m_connection_lock);
+                scoped_lock guard(m_connection_lock);
                 m_connections.erase(a.hdl);
             } else if (a.type == MQTT_MESSAGE) {
-                lock_guard<mutex> guard(m_connection_lock);
+                scoped_lock guard(m_connection_lock);
 
                 auto [key, value] = std::get<std::pair<std::string, std::string> >(a.msg);
 
@@ -240,7 +240,7 @@ public:
                 }
 
             } else if (a.type == MESSAGE) {
-                lock_guard<mutex> guard(m_connection_lock);
+                scoped_lock guard(m_connection_lock);
 
                 con_list::iterator it;
                 websocketpp::lib::error_code ec;

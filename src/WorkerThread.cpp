@@ -70,13 +70,13 @@ WorkerThread::WorkerThread() : doRun(true), config_ptr(nullptr) {
 
 
 void WorkerThread::setConfig(ConfigPtr cfg) {
-    std::lock_guard<std::mutex> lock(config_mutex);
+    std::scoped_lock<std::mutex> lock(config_mutex);
     new_config_ptr = std::move(cfg);
 }
 
 
 ConfigPtr WorkerThread::getConfig() {
-    std::lock_guard<std::mutex> lock(config_mutex);
+    std::scoped_lock<std::mutex> lock(config_mutex);
     if (new_config_ptr != nullptr) {
         return std::move(new_config_ptr);
     }

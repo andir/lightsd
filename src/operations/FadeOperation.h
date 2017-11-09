@@ -17,7 +17,7 @@ class FadeOperation : public Operation {
     std::mutex mutex;
 
     void recalcMask() {
-        std::lock_guard<std::mutex> l(mutex);
+        std::scoped_lock l(mutex);
 
         if (to <= from || min >= max)
             return;
@@ -52,7 +52,7 @@ public:
 
 
     BufferType operator()(BufferType &buffer) {
-        std::lock_guard<std::mutex> l(mutex);
+        std::scoped_lock l(mutex);
         if (mask.size() == 0)
             return buffer;
 
