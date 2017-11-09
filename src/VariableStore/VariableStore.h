@@ -1,39 +1,39 @@
 #pragma once
 
-#include <string>
-#include <memory>
-#include <shared_mutex>
-#include <map>
-#include <set>
 #include "ValueType.h"
+#include <map>
+#include <memory>
+#include <set>
+#include <shared_mutex>
+#include <string>
 
 struct mqtt_var_type {
-    std::string dataType;
-    std::string format;
-    std::string unit;
+  std::string dataType;
+  std::string format;
+  std::string unit;
 };
 
 using MqttVarType = struct mqtt_var_type;
 
 class VariableStore {
-    mutable std::shared_mutex lock;
-    std::map<std::string, std::weak_ptr<ValueType>> vars;
-    std::map<std::string, MqttVarType> types;
+  mutable std::shared_mutex lock;
+  std::map<std::string, std::weak_ptr<ValueType>> vars;
+  std::map<std::string, MqttVarType> types;
 
-public:
+ public:
+  VariableStore();
 
-    VariableStore();
+  void registerVar(const std::string& name,
+                   const MqttVarType& mqtt_type,
+                   std::shared_ptr<ValueType> var);
 
-    void registerVar(const std::string& name, const MqttVarType& mqtt_type, std::shared_ptr<ValueType> var);
+  void unregisterVar(const std::string& name);
 
-    void unregisterVar(const std::string& name);
+  void cleanUp();
 
-    void cleanUp();
+  std::set<std::string> keys() const;
 
-    std::set<std::string> keys() const;
+  std::shared_ptr<ValueType> getVar(const std::string& name) const;
 
-    std::shared_ptr<ValueType> getVar(const std::string& name) const;
-
-    MqttVarType getMqttType(const std::string& name) const;
-
+  MqttVarType getMqttType(const std::string& name) const;
 };

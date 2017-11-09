@@ -4,10 +4,10 @@
 #include <string>
 
 class InvalidVariableTypeException : public std::exception {
+  const std::string s;
 
-    const std::string s;
-public:
-    InvalidVariableTypeException();
+ public:
+  InvalidVariableTypeException();
 
-    const char *what() const throw();
+  const char* what() const throw();
 };

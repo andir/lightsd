@@ -1,28 +1,27 @@
 #pragma once
 
-#include <string>
 #include <linux/memfd.h>
+#include <string>
 
 enum class MemFDFlags : int {
-    CLOEXEC = MFD_CLOEXEC,
-    ALLOW_SEALING = MFD_ALLOW_SEALING,
+  CLOEXEC = MFD_CLOEXEC,
+  ALLOW_SEALING = MFD_ALLOW_SEALING,
 };
 
-
 class MemFD {
-public:
-    const std::string filename;
-    int fd;
+ public:
+  const std::string filename;
+  int fd;
 
-    explicit MemFD(const std::string& filename);
+  explicit MemFD(const std::string& filename);
 
-    bool open(unsigned int flags);
+  bool open(unsigned int flags);
 
-    bool setSize(size_t size);
+  bool setSize(size_t size);
 
-    bool seal();
+  bool seal();
 
-    void close();
+  void close();
 
-    ~MemFD();
+  ~MemFD();
 };

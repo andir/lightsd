@@ -4,21 +4,23 @@
 
 #include <yaml-cpp/yaml.h>
 
-#include "../VariableStore/VariableStore.h"
 #include "../VariableStore/BoundConcreteValueType.h"
+#include "../VariableStore/VariableStore.h"
 
 #include "../net/HSVUDPSink.h"
 
 class HSVUDPInputOperation : public Operation {
+  HSVUDPSink sink;
+  bool started;
 
-    HSVUDPSink sink;
-    bool started;
-public:
-    HSVUDPInputOperation(const std::string& name, std::shared_ptr<VariableStore> store, YAML::const_iterator start, YAML::const_iterator end);
+ public:
+  HSVUDPInputOperation(const std::string& name,
+                       std::shared_ptr<VariableStore> store,
+                       YAML::const_iterator start,
+                       YAML::const_iterator end);
 
-    ~HSVUDPInputOperation();
+  ~HSVUDPInputOperation();
 
-    void update(const size_t, const size_t);
-    Operation::BufferType operator()(Operation::BufferType &buffer);
-
+  void update(const size_t, const size_t);
+  Operation::BufferType operator()(Operation::BufferType& buffer);
 };

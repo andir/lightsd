@@ -1,19 +1,19 @@
 #pragma once
 
-#include <yaml-cpp/yaml.h>
 #include "../SharedMemoryBuffer.h"
 #include "Output.h"
+#include <yaml-cpp/yaml.h>
 
 class SharedMemoryOutput : public Output {
-    const std::string filename;
-    SharedMemoryBuffer shmBuffer;
+  const std::string filename;
+  SharedMemoryBuffer shmBuffer;
 
-public:
-    explicit SharedMemoryOutput(const YAML::Node &params);
+ public:
+  explicit SharedMemoryOutput(const YAML::Node& params);
 
-    virtual ~SharedMemoryOutput() {};
+  virtual ~SharedMemoryOutput(){};
 
-    virtual void draw(const AbstractBaseBuffer<HSV> &buffer);
+  virtual void draw(const AbstractBaseBuffer<HSV>& buffer);
 
-    virtual void draw(const std::vector<HSV> &buffer);
+  virtual void draw(const std::vector<HSV>& buffer);
 };

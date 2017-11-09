@@ -1,21 +1,22 @@
 #pragma once
 
+#include "Output.h"
+#include <VariableStore/VariableStore.h>
 #include <memory>
 #include <yaml-cpp/yaml.h>
-#include <VariableStore/VariableStore.h>
-#include "Output.h"
 
 class WebsocketOutputWrapper : public Output {
-    // internal pointer to the websocket output
-    std::unique_ptr<Output> output;
-    int port;
-public:
-    explicit WebsocketOutputWrapper(const YAML::Node &params, std::shared_ptr<VariableStore>& store);
+  // internal pointer to the websocket output
+  std::unique_ptr<Output> output;
+  int port;
 
-    ~WebsocketOutputWrapper();
+ public:
+  explicit WebsocketOutputWrapper(const YAML::Node& params,
+                                  std::shared_ptr<VariableStore>& store);
 
-    virtual void draw(const AbstractBaseBuffer<HSV> &buffer);
+  ~WebsocketOutputWrapper();
 
-    virtual void draw(const std::vector<HSV> &buffer);
+  virtual void draw(const AbstractBaseBuffer<HSV>& buffer);
 
+  virtual void draw(const std::vector<HSV>& buffer);
 };
