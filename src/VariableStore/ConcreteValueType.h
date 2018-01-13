@@ -127,6 +127,7 @@ class ConcreteValueType : public ValueType {
   virtual void setString(const std::string v) {
     if (std::is_same<std::string, InternalValueType>::value) {
       setValue<std::string>(v);
+      notify();
     } else {
       assert(false && "Invalid setter used");
     }
