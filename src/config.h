@@ -1,12 +1,12 @@
 #pragma once
 
+#include <map>
+#include <memory>
+#include <vector>
 #include "VariableStore/VariableStore.h"
 #include "net/MqttConnection.h"
 #include "operations/Operation.h"
 #include "outputs/Output.h"
-#include <map>
-#include <memory>
-#include <vector>
 
 struct MqttConfig {
   const std::string broker;

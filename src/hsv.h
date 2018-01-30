@@ -21,7 +21,8 @@ struct HSV {
 
   HSV operator/(const int div) const {
     return HSV{
-        hue / value_type(div), saturation / value_type(div),
+        hue / value_type(div),
+        saturation / value_type(div),
         value / value_type(div),
     };
   }

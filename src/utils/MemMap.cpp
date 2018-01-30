@@ -3,9 +3,9 @@
 //
 
 #include "MemMap.h"
+#include <sys/mman.h>
 #include <cassert>
 #include <cstdio>
-#include <sys/mman.h>
 
 MemMap::MemMap() : size(0), ptr(0) {}
 

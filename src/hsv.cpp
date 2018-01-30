@@ -1,7 +1,7 @@
 #include "hsv.h"
+#include <tgmath.h>
 #include "algorithm.h"
 #include "rgb.h"
-#include <tgmath.h>
 
 template <typename A, int min, int max>
 A ensure_bounds(A val) {

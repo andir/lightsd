@@ -1,8 +1,8 @@
 #pragma once
 
+#include <boost/asio.hpp>
 #include "../rgb.h"
 #include "Output.h"
-#include <boost/asio.hpp>
 
 using boost::asio::ip::udp;
 

@@ -1,11 +1,11 @@
 #pragma once
 
+#include <yaml-cpp/yaml.h>
 #include "../VariableStore/BoundConcreteValueType.h"
 #include "../VariableStore/ConcreteValueType.h"
 #include "../VariableStore/VariableStore.h"
 #include "../algorithm.h"
 #include "../hsv.h"
-#include <yaml-cpp/yaml.h>
 
 class SolidColorOperation : public Operation {
   BoundConcreteValue<float> hue;

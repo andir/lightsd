@@ -3,8 +3,8 @@
 //
 
 #include "DevMemOutput.h"
-#include <algorithm>
 #include <yaml-cpp/yaml.h>
+#include <algorithm>
 
 namespace {
 std::string parse_filename(const YAML::Node& params) {
@@ -34,7 +34,7 @@ size_t parse_data_offset(const YAML::Node& params) {
     return f.as<size_t>();
   return 0x1ff00000;
 }
-}
+}  // namespace
 
 DevMemOutput::DevMemOutput(const YAML::Node& params)
     : filename(parse_filename(params)),

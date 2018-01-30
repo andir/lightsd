@@ -2,10 +2,10 @@
 // Created by andi on 10/12/16.
 //
 #include "config.h"
+#include <yaml-cpp/yaml.h>
+#include <boost/algorithm/string.hpp>
 #include "config_output.h"
 #include "config_sequence.h"
-#include <boost/algorithm/string.hpp>
-#include <yaml-cpp/yaml.h>
 
 ConfigPtr parseConfig(const std::string& filename) {
   auto config = std::make_unique<Config>();

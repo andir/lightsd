@@ -1,9 +1,9 @@
 #pragma once
 
+#include <yaml-cpp/yaml.h>
 #include "../../rgb.h"
 #include "../Output.h"
 #include "SPI.h"
-#include <yaml-cpp/yaml.h>
 
 class SPIOutput : public Output {
   SPI spi;

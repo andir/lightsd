@@ -1,9 +1,9 @@
 #pragma once
 
+#include <vector>
 #include "Buffer.h"
 #include "rgb.h"
 #include "utils/MemMap.h"
-#include <vector>
 
 class DevMemBuffer {
  public:

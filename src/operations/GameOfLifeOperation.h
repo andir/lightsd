@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Operation.h"
 #include <yaml-cpp/yaml.h>
+#include "Operation.h"
 
 #include "../VariableStore/BoundConcreteValueType.h"
 #include "../VariableStore/VariableStore.h"

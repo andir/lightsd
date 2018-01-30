@@ -4,9 +4,9 @@
 
 #include "SharedMemoryBuffer.h"
 #include <fcntl.h>
-#include <iostream>
 #include <sys/mman.h>
 #include <unistd.h>
+#include <iostream>
 
 int _shm_open(const std::string& filename) {
   int fd = shm_open(filename.c_str(), O_CREAT | O_TRUNC | O_RDWR,

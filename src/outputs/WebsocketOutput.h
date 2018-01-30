@@ -125,7 +125,7 @@ class broadcast_server {
 
     var ws = new WebSocket("ws://" + location.host + "/stream");
     ws.binaryType = 'arraybuffer';
-    
+
     ws.onopen = function () {
       console.log('Opened');
     }

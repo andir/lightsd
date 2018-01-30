@@ -12,16 +12,12 @@
 template <typename T>
 inline std::unique_ptr<Output> generate(const YAML::Node& params,
                                         std::shared_ptr<VariableStore>& store) {
-  if
-    constexpr(std::is_constructible<T, const YAML::Node&,
-                                    std::shared_ptr<VariableStore>&>::value) {
-      return std::make_unique<T>(params, store);
-    }
-  else if
-    constexpr(std::is_constructible<T, const YAML::Node&>::value) {
-      return std::make_unique<T>(params);
-    }
-  else {
+  if constexpr (std::is_constructible<T, const YAML::Node&,
+                                      std::shared_ptr<VariableStore>&>::value) {
+    return std::make_unique<T>(params, store);
+  } else if constexpr (std::is_constructible<T, const YAML::Node&>::value) {
+    return std::make_unique<T>(params);
+  } else {
     static_assert("No valid constructor found.");
   }
   return nullptr;

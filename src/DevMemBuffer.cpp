@@ -4,10 +4,10 @@
 
 #include "DevMemBuffer.h"
 #include <fcntl.h>
-#include <iostream>
-#include <numeric>
 #include <sys/mman.h>
 #include <unistd.h>
+#include <iostream>
+#include <numeric>
 
 DevMemBuffer::DevMemBuffer(const std::string& filename,
                            const std::vector<size_t>& sizes,

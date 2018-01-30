@@ -3,16 +3,16 @@
 //
 
 #include "MemFD.h"
-#include <cassert>
 #include <fcntl.h>
 #include <syscall.h>
 #include <unistd.h>
+#include <cassert>
 
 namespace {
 static inline int memfd_create(const char* name, unsigned int flags) {
   return syscall(__NR_memfd_create, name, flags);
 }
-}
+}  // namespace
 
 #ifndef F_LINUX_SPECIFIC_BASE
 #define F_LINUX_SPECIFIC_BASE 1024

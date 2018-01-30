@@ -1,11 +1,11 @@
 #pragma once
 
-#include "ValueType.h"
 #include <map>
 #include <memory>
 #include <set>
 #include <shared_mutex>
 #include <string>
+#include "ValueType.h"
 
 struct mqtt_var_type {
   std::string dataType;

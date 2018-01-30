@@ -15,7 +15,7 @@ static std::string parse_port(const YAML::Node& params) {
   }
   return "6453";
 }
-}
+}  // namespace
 
 UDPOutputWrapper::UDPOutputWrapper(const YAML::Node& params)
     : output(parse_host(params), parse_port(params)) {}

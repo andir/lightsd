@@ -1,9 +1,9 @@
 #pragma once
 
-#include "operations/Operation.h"
+#include <yaml-cpp/yaml.h>
 #include <boost/algorithm/string.hpp>
 #include <memory>
-#include <yaml-cpp/yaml.h>
+#include "operations/Operation.h"
 
 std::unique_ptr<Operation> generateOperation(
     const std::string& name,
