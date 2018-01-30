@@ -2,6 +2,13 @@
 #include "../config.h"
 #include "../utils/random.h"
 
+inline int safe_mod(const int n, const int m) {
+  if (m == 0 || n == 0) {
+    return 0;
+  }
+  return n % m;
+}
+
 GameOfLifeOperation::GameOfLifeOperation(const std::string& name,
                                          std::shared_ptr<VariableStore> store,
                                          YAML::const_iterator start,
@@ -100,7 +107,7 @@ void GameOfLifeOperation::update(const size_t width, const size_t fps) {
   }
 
   // main update loop
-  if (frame_counter % int(fps * speed) == 0) {
+  if (safe_mod(frame_counter, int(fps * speed)) == 0) {
     std::vector<HSV> state(output.size());
     // once a second recalculate a new state
     auto default_color = HSV{default_hue, default_saturation, 0.0};

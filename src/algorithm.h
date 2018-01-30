@@ -184,4 +184,20 @@ template <typename Iterator, typename ColorType>
 void initSolidColor(Iterator start, Iterator stop, ColorType color) {
   std::fill(start, stop, color);
 };
+
+template <typename ColorTypeA, typename ColorTypeB>
+inline HSV linear_gradient(const ColorTypeA& _a,
+                           const ColorTypeB& _b,
+                           const float step) {
+  assert(step >= 0.0f && step <= 1.0f);
+  const HSV a = _a.toHSV();
+  const HSV b = _b.toHSV();
+
+  // calculate color delta
+  const auto delta = a - b;
+
+  const auto ret = a + (delta * step);
+
+  return ret;
+}
 };

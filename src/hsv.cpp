@@ -96,3 +96,16 @@ HSV HSV::operator=(const RGB& rhs) {
   *this = rhs.toHSV();
   return *this;
 }
+
+HSV HSV::operator*(const float mul) const {
+  return HSV{
+      value_type(fmod(hue * value_type(mul), 360)),
+      ensure_bounds<value_type, 0, 1>(saturation * value_type(mul)),
+      ensure_bounds<value_type, 0, 1>(value * value_type(mul)),
+  };
+}
+
+std::ostream& operator<<(std::ostream& os, const HSV t) {
+  os << "HSV{" << t.hue << ", " << t.saturation << ", " << t.value << "}";
+  return os;
+}
