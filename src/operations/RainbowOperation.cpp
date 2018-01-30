@@ -3,8 +3,8 @@
 //
 
 #include "RainbowOperation.h"
-#include "../algorithm.h"
 #include <yaml-cpp/yaml.h>
+#include "../algorithm.h"
 
 RainbowOperation::RainbowOperation(const std::string& name,
                                    std::shared_ptr<VariableStore> store,

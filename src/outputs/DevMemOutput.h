@@ -1,8 +1,8 @@
 #pragma once
 
+#include <yaml-cpp/yaml.h>
 #include "../DevMemBuffer.h"
 #include "Output.h"
-#include <yaml-cpp/yaml.h>
 
 class DevMemOutput : public Output {
   const std::string filename;

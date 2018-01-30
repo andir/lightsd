@@ -1,8 +1,8 @@
 #pragma once
 
+#include <yaml-cpp/yaml.h>
 #include "../VariableStore/VariableStore.h"
 #include "Operation.h"
-#include <yaml-cpp/yaml.h>
 
 class RainbowOperation : public Operation {
  public:

@@ -1,17 +1,17 @@
 #pragma once
 
-#include "hsv.h"
-#include "rgb.h"
 #include <algorithm>
 #include <cassert>
 #include <cmath>
+#include "hsv.h"
+#include "rgb.h"
 
 namespace {
 template <typename T>
 struct always_fail {
   enum { value = false };
 };
-}
+}  // namespace
 
 namespace algorithm {
 
@@ -40,7 +40,8 @@ struct Mask<HSV> {
   inline constexpr HSV operator()(const float factor, const HSV& color) const {
     // assert(factor <= 1.0f);
     return HSV{
-        color.hue, color.saturation,
+        color.hue,
+        color.saturation,
         std::min(HSV::value_type(color.value * factor), 1.0f),
     };
   }
@@ -200,4 +201,4 @@ inline HSV linear_gradient(const ColorTypeA& _a,
 
   return ret;
 }
-};
+};  // namespace algorithm

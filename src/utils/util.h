@@ -1,7 +1,7 @@
 #pragma once
 
-#include <chrono>
 #include <yaml-cpp/yaml.h>
+#include <chrono>
 
 template <typename T>
 inline static T getValueByKey(const std::string& key,
@@ -25,8 +25,8 @@ struct MeasureTime {
   MeasureTime() : start(std::chrono::steady_clock::now()) {}
 
   /*
- * time in ms
- */
+   * time in ms
+   */
   auto measure() {
     const auto p = std::chrono::steady_clock::now();
 

@@ -1,8 +1,8 @@
 #pragma once
 
+#include <yaml-cpp/yaml.h>
 #include "../SharedMemoryBuffer.h"
 #include "Output.h"
-#include <yaml-cpp/yaml.h>
 
 class SharedMemoryOutput : public Output {
   const std::string filename;

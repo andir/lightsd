@@ -1,4 +1,5 @@
 #include "config_sequence.h"
+#include <memory>
 #include "config.h"
 #include "operations/BellOperation.h"
 #include "operations/FadeOperation.h"
@@ -12,7 +13,6 @@
 #include "operations/SolidColorOperation.h"
 #include "operations/SplashdropOperation.h"
 #include "operations/lua/LuaOperation.h"
-#include <memory>
 
 // We can solve this entirely using the typesystem and a custom make_unique
 // implementation but it is not worth the effort...

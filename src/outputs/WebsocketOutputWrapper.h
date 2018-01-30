@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Output.h"
 #include <VariableStore/VariableStore.h>
-#include <memory>
 #include <yaml-cpp/yaml.h>
+#include <memory>
+#include "Output.h"
 
 class WebsocketOutputWrapper : public Output {
   // internal pointer to the websocket output

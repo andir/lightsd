@@ -1,17 +1,17 @@
 #pragma once
 
-#include "ConcreteValueType.h"
-#include "VariableStore.h"
+#include <cassert>
 #include <memory>
 #include <string>
-#include <cassert>
+#include "ConcreteValueType.h"
+#include "VariableStore.h"
 
 namespace {
 template <typename T>
 struct always_false {
   static const bool value = false;
 };
-};
+};  // namespace
 
 template <typename EnclosedValue>
 class BoundConcreteValue : public ValueType {
@@ -114,21 +114,15 @@ class BoundConcreteValue : public ValueType {
   operator EnclosedValue() const { return getValue(); }
 
   BoundConcreteValue& operator=(const EnclosedValue v) {
-    if
-      constexpr(std::is_same<bool, EnclosedValue>::value) { value->setBool(v); }
-    else if
-      constexpr(std::is_same<int, EnclosedValue>::value) {
-        value->setInteger(v);
-      }
-    else if
-      constexpr(std::is_same<float, EnclosedValue>::value) {
-        value->setFloat(v);
-      }
-    else if
-      constexpr(std::is_same<std::string, EnclosedValue>::value) {
-        value->setString(v);
-      }
-    else {
+    if constexpr (std::is_same<bool, EnclosedValue>::value) {
+      value->setBool(v);
+    } else if constexpr (std::is_same<int, EnclosedValue>::value) {
+      value->setInteger(v);
+    } else if constexpr (std::is_same<float, EnclosedValue>::value) {
+      value->setFloat(v);
+    } else if constexpr (std::is_same<std::string, EnclosedValue>::value) {
+      value->setString(v);
+    } else {
       static_assert(always_false<EnclosedValue>::value && "invalid value type");
     }
 

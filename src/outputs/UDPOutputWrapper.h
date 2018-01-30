@@ -1,9 +1,9 @@
 #pragma once
 
+#include <yaml-cpp/yaml.h>
 #include "../hsv.h"
 #include "Output.h"
 #include "UDPOutput.h"
-#include <yaml-cpp/yaml.h>
 
 class UDPOutputWrapper : public Output {
   UDPOutput output;

@@ -19,7 +19,7 @@ bool lexical_cast<bool, std::string>(const std::string& arg) {
   ss >> std::boolalpha >> b;
   return b;
 }
-}
+}  // namespace boost
 namespace {
 template <typename T, typename CT, typename CR, typename TK>
 inline void publish_value(CT& client,
@@ -49,7 +49,7 @@ static std::string getClientId() {
     return "this_is_lightsd";
   }
 }
-}
+}  // namespace
 
 MqttConnection::MqttConnection(std::shared_ptr<VariableStore>& store,
                                const std::string& broker,
@@ -77,11 +77,13 @@ MqttConnection::MqttConnection(std::shared_ptr<VariableStore>& store,
         return this->connack_handler(sp, connack_return_code);
       });
 
-  mqtt_client->set_publish_handler([this](
-      std::uint8_t fixed_header, boost::optional<std::uint16_t> packet_id,
-      std::string topic_name, std::string contents) {
-    return this->publish_handler(fixed_header, packet_id, topic_name, contents);
-  });
+  mqtt_client->set_publish_handler(
+      [this](std::uint8_t fixed_header,
+             boost::optional<std::uint16_t> packet_id, std::string topic_name,
+             std::string contents) {
+        return this->publish_handler(fixed_header, packet_id, topic_name,
+                                     contents);
+      });
 
   mqtt_client->set_close_handler([this]() { this->close_handler(); });
 

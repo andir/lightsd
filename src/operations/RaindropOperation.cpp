@@ -1,7 +1,7 @@
 #include "RaindropOperation.h"
 
-#include "../utils/random.h"
 #include <cassert>
+#include "../utils/random.h"
 
 RaindropOperation::RaindropOperation(const std::string& name,
                                      std::shared_ptr<VariableStore> store,

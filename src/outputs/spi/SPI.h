@@ -4,13 +4,13 @@ extern "C" {
 #include <linux/spi/spidev.h>
 };
 
-#include <cstdint>
-#include <cstring>
 #include <fcntl.h>
-#include <iostream>
-#include <string>
 #include <sys/ioctl.h>
 #include <unistd.h>
+#include <cstdint>
+#include <cstring>
+#include <iostream>
+#include <string>
 
 struct SPIError : public std::exception {
   const std::string s;

@@ -1,9 +1,9 @@
 #pragma once
 
 #include <atomic>
-#include <string>
 #include <cassert>
 #include <iostream>
+#include <string>
 
 #include "InvalidVariableTypeException.h"
 #include "ValueType.h"
@@ -34,7 +34,7 @@ template <>
 constexpr ValueType::Type determineType<std::string>() {
   return ValueType::Type::STRING;
 }
-};
+};  // namespace
 template <typename T>
 struct atomic_type {
   typedef std::atomic<T> type;

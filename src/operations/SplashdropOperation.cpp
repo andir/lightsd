@@ -3,8 +3,8 @@
 //
 
 #include "SplashdropOperation.h"
-#include "../utils/random.h"
 #include <cassert>
+#include "../utils/random.h"
 
 SplashdropOperation::SplashdropOperation(const std::string& name,
                                          std::shared_ptr<VariableStore> store,
@@ -20,7 +20,9 @@ void SplashdropOperation::hitDrop(Drop& drop) {
 
   // TODO: add random colors
   drop.color = HSV{
-      200, 1.0f, 0.0f,
+      200,
+      1.0f,
+      0.0f,
   };
   drop.rate = 0.3f;
   drop.state = DROPPING;

@@ -1,9 +1,9 @@
 #pragma once
 
+#include <mutex>
 #include "FrameScheduler.h"
 #include "config.h"
 #include "utils/JobQueue.h"
-#include <mutex>
 
 class WorkerThread {
   bool doRun;

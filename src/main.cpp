@@ -2,9 +2,9 @@
 // Created by andi on 10/7/16.
 //
 
+#include <stdlib.h>
 #include <csignal>
 #include <iostream>
-#include <stdlib.h>
 #include <thread>
 
 #include "WorkerThread.h"

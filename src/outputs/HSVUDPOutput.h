@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Output.h"
-#include <boost/asio.hpp>
 #include <yaml-cpp/yaml.h>
+#include <boost/asio.hpp>
+#include "Output.h"
 
 using boost::asio::ip::udp;
 

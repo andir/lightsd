@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../../VariableStore/BoundConcreteValueType.h"
-#include "../Operation.h"
 #include <luajit-2.1/lua.hpp>
 #include <memory>
 #include <mutex>
+#include "../../VariableStore/BoundConcreteValueType.h"
+#include "../Operation.h"
 
 class LuaOperation : public Operation {
   std::mutex code_mutex;
