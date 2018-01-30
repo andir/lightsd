@@ -16,9 +16,9 @@ HSV RGB::toHSV() const {
     h.hue = 0;
     return h;
   }
-  h.value = maxRGB;
+  h.value = float(maxRGB) / 255.0f;
 
-  h.saturation = diff / h.value;
+  h.saturation = diff / maxRGB;
   if (h.saturation == 0) {
     h.hue = 0;
     return h;
