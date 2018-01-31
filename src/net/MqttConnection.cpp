@@ -191,7 +191,11 @@ bool MqttConnection::publish_handler(std::uint8_t fixed_header,
                       << " with value: " << contents << std::endl;
             std::cerr << ex.what() << std::endl;
           }
-        }
+        } else {
+	  std::cerr << "Var for topic " << s << " is a nullptr" << std::endl;
+	}
+      } else {
+        std::cerr << "Unable to find var for topic: " << s << std::endl;
       }
     }
   }
