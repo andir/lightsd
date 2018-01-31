@@ -2,7 +2,9 @@
 #include <memory>
 #include "config.h"
 #include "operations/BellOperation.h"
+#include "operations/DoorBuzzerOperation.h"
 #include "operations/FadeOperation.h"
+#include "operations/FlashOperation.h"
 #include "operations/GameOfLifeOperation.h"
 #include "operations/HSVUDPInputOperation.h"
 #include "operations/RainbowOperation.h"
@@ -37,6 +39,8 @@ std::unique_ptr<Operation> generateSequenceStep(
   const static std::map<std::string, FuncT> types{
       {"fade", &generator<FadeOperation>},
       {"bell", &generator<BellOperation>},
+      {"doorbuzzer", &generator<DoorBuzzerOperation>},
+      {"flash", &generator<FlashOperation>},
       {"gameoflife", &generator<GameOfLifeOperation>},
       {"hsvudpinput", &generator<HSVUDPInputOperation>},
       {"rainbow", &generator<RainbowOperation>},

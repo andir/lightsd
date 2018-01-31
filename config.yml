@@ -1,5 +1,5 @@
 ---
-width: 1200
+width: 2115
 fps: 30
 
 mqtt:
@@ -102,26 +102,21 @@ operations:
           params:
             enabled: true
             step_width: -20
-  sub-sequence3:
+  sub-sequence-door:
     type: sequence
     params:
       enabled: true
-      from: 400
-      to: 600
+      from: 1737
+      to: 2057
       operations:
         - name: bell
-          type: bell
+          type: flash
           params:
-            enabled: true
-            duration: 500000000
-        - name: rotate
-          type: rotate
+            enabled: false
+        - name: buzzer
+          type: doorbuzzer
           params:
-            enabled: true
-            step_width: 40
-
-
-
+            enabled: false
 
 sequence:
   - rainbow
@@ -134,7 +129,7 @@ sequence:
 #  - example-lua
   - sub-sequence1
   - sub-sequence2
-  - sub-sequence3
+  - sub-sequence-door
   - rotate
   - shade
   - bell
@@ -147,5 +142,5 @@ outputs:
   Ranzput:
     type: hsvudp
     params:
-      host: 172.23.97.135
+      host: 172.20.64.232
       port: 1337
