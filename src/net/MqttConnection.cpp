@@ -177,6 +177,9 @@ bool MqttConnection::publish_handler(std::uint8_t fixed_header,
                     contents = "false";
                   spt->setBool(boost::lexical_cast<bool>(contents));
                   break;
+		case ValueType::Type::STRING:
+		  spt->setString(contents);
+		  break;
                 default:
                   std::cerr << "Unable to parse " << contents << std::endl;
               }
@@ -188,7 +191,11 @@ bool MqttConnection::publish_handler(std::uint8_t fixed_header,
                       << " with value: " << contents << std::endl;
             std::cerr << ex.what() << std::endl;
           }
-        }
+        } else {
+	  std::cerr << "Var for topic " << s << " is a nullptr" << std::endl;
+	}
+      } else {
+        std::cerr << "Unable to find var for topic: " << s << std::endl;
       }
     }
   }

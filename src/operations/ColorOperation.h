@@ -7,13 +7,13 @@
 #include "../algorithm.h"
 #include "../hsv.h"
 
-class SolidColorOperation : public Operation {
+class ColorOperation : public Operation {
   BoundConcreteValue<float> hue;
   BoundConcreteValue<float> saturation;
   BoundConcreteValue<float> value;
 
  public:
-  SolidColorOperation(const std::string& name,
+  ColorOperation(const std::string& name,
                       std::shared_ptr<VariableStore> store,
                       YAML::const_iterator start,
                       YAML::const_iterator end)

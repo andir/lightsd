@@ -46,13 +46,13 @@ DevMemOutput::DevMemOutput(const YAML::Node& params)
 void DevMemOutput::draw(const AbstractBaseBuffer<HSV>& buffer) {
   const auto& buf = *devMemBuffer.get();
   std::transform(buffer.begin(), buffer.end(), buf.begin(),
-                 [](const auto& p) { return p.toRGB(); });
+                 [](const auto& p) { return gammaCorrect(p).toRGB(); });
   devMemBuffer.writeConfiguration();
 }
 
 void DevMemOutput::draw(const std::vector<HSV>& buffer) {
   const auto& buf = *devMemBuffer.get();
   std::transform(buffer.begin(), buffer.end(), buf.begin(),
-                 [](const auto& p) { return p.toRGB(); });
+                 [](const auto& p) { return gammaCorrect(p).toRGB(); });
   devMemBuffer.writeConfiguration();
 }
