@@ -2,6 +2,7 @@
 #include <memory>
 #include "config.h"
 #include "operations/BellOperation.h"
+#include "operations/ColorOperation.h"
 #include "operations/DoorBuzzerOperation.h"
 #include "operations/FadeOperation.h"
 #include "operations/FlashOperation.h"
@@ -12,7 +13,6 @@
 #include "operations/RotateOperation.h"
 #include "operations/SequenceOperation.h"
 #include "operations/ShadeOperation.h"
-#include "operations/SolidColorOperation.h"
 #include "operations/SplashdropOperation.h"
 #include "operations/lua/LuaOperation.h"
 
@@ -37,21 +37,21 @@ std::unique_ptr<Operation> generateSequenceStep(
       YAML::const_iterator begin, YAML::const_iterator end);
 
   const static std::map<std::string, FuncT> types{
-      {"fade", &generator<FadeOperation>},
       {"bell", &generator<BellOperation>},
+      {"color", &generator<ColorOperation>},
       {"doorbuzzer", &generator<DoorBuzzerOperation>},
+      {"fade", &generator<FadeOperation>},
       {"flash", &generator<FlashOperation>},
       {"gameoflife", &generator<GameOfLifeOperation>},
       {"hsvudpinput", &generator<HSVUDPInputOperation>},
-      {"rainbow", &generator<RainbowOperation>},
-      {"initsolidcolor", &generator<SolidColorOperation>},
       {"lua", &generator<LuaOperation>},
+      {"rainbow", &generator<RainbowOperation>},
       {"raindrop", &generator<RaindropOperation>},
       {"rotate", &generator<RotateOperation>},
+      {"sequence", &generator<SequenceOperation>},
       {"shade", &generator<ShadeOperation>},
       {"splashdrop", &generator<SplashdropOperation>},
       {"udpinput", &generator<HSVUDPInputOperation>},
-      {"sequence", &generator<SequenceOperation>},
   };
 
   const auto lower_case_name = boost::algorithm::to_lower_copy(step_type);
