@@ -15,8 +15,6 @@ class KnightRiderOperation : public Operation {
 
   int currentCenter = 0;
 
-  BoundConcreteValue<float> hue;
-  BoundConcreteValue<float> saturation;
   BoundConcreteValue<float> value;
 
   BoundConcreteValue<int> duration_milliseconds;

@@ -13,14 +13,6 @@ KnightRiderOperation::KnightRiderOperation(const std::string& name,
                                            YAML::const_iterator end)
     : Operation(name, store, begin, end),
       state(State::IDLE),
-      hue(name + "/hue",
-          Operation::HSV_HUE,
-          store,
-          getValueByKey<float>("hue", begin, end, 0.0f)),
-      saturation(name + "/saturation",
-                 Operation::HSV_SATURATION,
-                 store,
-                 getValueByKey<float>("saturation", begin, end, 1.0f)),
       value(name + "/value",
             Operation::HSV_VALUE,
             store,
@@ -43,19 +35,19 @@ Operation::BufferType KnightRiderOperation::operator()(
 
   for (int i = 0; i < size; i++) {
     if (direction == Direction::ASCENDING && i > currentCenter) {
-      break;
+      (*buffer).at(i) = HSV{0, 0, 0};
+      continue;
     }
 
     if (direction == Direction::DESCENDING && i < currentCenter) {
-      i = currentCenter;
+      (*buffer).at(i) = HSV{0, 0, 0};
+      continue;
     }
 
     int distance = std::abs(i - currentCenter);
     float relValue = value - pow(float(distance) / float(size), width);
-    if (relValue >= 0.1f) {
-      (*buffer).at(i) =
-          HSV{hue.getValue(), saturation, std::clamp(relValue, 0.f, 1.f)};
-    }
+    auto& p = (*buffer).at(i);
+    (*buffer).at(i) = HSV{p.hue, p.saturation, std::clamp(relValue, 0.f, 1.f)};
   }
 
   return buffer;
