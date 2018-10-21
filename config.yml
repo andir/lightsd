@@ -51,6 +51,11 @@ operations:
     params:
       enabled: false
       duration: 5000
+  knightrider:
+    type: knightrider
+    params:
+      duration: 5000
+      width: 0.2
   rotate:
     type: rotate
     params:

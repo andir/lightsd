@@ -8,6 +8,7 @@
 #include "operations/FlashOperation.h"
 #include "operations/GameOfLifeOperation.h"
 #include "operations/HSVUDPInputOperation.h"
+#include "operations/KnightRider.h"
 #include "operations/RainbowOperation.h"
 #include "operations/RaindropOperation.h"
 #include "operations/RotateOperation.h"
@@ -45,6 +46,7 @@ std::unique_ptr<Operation> generateSequenceStep(
       {"gameoflife", &generator<GameOfLifeOperation>},
       {"hsvudpinput", &generator<HSVUDPInputOperation>},
       {"lua", &generator<LuaOperation>},
+      {"knightrider", &generator<KnightRiderOperation>},
       {"rainbow", &generator<RainbowOperation>},
       {"raindrop", &generator<RaindropOperation>},
       {"rotate", &generator<RotateOperation>},
